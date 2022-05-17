@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "765175452190",
+    "project_id": "amateurfoooballleague",
+    "storage_bucket": "amateurfoooballleague.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765175452190:android:9afc7525fde439f3c9140f",
+        "android_client_info": {
+          "package_name": "com.example.amateur_football_league_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "765175452190-2b55e33mbcmih52ijbp22q57sqi5pb3o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsLXGkmE-YQ3ayFrMpEhzJknhvvBmFLrs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "765175452190-2b55e33mbcmih52ijbp22q57sqi5pb3o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
