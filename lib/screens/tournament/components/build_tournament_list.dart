@@ -38,18 +38,17 @@ class BuildTournamentList extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    name.toString(),
-                    style: TextStyle(
-                      color: kBlackText,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                Text(
+                  name.toString(),
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: kBlackText,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(
-                  height: kPadding / 4,
+                  height: kPadding,
                 ),
                 Row(
                   children: [
@@ -64,7 +63,7 @@ class BuildTournamentList extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 16,
+                      width: 20,
                       child: Text(
                         "|",
                         style: TextStyle(
@@ -77,7 +76,6 @@ class BuildTournamentList extends StatelessWidget {
                       width: size.width - 200,
                       child: Text(
                         type.toString(),
-                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: kBlackText,
                           fontSize: 16,
@@ -89,30 +87,29 @@ class BuildTournamentList extends StatelessWidget {
                 SizedBox(
                   height: kPadding / 4,
                 ),
-                Text(
-                  name.toString(),
-                  style: TextStyle(
-                    color: kBlackText,
-                    fontSize: 18,
+                Expanded(
+                  child: Text(
+                    area.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
+                    style: TextStyle(
+                      color: kBlackText,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
           Column(
-            // ignore: prefer_const_literals_to_create_immutables
             children: [
-              const Image(
-                image: NetworkImage(
-                    "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"),
+              Image(
+                image: NetworkImage(image.toString()),
                 width: 80,
                 height: 120,
                 fit: BoxFit.cover,
               ),
             ],
-          ),
-          SizedBox(
-            width: kPadding / 2,
           ),
         ],
       ),

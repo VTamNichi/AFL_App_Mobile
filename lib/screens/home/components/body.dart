@@ -67,9 +67,6 @@ class Body extends StatelessWidget {
             child: ElevatedButton(
                   onPressed: () async {
                     generalController.currentIndex.value = 1;
-                    Get.to(() => const BottomNavbarScreen(),
-                          transition: Transition.leftToRight,
-                          duration: const Duration(milliseconds: 600));
                   },
                   style: ButtonStyle(
                       backgroundColor:
@@ -127,9 +124,6 @@ class Body extends StatelessWidget {
             child: ElevatedButton(
                   onPressed: () async {
                     generalController.currentIndex.value = 2;
-                    Get.to(() => const BottomNavbarScreen(),
-                          transition: Transition.leftToRight,
-                          duration: const Duration(milliseconds: 600));
                   },
                   style: ButtonStyle(
                       backgroundColor:

@@ -1,13 +1,10 @@
-import 'dart:io';
 import 'package:amateur_football_league_mobile/fetch_api/auth_api.dart';
 import 'package:amateur_football_league_mobile/screens/login/login_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AuthController extends GetxController {
+
   RxBool obsPassLogin = true.obs;
   RxBool emptyEmailLogin = false.obs;
   RxBool emptyPassLogin = false.obs;

@@ -1,4 +1,5 @@
 import 'package:amateur_football_league_mobile/controllers/auth_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class GoogleSignInProvider with ChangeNotifier {
 
   final authController = Get.put(AuthController());
   final userController = Get.put(UserController());
+  final generalController = Get.put(GeneralController());
 
   Future<String> googleLogin(String toDo) async {
     String statusLogin = "";
@@ -29,7 +31,8 @@ class GoogleSignInProvider with ChangeNotifier {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-
+      
+      generalController.isLoading.value = true;
       var response =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
@@ -39,7 +42,9 @@ class GoogleSignInProvider with ChangeNotifier {
         statusLogin = await userController.registerGoogle(response.user!.email.toString());
       }
       notifyListeners();
+      generalController.isLoading.value = false;
     } catch (e) {
+      generalController.isLoading.value = false;
       return statusLogin;
     }
     return statusLogin;

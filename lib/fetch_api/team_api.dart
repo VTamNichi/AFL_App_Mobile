@@ -6,11 +6,11 @@ import 'package:get/get.dart' as GetX;
 import 'package:http/http.dart' as http;
 
 class TeamAPI {
-  static Future<int> getListTeam(String name) async {
+  static Future<int> getListTeam(String name, String teamArea, String teamGender, String orderBy, String orderType) async {
     final teamController = GetX.Get.put(TeamController());
     int rs = 0;
     try {
-      final response = await http.get(Uri.parse("https://afootballleague.ddns.net/api/v1/teams?page-offset=1&limit=20"),
+      final response = await http.get(Uri.parse("https://afootballleague.ddns.net/api/v1/teams?"+ name + teamArea + teamGender + orderBy + orderBy + "page-offset=1&limit=20"),
               headers: <String, String>{
                 HttpHeaders.contentTypeHeader: 'application/json',
               });

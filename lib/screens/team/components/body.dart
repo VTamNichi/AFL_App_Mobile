@@ -89,21 +89,31 @@ class Body extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: teamController.listSearchTeam.map((element) {
-                  return Container(
-                    height: 30,
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    margin: EdgeInsets.only(left: kPadding/2, right: kPadding/2),
-                    decoration: BoxDecoration(
-                      color: kBackgroundColor,
-                      borderRadius: const BorderRadius.all( Radius.circular(8)),
-                      border: Border.all(
-                          color: kGreyColor,
-                          width: 1,
-                          style: BorderStyle.solid),
+                  return GestureDetector(
+                    onTap: () {
+                      teamController.showOptionSearchTeam(context, element);
+                    },
+                    child: Container(
+                      height: 30,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      margin: EdgeInsets.only(
+                          left: kPadding / 2, right: kPadding / 2),
+                      decoration: BoxDecoration(
+                        color: teamController.element.contains(element) ? kGreenLightColor : kBackgroundColor,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        border: Border.all(
+                            color: kGreyColor,
+                            width: 1,
+                            style: BorderStyle.solid),
+                      ),
+                      child: Text(
+                        element,
+                        style: TextStyle(color: teamController.element.contains(element) ? kWhiteText : kGreyColor),
+                      ),
                     ),
-                    child: Text(element, style: TextStyle(color: kGreyColor),),
-                    );
+                  );
                 }).toList(),
               ),
             ),
@@ -112,7 +122,7 @@ class Body extends StatelessWidget {
             height: 50,
             width: double.infinity,
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: kPadding/2, right: kPadding/2),
+            padding: EdgeInsets.only(left: kPadding / 2, right: kPadding / 2),
             child: Row(
               children: [
                 Text(
@@ -123,27 +133,45 @@ class Body extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
                 Expanded(child: Container()),
-                Container(
-                    width: 100,
-                    height: 30,
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    decoration: BoxDecoration(
-                      color: kBackgroundColor,
-                      borderRadius: const BorderRadius.all( Radius.circular(8)),
-                      border: Border.all(
-                          color: kGreyColor,
-                          width: 1,
-                          style: BorderStyle.solid),
-                    ),
-                    child: Row(
-                      children: [
-                        Text("Sắp xếp", style: TextStyle(color: kGreyColor),),
-                        Expanded(child: Container()),
-                        Icon(Icons.keyboard_arrow_down, color: kGreyColor,)
-                      ],
-                    )
-                    ),
+                GestureDetector(
+                  onTap: () {
+                    teamController.showOptionOrderTeam(context);
+                  },
+                  child: Container(
+                      width: 100,
+                      height: 30,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      decoration: BoxDecoration(
+                        color: teamController.sortTeamBy.value == ""
+                                  ? kBackgroundColor : kGreenLightColor,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        border: Border.all(
+                            color: kGreyColor,
+                            width: 1,
+                            style: BorderStyle.solid),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Sắp xếp",
+                            style: TextStyle(
+                              color: teamController.sortTeamBy.value == ""
+                                  ? kGreyColor
+                                  : kWhiteText,
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                          Icon(
+                            Icons.keyboard_arrow_down,
+                            color: teamController.sortTeamBy.value == ""
+                                ? kGreyColor
+                                : kWhiteText,
+                          )
+                        ],
+                      )),
+                ),
               ],
             ),
           ),

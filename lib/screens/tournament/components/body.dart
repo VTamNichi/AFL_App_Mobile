@@ -98,23 +98,28 @@ class Body extends StatelessWidget {
               child: Row(
                 children:
                     tournamentController.listSearchTournament.map((element) {
-                  return Container(
-                    height: 30,
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    margin: EdgeInsets.only(
-                        left: kPadding / 2, right: kPadding / 2),
-                    decoration: BoxDecoration(
-                      color: kBackgroundColor,
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      border: Border.all(
-                          color: kGreyColor,
-                          width: 1,
-                          style: BorderStyle.solid),
-                    ),
-                    child: Text(
-                      element,
-                      style: TextStyle(color: kGreyColor),
+                  return GestureDetector(
+                    onTap: () {
+                      tournamentController.showOptionSearchTournament(context, element);
+                    },
+                    child: Container(
+                      height: 30,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      margin: EdgeInsets.only(
+                          left: kPadding / 2, right: kPadding / 2),
+                      decoration: BoxDecoration(
+                        color: tournamentController.element.contains(element) ? kGreenLightColor : kBackgroundColor,
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                        border: Border.all(
+                            color: kGreyColor,
+                            width: 1,
+                            style: BorderStyle.solid),
+                      ),
+                      child: Text(
+                        element,
+                        style: TextStyle(color: tournamentController.element.contains(element) ? kWhiteText : kGreyColor,),
+                      ),
                     ),
                   );
                 }).toList(),
@@ -136,29 +141,34 @@ class Body extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
                 Expanded(child: Container()),
-                Container(
-                  width: 100,
-                  height: 30,
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  decoration: BoxDecoration(
-                    color: kBackgroundColor,
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(
-                        color: kGreyColor, width: 1, style: BorderStyle.solid),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Sắp xếp",
-                        style: TextStyle(color: kGreyColor),
-                      ),
-                      Expanded(child: Container()),
-                      Icon(
-                        Icons.keyboard_arrow_down,
-                        color: kGreyColor,
-                      )
-                    ],
+                GestureDetector(
+                  onTap: () {
+                    tournamentController.showOptionOrderTournament(context);
+                  },
+                  child: Container(
+                    width: 100,
+                    height: 30,
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    decoration: BoxDecoration(
+                      color: tournamentController.sortTourBy.value == "" ? kBackgroundColor : kGreenLightColor,
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      border: Border.all(
+                          color: kGreyColor, width: 1, style: BorderStyle.solid),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Sắp xếp",
+                          style: TextStyle(color: tournamentController.sortTourBy.value == "" ? kGreyColor : kWhiteText,),
+                        ),
+                        Expanded(child: Container()),
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          color: tournamentController.sortTourBy.value == "" ? kGreyColor : kWhiteText,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -173,8 +183,7 @@ class Body extends StatelessWidget {
                 itemCount: tournamentController.tournamentList.length,
                 itemBuilder: (BuildContext context, index) {
                   return BuildTournamentList(
-                    image: tournamentController.tournamentList[index]
-                      ..tournamentAvatar,
+                    image: tournamentController.tournamentList[index].tournamentAvatar,
                     name: tournamentController
                         .tournamentList[index].tournamentName,
                     gender: tournamentController
@@ -183,8 +192,8 @@ class Body extends StatelessWidget {
                         ? "Nữ"
                         : "Nam",
                     type: tournamentController
-                        .tournamentList[index].footballFieldTypeId == 1 ? "Loại trực tiếp" : tournamentController
-                        .tournamentList[index].footballFieldTypeId == 2 ? "Đấu vòng tròn" : "Chia bảng",
+                        .tournamentList[index].tournamentTypeId == 1 ? "Loại trực tiếp" : tournamentController
+                        .tournamentList[index].tournamentTypeId == 2 ? "Đấu vòng tròn" : "Chia bảng",
                     area: tournamentController
                         .tournamentList[index].footballFieldAddress,
                   );
@@ -207,7 +216,6 @@ class Body extends StatelessWidget {
           //     value: 50,
           //     valueColor: AlwaysStoppedAnimation(kGreenLightColor),
           //     backgroundColor: kGreyBackground,
-
           //   ),
           // ),
         ],

@@ -1,5 +1,6 @@
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/auth_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/team_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/tournament_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
@@ -19,12 +20,14 @@ class Body extends StatelessWidget {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   final authController = Get.put(AuthController());
+  final generalController = Get.put(GeneralController());
   final userController = Get.put(UserController());
   final teamController = Get.put(TeamController());
   final tournamentController = Get.put(TournamentController());
 
   @override
   Widget build(BuildContext context) {
+    email = TextEditingController(text: generalController.emailLogin.value);
     Size size = MediaQuery.of(context).size;
     return Obx(
       () => Container(
@@ -145,6 +148,9 @@ class Body extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                   onPressed: () async {
+                    FocusScope.of(context).unfocus();
+                    generalController.emailLogin.value = email.text;
+                    generalController.isLoading.value = true;
                     String result = await authController.checkLogin(
                         email.text, password.text);
                     if (result == "") {
@@ -155,9 +161,11 @@ class Body extends StatelessWidget {
                       if (result == "Đăng nhập thành công") {
                         teamController.getListTeam();
                         tournamentController.getListTournament();
+                        generalController.getListProvince();
                         Get.to(const BottomNavbarScreen());
                       }
                     }
+                    generalController.isLoading.value = false;
                   },
                   style: ButtonStyle(
                       backgroundColor:
@@ -188,6 +196,7 @@ class Body extends StatelessWidget {
                 height: 50,
                 child: ElevatedButton.icon(
                   onPressed: () async {
+                    FocusScope.of(context).unfocus();
                     var provider = Provider.of<GoogleSignInProvider>(context,
                         listen: false);
                     String result = await provider.googleLogin("Login");
@@ -199,6 +208,8 @@ class Body extends StatelessWidget {
                       if (result == "Đăng nhập thành công") {
                         teamController.getListTeam();
                         tournamentController.getListTournament();
+                        generalController.getListProvince();
+                        generalController.currentIndex.value = 0;
                         Get.to(const BottomNavbarScreen());
                       }
                     }
@@ -236,7 +247,7 @@ class Body extends StatelessWidget {
                     onTap: () {
                       userController.obsPassRegister.value = true;
                       userController.obsConfirmPassRegister.value = true;
-                      userController.dob.value = DateTime.now();
+                      generalController.dob.value = DateTime.now();
                       Get.to(() => RegisterScreen(),
                           transition: Transition.zoom,
                           duration: const Duration(milliseconds: 600));

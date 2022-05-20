@@ -1,4 +1,5 @@
 import 'package:amateur_football_league_mobile/constant.dart';
+import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/team_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/tournament_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
@@ -8,9 +9,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class VerifyAccountScreen extends StatelessWidget {
-  VerifyAccountScreen({Key? key}) : super(key: key);
+  VerifyAccountScreen({Key? key, required this.emailRegister})
+      : super(key: key);
+
+  final String emailRegister;
 
   final userController = Get.put(UserController());
+  final generalController = Get.put(GeneralController());
   final teamController = Get.put(TeamController());
   final tournamentController = Get.put(TournamentController());
 
@@ -86,11 +91,14 @@ class VerifyAccountScreen extends StatelessWidget {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () async {
-                        String result = await userController
-                            .registerUser(textCodeController.text);
-                        if (result != "") {
+                        generalController.isLoading.value = true;
+                        String result = await userController.registerUser(
+                            emailRegister, textCodeController.text);
+                        if (result == "") {
                           teamController.getListTeam();
                           tournamentController.getListTournament();
+                          generalController.getListProvince();
+                          generalController.currentIndex.value = 0;
                           Fluttertoast.showToast(
                               msg: "Đăng ký thành công", fontSize: 18);
                           Get.to(const BottomNavbarScreen());
@@ -98,6 +106,7 @@ class VerifyAccountScreen extends StatelessWidget {
                           Fluttertoast.showToast(
                               msg: "Mã xác thực không hợp lệ", fontSize: 18);
                         }
+                        generalController.isLoading.value = false;
                       },
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
@@ -116,6 +125,42 @@ class VerifyAccountScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: kPadding,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: Container()),
+                      Text(
+                        "Bạn chưa nhận được mã? ",
+                        style: TextStyle(
+                          color: kGreyColor,
+                          fontSize: 15,
+                        ),
+                      ),
+                      GestureDetector(
+                          onTap: () async {
+                            generalController.isLoading.value = true;
+                            String result = await userController
+                                .verifyEmail(emailRegister, "", "", "", "", "", "", 2);
+                            if (result != "") {
+                              Fluttertoast.showToast(msg: result, fontSize: 18);
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "Đã gửi lại mã xác nhận", fontSize: 18);
+                            }
+                            generalController.isLoading.value = false;
+                          },
+                          child: Text(
+                            "Gửi lại",
+                            style: TextStyle(
+                              color: kGreenLightColor,
+                              fontSize: 18,
+                            ),
+                          )),
+                      Expanded(child: Container()),
+                    ],
+                  )
                 ],
               ),
             ),
