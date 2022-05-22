@@ -84,11 +84,11 @@ class UserAPI {
       if (response.statusCode == 201) {
         User user = User.fromJson(response.data);
         userController.user.value = user;
-        message = "Đăng ký thành công";
+        message = "";
       } else if (response.statusCode == 400) {
         message = "Tài khoản đã tồn tại";
       } else {
-        message = "";
+        message = "Không kết nối được với máy chủ";
       }
     } on DioError catch (e) {
       return message;
@@ -97,33 +97,57 @@ class UserAPI {
   }
 
   static Future<String> verifyEmail(String email, int toDo) async {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data["email"] = email;
-    //final userController = GetX.Get.put(UserController());
-    //String message = "";
-    //try {
-    return "123456";
-    //   final response = await http.post(Uri.parse("https://afootballleague.ddns.net/api/v1/auth/login-with-google"),
-    //           headers: <String, String>{
-    //             HttpHeaders.contentTypeHeader: 'application/json',
-    //           },
-    //           body: jsonEncode(data));
-    //   if(response.statusCode == 200) {
-    //     var bodyJson = json.decode(utf8.decode(response.bodyBytes));
-    //     User user = User.fromJson(bodyJson);
-    //     userController.user.value = user;
-    //     message = "Đăng nhập thành công";
-    //   } else if(response.statusCode == 404) {
-    //     message = "Tài khoản không tồn tại";
-    //   } else if(response.statusCode == 400) {
-    //     message = "Tài khoản đã bị khóa";
-    //   } else {
-    //     message = "";
-    //   }
-    // } catch (e) {
-    //   return message;
-    // }
-    // return message;
+    String message = "";
+    try {
+      final response = await http.post(
+          Uri.parse(
+              "https://afootballleague.ddns.net/api/v1/auth/send-verify-code?email=" +
+                  email +
+                  "&toDo=" +
+                  toDo.toString()),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+          });
+
+      if (response.statusCode == 200) {
+        message = "";
+      } else if (response.statusCode == 404) {
+        message = "Tài khoản chưa tồn tại trong hệ thống";
+      } else if (response.statusCode == 400) {
+        message = "Tài khoản đã tồn tại trong hệ thống";
+      } else {
+        message = "Không kết nối được với máy chủ";
+      }
+    } catch (e) {
+      return message;
+    }
+    return message;
+  }
+
+  static Future<String> checkVerifyEmail(String email, String code) async {
+    String message = "";
+    try {
+      final response = await http.post(
+          Uri.parse(
+              "https://afootballleague.ddns.net/api/v1/auth/check-verify-code?email=" +
+                  email +
+                  "&code=" +
+                  code),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+          });
+
+      if (response.statusCode == 200) {
+        message = "";
+      } else if (response.statusCode == 400) {
+        message = "Mã xác nhận không hợp lệ hoặc đã hết hạn";
+      } else {
+        message = "Không kết nối được với máy chủ";
+      }
+    } catch (e) {
+      return message;
+    }
+    return message;
   }
 
   static Future<String> updateUser(User user, String filePath) async {
@@ -184,16 +208,19 @@ class UserAPI {
 
   static Future<String> changePassword(
       int id, String currentPass, String newPass) async {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["id"] = id;
+    data["currentPassword"] = currentPass;
+    data["newPassword"] = newPass;
     String message = "";
     try {
-      final response = await http.patch(
+      final response = await http.post(
           Uri.parse(
-              "https://afootballleague.ddns.net/api/v1/users/change-password?id=" +
-                  id.toString() +
-                  "&current-password=" + currentPass + "&new-password=" + newPass),
+              "https://afootballleague.ddns.net/api/v1/users/change-password"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
-          });
+          },
+          body: jsonEncode(data));
       if (response.statusCode == 200) {
         message = "Đổi mật khẩu thành công";
       } else if (response.statusCode == 404) {
@@ -210,14 +237,18 @@ class UserAPI {
   }
 
   static Future<String> resetPassword(String email, String newPass) async {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data["email"] = email;
+    data["newPassword"] = newPass;
     String message = "";
     try {
-      final response = await http.patch(
+      final response = await http.post(
           Uri.parse(
-              "https://afootballleague.ddns.net/api/v1/users/reset-password?email=" + email + "&new-password=" + newPass),
+              "https://afootballleague.ddns.net/api/v1/users/reset-password"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
-          });
+          },
+          body: jsonEncode(data));
       if (response.statusCode == 200) {
         message = "Đổi mật khẩu thành công";
       } else {

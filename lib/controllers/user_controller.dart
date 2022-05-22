@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/fetch_api/user_api.dart';
 import 'package:amateur_football_league_mobile/models/User.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
+  final generalController = Get.put(GeneralController());
+
   Rx<User> user = User().obs;
   RxString dobParse = "".obs;
 
@@ -11,27 +14,22 @@ class UserController extends GetxController {
   RxBool obsPassRegister = true.obs;
   RxBool obsConfirmPassRegister = true.obs;
 
-  Rx<File> imageRegister = File('').obs;
   RxBool emptyEmail = false.obs;
   RxBool emptyPass = false.obs;
   RxBool checkConfirmPass = false.obs;
   RxBool emptyName = false.obs;
   RxBool selectedGender = true.obs;
 
-  RxBool emptyDOB = false.obs;
-  Rx<DateTime> dob = DateTime.now().obs;
-
   RxBool emptyPhone = false.obs;
 
-  RxString verifyCode = "".obs;
   RxBool emptyCode = false.obs;
   Rx<User> userRe = User().obs;
 
   // update user variables
-  Rx<File> imageUpdate = File('').obs;
+
   RxBool genderUpdate = true.obs;
   RxString dobUpdate = "".obs;
-  Rx<DateTime> dobUpdatePick = DateTime.now().obs;
+
   RxBool emptyNameUpdate = false.obs;
   RxBool emptyPhoneUpdate = false.obs;
 
@@ -48,7 +46,7 @@ class UserController extends GetxController {
   RxString textButton = "GỬI MÃ XÁC THỰC".obs;
   RxBool emptyEmailReset = false.obs;
   RxBool emailResetRead = false.obs;
-  RxString codeResetPass = "".obs;
+  //RxString codeResetPass = "".obs;
   RxBool codeResetRead = false.obs;
   RxBool hasCode = false.obs;
   RxBool emptyCodeReset = false.obs;
@@ -57,7 +55,6 @@ class UserController extends GetxController {
   RxBool emptyNewPassReset = false.obs;
   RxBool obsConfirmNewPassReset = true.obs;
   RxBool checkConfirmNewPassReset = false.obs;
-
 
   Future<String> registerGoogle(String email) async {
     User userReG = User();
@@ -74,8 +71,11 @@ class UserController extends GetxController {
       String username,
       String address,
       String phone,
-      String bio) async {
-    if (email.isEmpty) {
+      String bio,
+      int flag) async {
+        String msg = "Lỗi";
+    if (flag == 1) {
+      if (email.isEmpty) {
       emptyEmail.value = true;
     } else {
       emptyEmail.value = false;
@@ -103,11 +103,11 @@ class UserController extends GetxController {
     } else {
       userRe.value.gender = "Nữ";
     }
-    if (dob.value.year >= DateTime.now().year) {
-      emptyDOB.value = true;
+    if (generalController.dob.value.year >= DateTime.now().year) {
+      generalController.emptyDOB.value = true;
     } else {
-      emptyDOB.value = false;
-      userRe.value.dateOfBirth = dob.value.toString();
+      generalController.emptyDOB.value = false;
+      userRe.value.dateOfBirth = generalController.dob.value.toString();
     }
     userRe.value.address = address;
     if (phone.isEmpty) {
@@ -118,30 +118,38 @@ class UserController extends GetxController {
     }
     userRe.value.bio = bio;
 
-    String msg = "";
     if (emptyEmail.isFalse &&
         emptyPass.isFalse &&
         checkConfirmPass.isFalse &&
         emptyName.isFalse &&
-        emptyDOB.isFalse &&
+        generalController.emptyDOB.isFalse &&
         emptyPhone.isFalse) {
-      await UserAPI.verifyEmail(email, 1)
-          .then((value) => {msg = value, verifyCode.value = value});
+      await UserAPI.verifyEmail(email, 1).then((value) => {msg = value});
+    }
+    }
+    else {
+      await UserAPI.verifyEmail(email, 1).then((value) => {msg = value});
     }
 
     return msg;
   }
 
-  Future<String> registerUser(String code) async {
-    String msg = "";
+  Future<String> registerUser(String email, String code) async {
+    String msg = "Lỗi";
     if (code.isEmpty) {
       emptyCode.value = true;
     } else {
       emptyCode.value = false;
     }
-    if (verifyCode.value == code && emptyCode.isFalse) {
-      await UserAPI.registerUser(userRe.value, imageRegister.value.path)
-          .then((value) => msg = value);
+    if (emptyCode.isFalse) {
+      String check = "";
+      await UserAPI.checkVerifyEmail(email, code)
+          .then((value) => {check = value});
+      if (check == "") {
+        await UserAPI.registerUser(
+                userRe.value, generalController.imageRegister.value.path)
+            .then((value) => msg = value);
+      }
     }
     return msg;
   }
@@ -166,86 +174,96 @@ class UserController extends GetxController {
       userUpdate.email = user.value.email;
       userUpdate.username = username;
       userUpdate.gender = genderUpdate.isTrue ? "Male" : "Female";
-      userUpdate.dateOfBirth = dobUpdatePick.value.year >= DateTime.now().year
-          ? user.value.dateOfBirth
-          : dobUpdatePick.toString();
+      userUpdate.dateOfBirth =
+          generalController.dobUpdatePick.value.year >= DateTime.now().year
+              ? user.value.dateOfBirth
+              : generalController.dobUpdatePick.toString();
       userUpdate.address = address;
       userUpdate.phone = phone;
       userUpdate.bio = bio;
       userUpdate.roleId = user.value.roleId;
-      await UserAPI.updateUser(userUpdate, imageUpdate.value.path)
+      await UserAPI.updateUser(
+              userUpdate, generalController.imageUpdate.value.path)
           .then((value) => msg = value);
     }
     return msg;
   }
 
-  Future<String> changePassword(String currentPass, String newPass, String confirmNewPass) async {
+  Future<String> changePassword(
+      String currentPass, String newPass, String confirmNewPass) async {
     String msg = "";
-    if(currentPass.isEmpty) {
+    if (currentPass.isEmpty) {
       emptyCurrentPass.value = true;
     } else {
       emptyCurrentPass.value = false;
     }
-    if(newPass.isEmpty) {
+    if (newPass.isEmpty) {
       emptyNewPass.value = true;
     } else {
       emptyNewPass.value = false;
     }
-    if(newPass != confirmNewPass) {
+    if (newPass != confirmNewPass) {
       checkConfirmNewPass.value = true;
     } else {
       checkConfirmNewPass.value = false;
     }
-    if(emptyCurrentPass.isFalse && emptyNewPass.isFalse && checkConfirmNewPass.isFalse) {
-      await UserAPI.changePassword(user.value.id!, currentPass, newPass).then((value) => msg = value);
+    if (emptyCurrentPass.isFalse &&
+        emptyNewPass.isFalse &&
+        checkConfirmNewPass.isFalse) {
+      await UserAPI.changePassword(user.value.id!, currentPass, newPass)
+          .then((value) => msg = value);
     }
     return msg;
   }
 
   Future<String> getVerifyCode(String email) async {
-    String msg = "";
-    if(email.isEmpty) {
+    String msg = "Lỗi";
+    if (email.isEmpty) {
       emptyEmailReset.value = true;
     } else {
       emptyEmailReset.value = false;
     }
-    
+
     if (emptyEmailReset.isFalse) {
-      await UserAPI.verifyEmail(email, 2)
-          .then((value) => {msg = value, codeResetPass.value = value});
+      await UserAPI.verifyEmail(email, 2).then((value) => {msg = value});
     }
     return msg;
   }
 
-  Future<String> checkVerifyCodeReset(String code) async {
-    String msg = "";
-    if(code.isEmpty) {
+  Future<String> checkVerifyCodeReset(String email, String code) async {
+    String msg = "Lỗi";
+    if (code.isEmpty) {
       emptyCodeReset.value = true;
     } else {
       emptyCodeReset.value = false;
     }
 
-    if (code == codeResetPass.value && emptyCode.isFalse) {
-      msg = "True";
-      checkCodeReset.value = true;
+    if (emptyCode.isFalse) {
+      await UserAPI.checkVerifyEmail(email, code)
+          .then((value) => {msg = value});
+      if (msg == "") {
+        checkCodeReset.value = true;
+      }
     }
     return msg;
   }
 
-  Future<String> resetPassword(String email, String newPassReset, String confirmNewPassReset) async {
-    String msg = "";
-    if(newPassReset.isEmpty) {
+  Future<String> resetPassword(
+      String email, String newPassReset, String confirmNewPassReset) async {
+    String msg = "Lỗi";
+    if (newPassReset.isEmpty) {
       emptyNewPassReset.value = true;
     } else {
       emptyNewPassReset.value = false;
     }
-    if(newPassReset != confirmNewPassReset) {
+    if (newPassReset != confirmNewPassReset) {
       checkConfirmNewPassReset.value = true;
     } else {
       checkConfirmNewPassReset.value = false;
     }
-    if(emptyNewPassReset.isFalse && checkConfirmNewPassReset.isFalse) {
-      await UserAPI.resetPassword(email, newPassReset).then((value) => msg = value);
+    if (emptyNewPassReset.isFalse && checkConfirmNewPassReset.isFalse) {
+      await UserAPI.resetPassword(email, newPassReset)
+          .then((value) => msg = value);
     }
     return msg;
   }

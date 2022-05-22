@@ -32,7 +32,7 @@ class BuildTeamList extends StatelessWidget {
             children: [
               ClipOval(
                 child: Image(
-                  image: NetworkImage(image.toString()),
+                  image: NetworkImage(image.toString().isEmpty ? "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg" : image.toString()),
                   width: 70,
                   height: 70,
                 ),
@@ -81,7 +81,7 @@ class BuildTeamList extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 16,
+                      width: 20,
                       child: Text(
                         "|",
                         style: TextStyle(

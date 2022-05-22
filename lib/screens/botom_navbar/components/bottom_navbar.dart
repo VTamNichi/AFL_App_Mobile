@@ -13,7 +13,7 @@ class BottomNavbar extends StatelessWidget {
 
   final screens = [
     const HomeScreen(),
-    const TournamentScreen(),
+    TournamentScreen(),
     TeamScreen(),
     UserInforScreen(),
   ];

@@ -1,5 +1,6 @@
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/auth_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:amateur_football_league_mobile/screens/user/edit_infor/change_password_screen.dart';
 import 'package:amateur_football_league_mobile/screens/user/edit_infor/edit_user_infor_screen.dart';
@@ -15,6 +16,7 @@ class Body extends StatelessWidget {
 
   final userController = Get.put(UserController());
   final authController = Get.put(AuthController());
+  final generalController = Get.put(GeneralController());
 
   @override
   Widget build(BuildContext context) {
@@ -225,10 +227,12 @@ class Body extends StatelessWidget {
                     hintext: "Đăng xuất",
                     icon: Icons.logout,
                     onTap: () {
+                      generalController.isLoading.value = true;
                       var provider = Provider.of<GoogleSignInProvider>(context,
                           listen: false);
-                      provider.logout();
                       authController.logout();
+                      provider.logout();
+                      generalController.isLoading.value = false;
                     },
                   ),
                 ],

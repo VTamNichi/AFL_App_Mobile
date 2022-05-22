@@ -22,3 +22,9 @@ var kTitleTextColor = const Color(0xff1E1C61);
 var kSearchBackgroundColor = const Color(0xffF2F2F2);
 var kCategoryTextColor = const Color(0xff292685);
 var kBackgroundVideoColor = const Color(0xff202124);
+
+//agora
+const appId = "629c856215b345779a8fb2a691f51976";
+const token =
+    "006629c856215b345779a8fb2a691f51976IADPWBVycMQNmP+l8i5HojiijMwi1LVe2/HgR+t7F8TdwaZ/iaIAAAAAEACXaa56ePiGYgEAAQB5+IZi";
+const channelId = "Livestream 1";
