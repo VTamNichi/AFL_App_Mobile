@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:amateur_football_league_mobile/models/User.dart';
 import 'package:dio/dio.dart';
+// ignore: library_prefixes
 import 'package:get/get.dart' as GetX;
 import 'package:http/http.dart' as http;
 
@@ -30,7 +31,7 @@ class UserAPI {
       } else {
         message = "";
       }
-    } on DioError catch (e) {
+    } on DioError {
       return "Tài khoản đã tồn tại";
     }
     return message;
@@ -90,7 +91,7 @@ class UserAPI {
       } else {
         message = "Không kết nối được với máy chủ";
       }
-    } on DioError catch (e) {
+    } on DioError {
       return message;
     }
     return message;
@@ -200,7 +201,7 @@ class UserAPI {
       } else {
         message = "";
       }
-    } on DioError catch (e) {
+    } on DioError {
       return message;
     }
     return message;

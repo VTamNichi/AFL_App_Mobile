@@ -11,6 +11,8 @@ class TournamentController extends GetxController {
 
   Rx<int> selectTournament = 1.obs;
   RxList<Tournament> tournamentList = <Tournament>[].obs;
+  Rx<Tournament> tournamentDetail = Tournament().obs;
+
   RxInt countListTournament = 0.obs;
   RxList listSearchTournament = [
     "Tỉnh / Thành Phố",
@@ -20,6 +22,12 @@ class TournamentController extends GetxController {
     "Loại giải đấu",
     "Loại sân",
     "Giới tính",
+  ].obs;
+  RxList listTournamentDetail = [
+    "Lịch thi đấu",
+    "Bảng xếp hạng",
+    "Đội thi đấu",
+    "Thống kê",
   ].obs;
 
   RxString sortTourBy = "".obs;
@@ -215,29 +223,29 @@ class TournamentController extends GetxController {
     } else if (searchTournament == "Quận / Huyện") {
       if (generalController.listDistrictTour.isNotEmpty) {
         await generalController.showOptionAreaDistrict(context, 2);
-        if (generalController.elementAreaTour.value.isNotEmpty &&
+        if (generalController.elementAreaDistrictTour.value.isNotEmpty &&
             element.where((element) => element == "Quận / Huyện").isEmpty) {
           element.add("Quận / Huyện");
-        } else if (generalController.elementAreaTour.value.isEmpty &&
+        } else if (generalController.elementAreaDistrictTour.value.isEmpty &&
             element.where((element) => element == "Quận / Huyện").isNotEmpty) {
           element.remove("Quận / Huyện");
           element.remove("Phường / Xã");
-        } else if (generalController.elementAreaTour.value.isNotEmpty &&
+        } else if (generalController.elementAreaDistrictTour.value.isNotEmpty &&
             element.where((element) => element == "Quận / Huyện").isNotEmpty) {}
       } else {
         Fluttertoast.showToast(
             msg: "Vui lòng chọn tỉnh / thành phố", fontSize: 18);
       }
     } else if (searchTournament == "Phường / Xã") {
-      if (generalController.listDistrictTour.isNotEmpty) {
+      if (generalController.listWardTour.isNotEmpty) {
         await generalController.showOptionAreaWard(context, 2);
-        if (generalController.elementAreaTour.value.isNotEmpty &&
+        if (generalController.elementAreaWardTour.value.isNotEmpty &&
             element.where((element) => element == "Phường / Xã").isEmpty) {
           element.add("Phường / Xã");
-        } else if (generalController.elementAreaTour.value.isEmpty &&
+        } else if (generalController.elementAreaWardTour.value.isEmpty &&
             element.where((element) => element == "Phường / Xã").isNotEmpty) {
           element.remove("Phường / Xã");
-        } else if (generalController.elementAreaTour.value.isNotEmpty &&
+        } else if (generalController.elementAreaWardTour.value.isNotEmpty &&
             element.where((element) => element == "Phường / Xã").isNotEmpty) {}
       } else {
         Fluttertoast.showToast(msg: "Vui lòng chọn quận / huyện", fontSize: 18);

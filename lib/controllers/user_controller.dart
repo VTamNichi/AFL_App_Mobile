@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/fetch_api/user_api.dart';
 import 'package:amateur_football_league_mobile/models/User.dart';

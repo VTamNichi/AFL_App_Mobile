@@ -105,9 +105,9 @@ class BuildTournamentList extends StatelessWidget {
             children: [
               Image(
                 image: NetworkImage(image.toString()),
-                width: 80,
-                height: 120,
-                fit: BoxFit.cover,
+                width: 100,
+                height: 150,
+                fit: BoxFit.fill,
               ),
             ],
           ),
