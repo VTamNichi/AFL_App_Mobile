@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
-import 'package:amateur_football_league_mobile/controllers/team_controller.dart';
-import 'package:amateur_football_league_mobile/models/list_models/ListTeam.dart';
+// ignore: library_prefixes
 import 'package:get/get.dart' as GetX;
 import 'package:http/http.dart' as http;
 import 'package:amateur_football_league_mobile/models/general_models/Province';

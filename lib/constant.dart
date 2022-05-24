@@ -6,6 +6,7 @@ var kWhiteText = const Color(0xffffffff);
 var kBlackText = const Color(0xff16192b);
 var kRedColor = const Color(0xFFF44336);
 var kGreyColor = const Color(0xFF9E9E9E);
+var kGreyColorD = const Color(0xFFDEDEDE);
 var kFontFamily = "Mulish";
 double kPadding = 30;
 
@@ -25,6 +26,3 @@ var kBackgroundVideoColor = const Color(0xff202124);
 
 //agora
 const appId = "629c856215b345779a8fb2a691f51976";
-const token =
-    "006629c856215b345779a8fb2a691f51976IADPWBVycMQNmP+l8i5HojiijMwi1LVe2/HgR+t7F8TdwaZ/iaIAAAAAEACXaa56ePiGYgEAAQB5+IZi";
-const channelId = "Livestream 1";

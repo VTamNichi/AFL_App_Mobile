@@ -1,7 +1,5 @@
 import 'dart:io';
 import 'package:amateur_football_league_mobile/constant.dart';
-import 'package:amateur_football_league_mobile/controllers/tournament_controller.dart';
-import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:amateur_football_league_mobile/fetch_api/general_api.dart';
 import 'package:amateur_football_league_mobile/fetch_api/team_api.dart';
 import 'package:amateur_football_league_mobile/fetch_api/tournament_api.dart';
@@ -97,7 +95,7 @@ class GeneralController extends GetxController {
       } else {
         imageUpdate.value = imageTemp;
       }
-    } on PlatformException catch (e) {
+    } on PlatformException {
       throw Exception("Không chọn được ảnh");
     }
   }

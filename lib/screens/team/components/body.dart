@@ -1,6 +1,7 @@
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/team_controller.dart';
 import 'package:amateur_football_league_mobile/screens/team/components/build_team_list.dart';
+import 'package:amateur_football_league_mobile/screens/team/team_detail/team_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -183,15 +184,22 @@ class Body extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: teamController.teamList.length,
                 itemBuilder: (BuildContext context, index) {
-                  return BuildTeamList(
-                    image: teamController.teamList[index].teamAvatar,
-                    name: teamController.teamList[index].teamName,
-                    number: teamController.teamList[index].numberPlayerInTeam,
-                    gender:
-                        teamController.teamList[index].teamGender == "Female"
-                            ? "Nữ"
-                            : "Nam",
-                    area: teamController.teamList[index].teamArea,
+                  return GestureDetector(
+                    onTap: () {
+                      Get.to(() => TeamDetailScreen(),
+                          transition: Transition.zoom,
+                          duration: const Duration(milliseconds: 600));
+                    },
+                    child: BuildTeamList(
+                      image: teamController.teamList[index].teamAvatar,
+                      name: teamController.teamList[index].teamName,
+                      number: teamController.teamList[index].numberPlayerInTeam,
+                      gender:
+                          teamController.teamList[index].teamGender == "Female"
+                              ? "Nữ"
+                              : "Nam",
+                      area: teamController.teamList[index].teamArea,
+                    ),
                   );
                 },
               ),

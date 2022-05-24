@@ -1,6 +1,9 @@
 import 'package:amateur_football_league_mobile/constant.dart';
+import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/team_in_match_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/tournament_controller.dart';
 import 'package:amateur_football_league_mobile/screens/tournament/components/build_tournament_list.dart';
+import 'package:amateur_football_league_mobile/screens/tournament/tournament_detail/tournament_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,6 +11,8 @@ class Body extends StatelessWidget {
   Body({Key? key}) : super(key: key);
 
   final tournamentController = Get.put(TournamentController());
+  final generalController = Get.put(GeneralController());
+  final teamInMatchController = Get.put(TeamInMatchController());
 
   @override
   Widget build(BuildContext context) {
@@ -182,20 +187,32 @@ class Body extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: tournamentController.tournamentList.length,
                 itemBuilder: (BuildContext context, index) {
-                  return BuildTournamentList(
-                    image: tournamentController.tournamentList[index].tournamentAvatar,
-                    name: tournamentController
-                        .tournamentList[index].tournamentName,
-                    gender: tournamentController
-                                .tournamentList[index].tournamentGender ==
-                            "Female"
-                        ? "Nữ"
-                        : "Nam",
-                    type: tournamentController
-                        .tournamentList[index].tournamentTypeId == 1 ? "Loại trực tiếp" : tournamentController
-                        .tournamentList[index].tournamentTypeId == 2 ? "Đấu vòng tròn" : "Chia bảng",
-                    area: tournamentController
-                        .tournamentList[index].footballFieldAddress,
+                  return GestureDetector(
+                    onTap: () async {
+                      generalController.isLoading.value = true;
+                      await teamInMatchController.getListTeamInMatch(tournamentController.tournamentList[index].id!);
+                      tournamentController.tournamentDetail.value = tournamentController.tournamentList[index];
+                      Get.to(() => TournamentDetailScreen(),
+                          transition: Transition.zoom,
+                          duration: const Duration(milliseconds: 600));
+                                                generalController.isLoading.value = false;
+                      
+                    },
+                    child: BuildTournamentList(
+                      image: tournamentController.tournamentList[index].tournamentAvatar,
+                      name: tournamentController
+                          .tournamentList[index].tournamentName,
+                      gender: tournamentController
+                                  .tournamentList[index].tournamentGender ==
+                              "Female"
+                          ? "Nữ"
+                          : "Nam",
+                      type: tournamentController
+                          .tournamentList[index].tournamentTypeId == 1 ? "Loại trực tiếp" : tournamentController
+                          .tournamentList[index].tournamentTypeId == 2 ? "Đấu vòng tròn" : "Chia bảng",
+                      area: tournamentController
+                          .tournamentList[index].footballFieldAddress,
+                    ),
                   );
                 },
               ),
