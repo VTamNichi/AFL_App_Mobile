@@ -107,49 +107,145 @@ class ScheduleScreen extends StatelessWidget {
                   SizedBox(
                     height: kPadding,
                   ),
-                  Divider(
-                    color: kGreyColor,
-                    height: 1,
-                  ),
-                  SizedBox(
-                    height: size.height - 201,
-                    child: SingleChildScrollView(
-                      child: teamInMatchController.teamInMatchList.isNotEmpty ? ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount:
-                            (teamInMatchController.teamInMatchList.length / 2)
-                                .round(),
-                        itemBuilder: (BuildContext context, index) {
-                          int flag = 0;
-                          flag+=2 * index;
-                          return GestureDetector(
-                            onTap: () async {
-                              matchController.matchId.value = teamInMatchController.teamInMatchList[flag].matchId!;
-                              Get.to(MatchDetailScreen());
-                            },
-                            child: ListMatch(
-                              name1: teamInMatchController
-                                  .teamInMatchList[flag].teamName,
-                              image1: "",
-                              score1: teamInMatchController
-                                  .teamInMatchList[flag].teamScore,
-                              name2: teamInMatchController
-                                  .teamInMatchList[flag+1].teamName,
-                              image2: "",
-                              score2: teamInMatchController
-                                  .teamInMatchList[flag+1].teamScore,
-                            ),
-                          );
-                        },
-                      ) : Column(
+                  if (tournamentController
+                          .tournamentDetail.value.tournamentTypeId ==
+                      1) ...[
+                    Container(
+                      width: double.infinity,
+                      height: 50,
+                      color: kBackgroundColor,
+                      child: Row(
                         children: [
-                          SizedBox(height: kPadding,),
-                          const Text("Chưa có lịch thi đấu", style: TextStyle(fontSize: 22),),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () => {
+                                tournamentController.selectTournament.value = 1
+                              },
+                              child: Container(
+                                width: 104,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: tournamentController
+                                                      .selectTournament.value ==
+                                                  1
+                                              ? kGreenLightColor
+                                              : kBackgroundColor,
+                                          width: 3,
+                                          style: BorderStyle.solid)),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "Tất cả giải",
+                                  style: TextStyle(
+                                    color: tournamentController
+                                                .selectTournament.value ==
+                                            1
+                                        ? kGreenLightColor
+                                        : kBlackText,
+                                    fontSize: 18,
+                                  ),
+                                )),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () => {
+                                tournamentController.selectTournament.value = 2
+                              },
+                              child: Container(
+                                width: 104,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: tournamentController
+                                                      .selectTournament.value ==
+                                                  2
+                                              ? kGreenLightColor
+                                              : kBackgroundColor,
+                                          width: 3,
+                                          style: BorderStyle.solid)),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "Giải của tôi",
+                                  style: TextStyle(
+                                    color: tournamentController
+                                                .selectTournament.value ==
+                                            2
+                                        ? kGreenLightColor
+                                        : kBlackText,
+                                    fontSize: 18,
+                                  ),
+                                )),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ),
+                  ] else if (tournamentController
+                          .tournamentDetail.value.tournamentTypeId ==
+                      2) ...[
+                    Divider(
+                      color: kGreyColor,
+                      height: 1,
+                    ),
+                    SizedBox(
+                      height: size.height - 201,
+                      child: SingleChildScrollView(
+                        child: teamInMatchController.teamInMatchList.isNotEmpty
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: (teamInMatchController
+                                            .teamInMatchList.length /
+                                        2)
+                                    .round(),
+                                itemBuilder: (BuildContext context, index) {
+                                  int flag = 0;
+                                  flag += 2 * index;
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      matchController.matchId.value =
+                                          teamInMatchController
+                                              .teamInMatchList[flag].matchId!;
+                                      Get.to(MatchDetailScreen());
+                                    },
+                                    child: ListMatch(
+                                      name1: teamInMatchController
+                                          .teamInMatchList[flag].teamName,
+                                      image1: "",
+                                      score1: teamInMatchController
+                                          .teamInMatchList[flag].teamScore,
+                                      name2: teamInMatchController
+                                          .teamInMatchList[flag + 1].teamName,
+                                      image2: "",
+                                      score2: teamInMatchController
+                                          .teamInMatchList[flag + 1].teamScore,
+                                    ),
+                                  );
+                                },
+                              )
+                            : Column(
+                                children: [
+                                  SizedBox(
+                                    height: kPadding,
+                                  ),
+                                  const Text(
+                                    "Chưa có lịch thi đấu",
+                                    style: TextStyle(fontSize: 22),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    )
+                  ] else ...[
+                    Container(),
+                  ],
                 ],
               ),
             ),
