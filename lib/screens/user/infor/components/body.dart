@@ -116,7 +116,8 @@ class Body extends StatelessWidget {
                               .toString()
                               .isEmpty
                           ? "Chưa cập nhật ngày sinh"
-                          : DateFormat("yyyy-MM-dd").format(DateTime.parse(userController.user.value.dateOfBirth.toString())),
+                          : userController.user.value.dateOfBirth
+                              .toString().split(" ")[0],
                       icon: Icons.calendar_month),
                   MyTextField(
                       hintext:

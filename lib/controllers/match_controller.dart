@@ -9,9 +9,9 @@ class MatchController extends GetxController {
   RxInt matchId = 0.obs;
   Rx<Match> matchDetail = Match().obs;
 
-  Future<int> createToken(int matchId) async {
+  Future<int> createToken(Match match) async {
     int rs = 0;
-    await MatchAPI.createTokenMatch(matchId).then((value) => rs = value);
+    await MatchAPI.createTokenMatch(match).then((value) => rs = value);
     return rs;
   }
   Future<int> getToken(int matchId) async {

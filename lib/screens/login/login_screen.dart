@@ -5,6 +5,7 @@ import 'package:amateur_football_league_mobile/screens/loading/loading_screen.da
 import 'package:amateur_football_league_mobile/screens/login/components/body.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -16,11 +17,17 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final authController = Get.put(AuthController());
   final generalController = Get.put(GeneralController());
+  final storage = const Storage.FlutterSecureStorage();
 
   @override
   void initState() {
+    clearStorage();
     super.initState();
     authController.obsPassLogin.value = true;
+  }
+
+  clearStorage() async {
+    await storage.deleteAll();
   }
 
   @override

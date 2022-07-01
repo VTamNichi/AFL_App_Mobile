@@ -10,9 +10,20 @@ import 'package:image_picker/image_picker.dart';
 import 'package:amateur_football_league_mobile/models/general_models/Province';
 
 class GeneralController extends GetxController {
+  RxInt currentTournamentPage = 0.obs;
+  RxInt currentTeamPage = 0.obs;
+  RxInt currentNotificationPage = 0.obs;
+  RxInt currentFootballPlayerPage = 0.obs;
+  RxInt currentCommentPage = 0.obs;
+
+  RxString searchIDComment = "".obs;
+  
 
   RxInt currentIndex = 0.obs;
   RxBool isLoading = false.obs;
+  RxBool isSearchTour = true.obs;
+  RxString userIDSearchTour = "".obs;
+
   RxString emailLogin = "".obs;
 
   RxList<Province> listProvince = <Province>[].obs;
@@ -165,7 +176,8 @@ class GeneralController extends GetxController {
                                   areaSearchTeam.value,
                                   genderSearchTeam.value,
                                   sortTeamBy.value,
-                                  sortTeamType.value);
+                                  sortTeamType.value,
+                                  currentTeamPage.value);
                             } else {
                               elementAreaTour.value = "";
                               elementAreaDistrictTour.value = "";
@@ -178,13 +190,15 @@ class GeneralController extends GetxController {
                               areaSearchTour.value = "";
                               await TournamentAPI.getListTournament(
                                   nameSearchTour.value,
+                                  userIDSearchTour.value,
                                   areaSearchTour.value,
                                   modeSearchTour.value,
                                   typeSearchTour.value,
                                   genderSearchTour.value,
                                   footballFieldSearchTour.value,
                                   sortTourBy.value,
-                                  sortTourType.value);
+                                  sortTourType.value,
+                                  currentTournamentPage.value);
                             }
                             isLoading.value = false;
                           },
@@ -215,7 +229,8 @@ class GeneralController extends GetxController {
                                         areaSearchTeam.value,
                                         genderSearchTeam.value,
                                         sortTeamBy.value,
-                                        sortTeamType.value);
+                                        sortTeamType.value,
+                                        currentTeamPage.value);
                                   } else {
                                     elementAreaTour.value = "Has Value";
                                     nameAreaTour.value =
@@ -227,13 +242,15 @@ class GeneralController extends GetxController {
                                         "&";
                                     await TournamentAPI.getListTournament(
                                         nameSearchTour.value,
+                                        userIDSearchTour.value,
                                         areaSearchTour.value,
                                         modeSearchTour.value,
                                         typeSearchTour.value,
                                         genderSearchTour.value,
                                         footballFieldSearchTour.value,
                                         sortTourBy.value,
-                                        sortTourType.value);
+                                        sortTourType.value,
+                                        currentTournamentPage.value);
                                   }
                                   isLoading.value = false;
                                 },
@@ -314,7 +331,8 @@ class GeneralController extends GetxController {
                                   areaSearchTeam.value,
                                   genderSearchTeam.value,
                                   sortTeamBy.value,
-                                  sortTeamType.value);
+                                  sortTeamType.value,
+                                  currentTeamPage.value);
                             } else {
                               elementAreaDistrictTour.value = "";
                               elementAreaWardTour.value = "";
@@ -325,13 +343,15 @@ class GeneralController extends GetxController {
                                   "tournament-area=" + nameAreaTour.value + "&";
                               await TournamentAPI.getListTournament(
                                   nameSearchTour.value,
+                                  userIDSearchTour.value,
                                   areaSearchTour.value,
                                   modeSearchTour.value,
                                   typeSearchTour.value,
                                   genderSearchTour.value,
                                   footballFieldSearchTour.value,
                                   sortTourBy.value,
-                                  sortTourType.value);
+                                  sortTourType.value,
+                                  currentTournamentPage.value);
                             }
                             isLoading.value = false;
                           },
@@ -366,7 +386,8 @@ class GeneralController extends GetxController {
                                         areaSearchTeam.value,
                                         genderSearchTeam.value,
                                         sortTeamBy.value,
-                                        sortTeamType.value);
+                                        sortTeamType.value,
+                                        currentTeamPage.value);
                                   } else {
                                     elementAreaDistrictTour.value = "Has Value";
                                     nameAreaDistrictTour.value =
@@ -380,19 +401,27 @@ class GeneralController extends GetxController {
                                         "&";
                                     await TournamentAPI.getListTournament(
                                         nameSearchTour.value,
+                                        userIDSearchTour.value,
                                         areaSearchTour.value,
                                         modeSearchTour.value,
                                         typeSearchTour.value,
                                         genderSearchTour.value,
                                         footballFieldSearchTour.value,
                                         sortTourBy.value,
-                                        sortTourType.value);
+                                        sortTourType.value,
+                                        currentTournamentPage.value);
                                   }
                                   isLoading.value = false;
                                 },
                                 title: Center(
                                   child: Text(
-                                    flag == 1 ? listDistrictTeam[index].name.toString() : listDistrictTour[index].name.toString(),
+                                    flag == 1
+                                        ? listDistrictTeam[index]
+                                            .name
+                                            .toString()
+                                        : listDistrictTour[index]
+                                            .name
+                                            .toString(),
                                     style: flag == 1
                                         ? TextStyle(
                                             color: listDistrictTeam[index]
@@ -465,7 +494,8 @@ class GeneralController extends GetxController {
                                   areaSearchTeam.value,
                                   genderSearchTeam.value,
                                   sortTeamBy.value,
-                                  sortTeamType.value);
+                                  sortTeamType.value,
+                                  currentTeamPage.value);
                             } else {
                               elementAreaWardTour.value = "";
                               nameAreaWardTour.value = "";
@@ -474,13 +504,15 @@ class GeneralController extends GetxController {
                                   "&";
                               await TournamentAPI.getListTournament(
                                   nameSearchTour.value,
+                                  userIDSearchTour.value,
                                   areaSearchTour.value,
                                   modeSearchTour.value,
                                   typeSearchTour.value,
                                   genderSearchTour.value,
                                   footballFieldSearchTour.value,
                                   sortTourBy.value,
-                                  sortTourType.value);
+                                  sortTourType.value,
+                                  currentTournamentPage.value);
                             }
                             isLoading.value = false;
                           },
@@ -511,7 +543,8 @@ class GeneralController extends GetxController {
                                         areaSearchTeam.value,
                                         genderSearchTeam.value,
                                         sortTeamBy.value,
-                                        sortTeamType.value);
+                                        sortTeamType.value,
+                                        currentTeamPage.value);
                                   } else {
                                     elementAreaWardTour.value = "Has Value";
                                     nameAreaWardTour.value =
@@ -521,19 +554,23 @@ class GeneralController extends GetxController {
                                         "&";
                                     await TournamentAPI.getListTournament(
                                         nameSearchTour.value,
+                                        userIDSearchTour.value,
                                         areaSearchTour.value,
                                         modeSearchTour.value,
                                         typeSearchTour.value,
                                         genderSearchTour.value,
                                         footballFieldSearchTour.value,
                                         sortTourBy.value,
-                                        sortTourType.value);
+                                        sortTourType.value,
+                                        currentTournamentPage.value);
                                   }
                                   isLoading.value = false;
                                 },
                                 title: Center(
                                   child: Text(
-                                    flag == 1 ? listWardTeam[index].name.toString() : listWardTour[index].name.toString(),
+                                    flag == 1
+                                        ? listWardTeam[index].name.toString()
+                                        : listWardTour[index].name.toString(),
                                     style: flag == 1
                                         ? TextStyle(
                                             color: listWardTeam[index]

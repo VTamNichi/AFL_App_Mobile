@@ -24,5 +24,10 @@ var kSearchBackgroundColor = const Color(0xffF2F2F2);
 var kCategoryTextColor = const Color(0xff292685);
 var kBackgroundVideoColor = const Color(0xff202124);
 
-//agora
+var kWhiteComment = const Color(0xfff0f2f5);
+
+// agora
 const appId = "629c856215b345779a8fb2a691f51976";
+
+// api
+const urlApi = "https://afootballleague.ddns.net/api/v1/";

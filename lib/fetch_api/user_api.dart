@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:amateur_football_league_mobile/models/User.dart';
 import 'package:dio/dio.dart';
 // ignore: library_prefixes
 import 'package:get/get.dart' as GetX;
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class UserAPI {
   static Future<String> registerGoogle(User user) async {
@@ -17,7 +19,7 @@ class UserAPI {
         "RoleId": 4,
       });
       Response response =
-          await Dio().post("https://afootballleague.ddns.net/api/v1/users",
+          await Dio().post(urlApi + "users",
               data: formData,
               options: Options(headers: <String, String>{
                 HttpHeaders.contentTypeHeader: 'multipart/form-data',
@@ -77,7 +79,7 @@ class UserAPI {
         });
       }
       Response response =
-          await Dio().post("https://afootballleague.ddns.net/api/v1/users",
+          await Dio().post(urlApi + "users",
               data: formData,
               options: Options(headers: <String, String>{
                 HttpHeaders.contentTypeHeader: 'multipart/form-data',
@@ -102,7 +104,7 @@ class UserAPI {
     try {
       final response = await http.post(
           Uri.parse(
-              "https://afootballleague.ddns.net/api/v1/auth/send-verify-code?email=" +
+              urlApi + "auth/send-verify-code?email=" +
                   email +
                   "&toDo=" +
                   toDo.toString()),
@@ -130,7 +132,7 @@ class UserAPI {
     try {
       final response = await http.post(
           Uri.parse(
-              "https://afootballleague.ddns.net/api/v1/auth/check-verify-code?email=" +
+              urlApi + "auth/check-verify-code?email=" +
                   email +
                   "&code=" +
                   code),
@@ -187,7 +189,7 @@ class UserAPI {
         });
       }
       Response response =
-          await Dio().put("https://afootballleague.ddns.net/api/v1/users",
+          await Dio().put(urlApi + "users",
               data: formData,
               options: Options(headers: <String, String>{
                 HttpHeaders.contentTypeHeader: 'multipart/form-data',
@@ -217,7 +219,7 @@ class UserAPI {
     try {
       final response = await http.post(
           Uri.parse(
-              "https://afootballleague.ddns.net/api/v1/users/change-password"),
+              urlApi + "users/change-password"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
           },
@@ -245,7 +247,7 @@ class UserAPI {
     try {
       final response = await http.post(
           Uri.parse(
-              "https://afootballleague.ddns.net/api/v1/users/reset-password"),
+              urlApi + "users/reset-password"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
           },

@@ -1,7 +1,6 @@
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
-import 'package:amateur_football_league_mobile/screens/botom_navbar/bottom_navbar_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

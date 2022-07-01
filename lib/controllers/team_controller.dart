@@ -11,6 +11,12 @@ class TeamController extends GetxController {
 
   Rx<int> selectTeam = 1.obs;
   RxList<Team> teamList = <Team>[].obs;
+  Rx<Team> teamDetail = Team().obs;
+  RxList listTeamDetail = [
+    "Thành viên",
+    "Thống kê",
+  ].obs;
+
   RxInt countListTeam = 0.obs;
   RxList listSearchTeam = [
     "Tỉnh / Thành Phố",
@@ -19,8 +25,19 @@ class TeamController extends GetxController {
     "Giới tính",
   ].obs;
 
-  Future<void> getListTeam() async {
-    await TeamAPI.getListTeam("", "", "", "", "");
+  Future<void> getListTeam({bool isRefresh = false}) async {
+    generalController.isLoading.value = true;
+    if (isRefresh) {
+      generalController.currentTeamPage.value = 1;
+    }
+    await TeamAPI.getListTeam(
+        nameSearchTeam.value,
+        generalController.areaSearchTeam.value,
+        genderSearchTeam.value,
+        sortTeamBy.value,
+        sortTeamType.value,
+        generalController.currentTeamPage.value);
+    generalController.isLoading.value = false;
   }
 
   RxString sortTeamType = "".obs;
@@ -56,7 +73,6 @@ class TeamController extends GetxController {
                 ListTile(
                     onTap: () async {
                       Navigator.pop(context);
-                      generalController.isLoading.value = true;
                       if (sortType.isTrue) {
                         sortTeamType.value = "order-type=ASC&";
                       } else {
@@ -64,20 +80,13 @@ class TeamController extends GetxController {
                       }
                       sortType.value = !sortType.value;
                       sortTeamBy.value = "";
-                      await TeamAPI.getListTeam(
-                          nameSearchTeam.value,
-                          generalController.areaSearchTeam.value,
-                          genderSearchTeam.value,
-                          sortTeamBy.value,
-                          sortTeamType.value);
-                          generalController.isLoading.value = false;
+                      await getListTeam();
                     },
                     title: const Center(child: Text("--"))),
                 Divider(color: kGreyColor, height: 3),
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (sortNameType.isTrue) {
                       sortTeamType.value = "order-type=ASC&";
                     } else {
@@ -85,13 +94,7 @@ class TeamController extends GetxController {
                     }
                     sortNameType.value = !sortNameType.value;
                     sortTeamBy.value = "order-by=TeamName&";
-                    await TeamAPI.getListTeam(
-                        nameSearchTeam.value,
-                        generalController.areaSearchTeam.value,
-                        genderSearchTeam.value,
-                        sortTeamBy.value,
-                        sortTeamType.value);
-                        generalController.isLoading.value = false;
+                    await getListTeam();
                   },
                   title: Center(
                     child: Text(
@@ -160,8 +163,7 @@ class TeamController extends GetxController {
         } else if (generalController.elementAreaWardTeam.value.isNotEmpty &&
             element.where((element) => element == "Phường / Xã").isNotEmpty) {}
       } else {
-        Fluttertoast.showToast(
-            msg: "Vui lòng chọn quận / huyện", fontSize: 18);
+        Fluttertoast.showToast(msg: "Vui lòng chọn quận / huyện", fontSize: 18);
       }
     }
   }
@@ -189,36 +191,22 @@ class TeamController extends GetxController {
                 ListTile(
                     onTap: () async {
                       Navigator.pop(context);
-                      generalController.isLoading.value = true;
                       genderSearchTeam.value = "";
                       element.remove("Giới tính");
-                      await TeamAPI.getListTeam(
-                          nameSearchTeam.value,
-                          generalController.areaSearchTeam.value,
-                          genderSearchTeam.value,
-                          sortTeamBy.value,
-                          sortTeamType.value);
-                          generalController.isLoading.value = false;
+                      await getListTeam();
                     },
                     title: const Center(child: Text("--"))),
                 Divider(color: kGreyColor, height: 3),
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (element
                         .where((element) => element == "Giới tính")
                         .isEmpty) {
                       element.add("Giới tính");
                     }
                     genderSearchTeam.value = "team-gender=Male&";
-                    await TeamAPI.getListTeam(
-                        nameSearchTeam.value,
-                        generalController.areaSearchTeam.value,
-                        genderSearchTeam.value,
-                        sortTeamBy.value,
-                        sortTeamType.value);
-                        generalController.isLoading.value = false;
+                    await getListTeam();
                   },
                   title: Center(
                     child: Text(
@@ -234,20 +222,13 @@ class TeamController extends GetxController {
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (element
                         .where((element) => element == "Giới tính")
                         .isEmpty) {
                       element.add("Giới tính");
                     }
                     genderSearchTeam.value = "team-gender=Female&";
-                    await TeamAPI.getListTeam(
-                        nameSearchTeam.value,
-                        generalController.areaSearchTeam.value,
-                        genderSearchTeam.value,
-                        sortTeamBy.value,
-                        sortTeamType.value);
-                        generalController.isLoading.value = false;
+                    await getListTeam();
                   },
                   title: Center(
                     child: Text(

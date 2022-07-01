@@ -45,8 +45,23 @@ class TournamentController extends GetxController {
 
   RxList<String> element = <String>[].obs;
 
-  Future<void> getListTournament() async {
-    await TournamentAPI.getListTournament("", "", "", "", "", "", "", "");
+  Future<void> getListTournament({bool isRefresh = false}) async {
+    generalController.isLoading.value = true;
+    if (isRefresh) {
+      generalController.currentTournamentPage.value = 1;
+    }
+    await TournamentAPI.getListTournament(
+        nameSearchTour.value,
+        generalController.userIDSearchTour.value,
+        generalController.areaSearchTour.value,
+        modeSearchTour.value,
+        typeSearchTour.value,
+        genderSearchTour.value,
+        footballFieldSearchTour.value,
+        sortTourBy.value,
+        sortTourType.value,
+        generalController.currentTournamentPage.value);
+    generalController.isLoading.value = false;
   }
 
   void showOptionOrderTournament(BuildContext context) {
@@ -72,7 +87,6 @@ class TournamentController extends GetxController {
                 ListTile(
                     onTap: () async {
                       Navigator.pop(context);
-                      generalController.isLoading.value = true;
                       if (sortType.isTrue) {
                         sortTourType.value = "order-type=ASC&";
                       } else {
@@ -80,23 +94,13 @@ class TournamentController extends GetxController {
                       }
                       sortType.value = !sortType.value;
                       sortTourBy.value = "";
-                      await TournamentAPI.getListTournament(
-                          nameSearchTour.value,
-                          generalController.areaSearchTour.value,
-                          modeSearchTour.value,
-                          typeSearchTour.value,
-                          genderSearchTour.value,
-                          footballFieldSearchTour.value,
-                          sortTourBy.value,
-                          sortTourType.value);
-                          generalController.isLoading.value = false;
+                      await getListTournament();
                     },
                     title: const Center(child: Text("--"))),
                 Divider(color: kGreyColor, height: 3),
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (sortNameType.isTrue) {
                       sortTourType.value = "order-type=ASC&";
                     } else {
@@ -104,16 +108,7 @@ class TournamentController extends GetxController {
                     }
                     sortNameType.value = !sortNameType.value;
                     sortTourBy.value = "order-by=TournamentName&";
-                    await TournamentAPI.getListTournament(
-                        nameSearchTour.value,
-                        generalController.areaSearchTour.value,
-                        modeSearchTour.value,
-                        typeSearchTour.value,
-                        genderSearchTour.value,
-                        footballFieldSearchTour.value,
-                        sortTourBy.value,
-                        sortTourType.value);
-                        generalController.isLoading.value = false;
+                    await getListTournament();
                   },
                   title: Center(
                     child: Text(
@@ -129,7 +124,6 @@ class TournamentController extends GetxController {
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (sortModeType.isTrue) {
                       sortTourType.value = "order-type=ASC&";
                     } else {
@@ -137,16 +131,7 @@ class TournamentController extends GetxController {
                     }
                     sortModeType.value = !sortNameType.value;
                     sortTourBy.value = "order-by=Mode&";
-                    await TournamentAPI.getListTournament(
-                        nameSearchTour.value,
-                        generalController.areaSearchTour.value,
-                        modeSearchTour.value,
-                        typeSearchTour.value,
-                        genderSearchTour.value,
-                        footballFieldSearchTour.value,
-                        sortTourBy.value,
-                        sortTourType.value);
-                        generalController.isLoading.value = false;
+                    await getListTournament();
                   },
                   title: Center(
                     child: Text(
@@ -162,7 +147,6 @@ class TournamentController extends GetxController {
                 ListTile(
                     onTap: () async {
                       Navigator.pop(context);
-                      generalController.isLoading.value = true;
                       if (sortDateType.isTrue) {
                         sortTourType.value = "order-type=ASC&";
                       } else {
@@ -170,16 +154,7 @@ class TournamentController extends GetxController {
                       }
                       sortDateType.value = !sortNameType.value;
                       sortTourBy.value = "order-by=DateCreate&";
-                      await TournamentAPI.getListTournament(
-                          nameSearchTour.value,
-                          generalController.areaSearchTour.value,
-                          modeSearchTour.value,
-                          typeSearchTour.value,
-                          genderSearchTour.value,
-                          footballFieldSearchTour.value,
-                          sortTourBy.value,
-                          sortTourType.value);
-                          generalController.isLoading.value = false;
+                      await getListTournament();
                     },
                     title: Center(
                         child: Text(
@@ -199,7 +174,8 @@ class TournamentController extends GetxController {
     generalController.modeSearchTour.value = modeSearchTour.value;
     generalController.typeSearchTour.value = typeSearchTour.value;
     generalController.genderSearchTour.value = genderSearchTour.value;
-    generalController.footballFieldSearchTour.value = footballFieldSearchTour.value;
+    generalController.footballFieldSearchTour.value =
+        footballFieldSearchTour.value;
     generalController.sortTourBy.value = sortTourBy.value;
     generalController.sortTourType.value = sortTourType.value;
 
@@ -284,42 +260,22 @@ class TournamentController extends GetxController {
                 ListTile(
                     onTap: () async {
                       Navigator.pop(context);
-                      generalController.isLoading.value = true;
                       modeSearchTour.value = "";
                       element.remove("Hình thức");
-                      await TournamentAPI.getListTournament(
-                          nameSearchTour.value,
-                          generalController.areaSearchTour.value,
-                          modeSearchTour.value,
-                          typeSearchTour.value,
-                          genderSearchTour.value,
-                          footballFieldSearchTour.value,
-                          sortTourBy.value,
-                          sortTourType.value);
-                          generalController.isLoading.value = false;
+                      await getListTournament();
                     },
                     title: const Center(child: Text("--"))),
                 Divider(color: kGreyColor, height: 3),
                 ListTile(
                     onTap: () async {
                       Navigator.pop(context);
-                      generalController.isLoading.value = true;
                       modeSearchTour.value = "tournament-mode=PUBLIC&";
                       if (element
                           .where((element) => element == "Hình thức")
                           .isEmpty) {
                         element.add("Hình thức");
                       }
-                      await TournamentAPI.getListTournament(
-                          nameSearchTour.value,
-                          generalController.areaSearchTour.value,
-                          modeSearchTour.value,
-                          typeSearchTour.value,
-                          genderSearchTour.value,
-                          footballFieldSearchTour.value,
-                          sortTourBy.value,
-                          sortTourType.value);
-                          generalController.isLoading.value = false;
+                      await getListTournament();
                     },
                     title: Center(
                         child: Text(
@@ -334,23 +290,13 @@ class TournamentController extends GetxController {
                 ListTile(
                     onTap: () async {
                       Navigator.pop(context);
-                      generalController.isLoading.value = true;
                       if (element
                           .where((element) => element == "Hình thức")
                           .isEmpty) {
                         element.add("Hình thức");
                       }
                       modeSearchTour.value = "tournament-mode=PRIVATE&";
-                      await TournamentAPI.getListTournament(
-                          nameSearchTour.value,
-                          generalController.areaSearchTour.value,
-                          modeSearchTour.value,
-                          typeSearchTour.value,
-                          genderSearchTour.value,
-                          footballFieldSearchTour.value,
-                          sortTourBy.value,
-                          sortTourType.value);
-                          generalController.isLoading.value = false;
+                      await getListTournament();
                     },
                     title: Center(
                         child: Text(
@@ -388,42 +334,22 @@ class TournamentController extends GetxController {
                 ListTile(
                     onTap: () async {
                       Navigator.pop(context);
-                      generalController.isLoading.value = true;
                       typeSearchTour.value = "";
                       element.remove("Loại giải đấu");
-                      await TournamentAPI.getListTournament(
-                          nameSearchTour.value,
-                          generalController.areaSearchTour.value,
-                          modeSearchTour.value,
-                          typeSearchTour.value,
-                          genderSearchTour.value,
-                          footballFieldSearchTour.value,
-                          sortTourBy.value,
-                          sortTourType.value);
-                          generalController.isLoading.value = false;
+                      await getListTournament();
                     },
                     title: const Center(child: Text("--"))),
                 Divider(color: kGreyColor, height: 3),
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (element
                         .where((element) => element == "Loại giải đấu")
                         .isEmpty) {
                       element.add("Loại giải đấu");
                     }
                     typeSearchTour.value = "tournament-type=KnockoutStage&";
-                    await TournamentAPI.getListTournament(
-                        nameSearchTour.value,
-                        generalController.areaSearchTour.value,
-                        modeSearchTour.value,
-                        typeSearchTour.value,
-                        genderSearchTour.value,
-                        footballFieldSearchTour.value,
-                        sortTourBy.value,
-                        sortTourType.value);
-                        generalController.isLoading.value = false;
+                    await getListTournament();
                   },
                   title: Center(
                     child: Text(
@@ -440,23 +366,13 @@ class TournamentController extends GetxController {
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (element
                         .where((element) => element == "Loại giải đấu")
                         .isEmpty) {
                       element.add("Loại giải đấu");
                     }
                     typeSearchTour.value = "tournament-type=CircleStage&";
-                    await TournamentAPI.getListTournament(
-                        nameSearchTour.value,
-                        generalController.areaSearchTour.value,
-                        modeSearchTour.value,
-                        typeSearchTour.value,
-                        genderSearchTour.value,
-                        footballFieldSearchTour.value,
-                        sortTourBy.value,
-                        sortTourType.value);
-                        generalController.isLoading.value = false;
+                    await getListTournament();
                   },
                   title: Center(
                     child: Text(
@@ -473,23 +389,13 @@ class TournamentController extends GetxController {
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (element
                         .where((element) => element == "Loại giải đấu")
                         .isEmpty) {
                       element.add("Loại giải đấu");
                     }
                     typeSearchTour.value = "tournament-type=GroupStage&";
-                    await TournamentAPI.getListTournament(
-                        nameSearchTour.value,
-                        generalController.areaSearchTour.value,
-                        modeSearchTour.value,
-                        typeSearchTour.value,
-                        genderSearchTour.value,
-                        footballFieldSearchTour.value,
-                        sortTourBy.value,
-                        sortTourType.value);
-                        generalController.isLoading.value = false;
+                    await getListTournament();
                   },
                   title: Center(
                     child: Text(
@@ -529,26 +435,15 @@ class TournamentController extends GetxController {
                 ListTile(
                     onTap: () async {
                       Navigator.pop(context);
-                      generalController.isLoading.value = true;
                       element.remove("Loại sân");
                       footballFieldSearchTour.value = "";
-                      await TournamentAPI.getListTournament(
-                          nameSearchTour.value,
-                          generalController.areaSearchTour.value,
-                          modeSearchTour.value,
-                          typeSearchTour.value,
-                          genderSearchTour.value,
-                          footballFieldSearchTour.value,
-                          sortTourBy.value,
-                          sortTourType.value);
-                          generalController.isLoading.value = false;
+                      await getListTournament();
                     },
                     title: const Center(child: Text("--"))),
                 Divider(color: kGreyColor, height: 3),
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (element
                         .where((element) => element == "Loại sân")
                         .isEmpty) {
@@ -556,16 +451,7 @@ class TournamentController extends GetxController {
                     }
                     footballFieldSearchTour.value =
                         "tournament-football-type=Field5&";
-                    await TournamentAPI.getListTournament(
-                        nameSearchTour.value,
-                        generalController.areaSearchTour.value,
-                        modeSearchTour.value,
-                        typeSearchTour.value,
-                        genderSearchTour.value,
-                        footballFieldSearchTour.value,
-                        sortTourBy.value,
-                        sortTourType.value);
-                        generalController.isLoading.value = false;
+                    await getListTournament();
                   },
                   title: Center(
                     child: Text(
@@ -582,7 +468,6 @@ class TournamentController extends GetxController {
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (element
                         .where((element) => element == "Loại sân")
                         .isEmpty) {
@@ -590,16 +475,7 @@ class TournamentController extends GetxController {
                     }
                     footballFieldSearchTour.value =
                         "tournament-football-type=Field7&";
-                    await TournamentAPI.getListTournament(
-                        nameSearchTour.value,
-                        generalController.areaSearchTour.value,
-                        modeSearchTour.value,
-                        typeSearchTour.value,
-                        genderSearchTour.value,
-                        footballFieldSearchTour.value,
-                        sortTourBy.value,
-                        sortTourType.value);
-                        generalController.isLoading.value = false;
+                    await getListTournament();
                   },
                   title: Center(
                     child: Text(
@@ -616,7 +492,6 @@ class TournamentController extends GetxController {
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (element
                         .where((element) => element == "Loại sân")
                         .isEmpty) {
@@ -624,16 +499,7 @@ class TournamentController extends GetxController {
                     }
                     footballFieldSearchTour.value =
                         "tournament-football-type=Field11&";
-                    await TournamentAPI.getListTournament(
-                        nameSearchTour.value,
-                        generalController.areaSearchTour.value,
-                        modeSearchTour.value,
-                        typeSearchTour.value,
-                        genderSearchTour.value,
-                        footballFieldSearchTour.value,
-                        sortTourBy.value,
-                        sortTourType.value);
-                        generalController.isLoading.value = false;
+                    await getListTournament();
                   },
                   title: Center(
                     child: Text(
@@ -673,42 +539,22 @@ class TournamentController extends GetxController {
                 ListTile(
                     onTap: () async {
                       Navigator.pop(context);
-                      generalController.isLoading.value = true;
                       element.remove("Giới tính");
                       genderSearchTour.value = "";
-                      await TournamentAPI.getListTournament(
-                          nameSearchTour.value,
-                          generalController.areaSearchTour.value,
-                          modeSearchTour.value,
-                          typeSearchTour.value,
-                          genderSearchTour.value,
-                          footballFieldSearchTour.value,
-                          sortTourBy.value,
-                          sortTourType.value);
-                          generalController.isLoading.value = false;
+                      await getListTournament();
                     },
                     title: const Center(child: Text("--"))),
                 Divider(color: kGreyColor, height: 3),
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (element
                         .where((element) => element == "Giới tính")
                         .isEmpty) {
                       element.add("Giới tính");
                     }
                     genderSearchTour.value = "tournament-gender=Male&";
-                    await TournamentAPI.getListTournament(
-                        nameSearchTour.value,
-                        generalController.areaSearchTour.value,
-                        modeSearchTour.value,
-                        typeSearchTour.value,
-                        genderSearchTour.value,
-                        footballFieldSearchTour.value,
-                        sortTourBy.value,
-                        sortTourType.value);
-                        generalController.isLoading.value = false;
+                    await getListTournament();
                   },
                   title: Center(
                     child: Text(
@@ -725,23 +571,13 @@ class TournamentController extends GetxController {
                 ListTile(
                   onTap: () async {
                     Navigator.pop(context);
-                    generalController.isLoading.value = true;
                     if (element
                         .where((element) => element == "Giới tính")
                         .isEmpty) {
                       element.add("Giới tính");
                     }
                     genderSearchTour.value = "tournament-gender=Female&";
-                    await TournamentAPI.getListTournament(
-                        nameSearchTour.value,
-                        generalController.areaSearchTour.value,
-                        modeSearchTour.value,
-                        typeSearchTour.value,
-                        genderSearchTour.value,
-                        footballFieldSearchTour.value,
-                        sortTourBy.value,
-                        sortTourType.value);
-                        generalController.isLoading.value = false;
+                    await getListTournament();
                   },
                   title: Center(
                     child: Text(
