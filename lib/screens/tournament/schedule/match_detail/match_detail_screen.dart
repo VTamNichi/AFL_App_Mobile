@@ -52,11 +52,11 @@ class MatchDetailScreen extends StatelessWidget {
                   generalController.isLoading.value = true;
                   await matchController.getToken(matchController.matchId.value);
                   if (matchController
-                      .matchDetail.value.tokenLivestream!.isEmpty) {
+                      .matchDetail.value.tokenLivestream!.isEmpty) { 
                     if (userController.user.value.id ==
                         tournamentController.tournamentDetail.value.userId) {
                       await matchController
-                          .createToken(matchController.matchId.value);
+                          .createToken(matchController.matchDetail.value);
                     }
                   }
                   generalController.isLoading.value = false;

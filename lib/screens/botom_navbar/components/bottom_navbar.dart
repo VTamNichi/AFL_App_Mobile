@@ -1,5 +1,6 @@
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
+import 'package:amateur_football_league_mobile/screens/football_player/football_player_screen.dart';
 import 'package:amateur_football_league_mobile/screens/home/home_screen.dart';
 import 'package:amateur_football_league_mobile/screens/tournament/tournament_screen.dart';
 import 'package:amateur_football_league_mobile/screens/team/team_screen.dart';
@@ -15,6 +16,7 @@ class BottomNavbar extends StatelessWidget {
     const HomeScreen(),
     TournamentScreen(),
     TeamScreen(),
+    FootballPlayerScreen(),
     UserInforScreen(),
   ];
   @override
@@ -46,6 +48,10 @@ class BottomNavbar extends StatelessWidget {
               const BottomNavigationBarItem(
                 icon: Icon(Icons.sports_soccer),
                 label: "Đội bóng",
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.sports_handball),
+                label: "Cầu thủ",
               ),
               const BottomNavigationBarItem(
                 icon: Icon(Icons.person),

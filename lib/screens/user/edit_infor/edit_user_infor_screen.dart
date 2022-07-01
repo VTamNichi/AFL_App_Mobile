@@ -33,9 +33,7 @@ class _EditUserInforScreenState extends State<EditUserInforScreen> {
     textBioController.text = userController.user.value.bio.toString();
 
     userController.genderUpdate.value =
-        userController.user.value.gender == "Female" ? false : true;
-    userController.dobUpdate.value = DateFormat("yyyy-MM-dd").format(
-        DateTime.parse(userController.user.value.dateOfBirth.toString()));
+    userController.user.value.gender == "Female" ? false : true;
     userController.emptyNameUpdate.value = false;
     userController.emptyPhoneUpdate.value = false;
     generalController.imageUpdate.value = File('');
@@ -244,7 +242,7 @@ class _EditUserInforScreenState extends State<EditUserInforScreen> {
                             controller: TextEditingController(
                                 text: generalController.dobUpdatePick.value.year >=
                                         DateTime.now().year
-                                    ? userController.dobUpdate.value
+                                    ? userController.user.value.dateOfBirth.toString().split(" ")[0]
                                     : DateFormat("yyyy-MM-dd").format(
                                         generalController.dobUpdatePick.value)),
                             decoration: InputDecoration(

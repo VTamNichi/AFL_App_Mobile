@@ -159,8 +159,6 @@ class Body extends StatelessWidget {
                     } else {
                       Fluttertoast.showToast(msg: result, fontSize: 18);
                       if (result == "Đăng nhập thành công") {
-                        teamController.getListTeam();
-                        tournamentController.getListTournament();
                         generalController.getListProvince();
                         Get.to(const BottomNavbarScreen());
                       }

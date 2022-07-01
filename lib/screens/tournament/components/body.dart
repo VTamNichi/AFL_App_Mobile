@@ -1,18 +1,50 @@
 import 'package:amateur_football_league_mobile/constant.dart';
+import 'package:amateur_football_league_mobile/controllers/comment_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/team_in_match_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/tournament_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:amateur_football_league_mobile/screens/tournament/components/build_tournament_list.dart';
 import 'package:amateur_football_league_mobile/screens/tournament/tournament_detail/tournament_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   Body({Key? key}) : super(key: key);
 
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   final tournamentController = Get.put(TournamentController());
+  final userController = Get.put(UserController());
   final generalController = Get.put(GeneralController());
   final teamInMatchController = Get.put(TeamInMatchController());
+  final commentController = Get.put(CommentController());
+
+  final RefreshController refreshController =
+      RefreshController(initialRefresh: true);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<bool> getTournamentData({bool isRefresh = false}) async {
+    if (!isRefresh) {
+      if (generalController.currentTournamentPage.value >=
+          (tournamentController.countListTournament.value / 8).ceil()) {
+        refreshController.loadNoData();
+        return true;
+      } else {
+        generalController.currentTournamentPage.value += 1;
+      }
+    }
+    await tournamentController.getListTournament(isRefresh: isRefresh);
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +60,11 @@ class Body extends StatelessWidget {
               children: [
                 Expanded(
                   child: InkWell(
-                    onTap: () =>
-                        {tournamentController.selectTournament.value = 1},
+                    onTap: () async {
+                      generalController.userIDSearchTour.value = "";
+                      tournamentController.selectTournament.value = 1;
+                      await tournamentController.getListTournament();
+                    },
                     child: Container(
                       width: 104,
                       height: double.infinity,
@@ -60,8 +95,13 @@ class Body extends StatelessWidget {
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap: () =>
-                        {tournamentController.selectTournament.value = 2},
+                    onTap: () async {
+                      generalController.userIDSearchTour.value = "userId=" +
+                          userController.user.value.id.toString() +
+                          "&";
+                      tournamentController.selectTournament.value = 2;
+                      await tournamentController.getListTournament();
+                    },
                     child: Container(
                       width: 104,
                       height: double.infinity,
@@ -105,7 +145,8 @@ class Body extends StatelessWidget {
                     tournamentController.listSearchTournament.map((element) {
                   return GestureDetector(
                     onTap: () {
-                      tournamentController.showOptionSearchTournament(context, element);
+                      tournamentController.showOptionSearchTournament(
+                          context, element);
                     },
                     child: Container(
                       height: 30,
@@ -114,8 +155,11 @@ class Body extends StatelessWidget {
                       margin: EdgeInsets.only(
                           left: kPadding / 2, right: kPadding / 2),
                       decoration: BoxDecoration(
-                        color: tournamentController.element.contains(element) ? kGreenLightColor : kBackgroundColor,
-                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                        color: tournamentController.element.contains(element)
+                            ? kGreenLightColor
+                            : kBackgroundColor,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
                         border: Border.all(
                             color: kGreyColor,
                             width: 1,
@@ -123,7 +167,11 @@ class Body extends StatelessWidget {
                       ),
                       child: Text(
                         element,
-                        style: TextStyle(color: tournamentController.element.contains(element) ? kWhiteText : kGreyColor,),
+                        style: TextStyle(
+                          color: tournamentController.element.contains(element)
+                              ? kWhiteText
+                              : kGreyColor,
+                        ),
                       ),
                     ),
                   );
@@ -139,7 +187,8 @@ class Body extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  tournamentController.countListTournament.value.toString() + " Giải đấu",
+                  tournamentController.countListTournament.value.toString() +
+                      " Giải đấu",
                   style: TextStyle(
                       color: kBlackText,
                       fontSize: 18,
@@ -156,21 +205,31 @@ class Body extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     decoration: BoxDecoration(
-                      color: tournamentController.sortTourBy.value == "" ? kBackgroundColor : kGreenLightColor,
+                      color: tournamentController.sortTourBy.value == ""
+                          ? kBackgroundColor
+                          : kGreenLightColor,
                       borderRadius: const BorderRadius.all(Radius.circular(8)),
                       border: Border.all(
-                          color: kGreyColor, width: 1, style: BorderStyle.solid),
+                          color: kGreyColor,
+                          width: 1,
+                          style: BorderStyle.solid),
                     ),
                     child: Row(
                       children: [
                         Text(
                           "Sắp xếp",
-                          style: TextStyle(color: tournamentController.sortTourBy.value == "" ? kGreyColor : kWhiteText,),
+                          style: TextStyle(
+                            color: tournamentController.sortTourBy.value == ""
+                                ? kGreyColor
+                                : kWhiteText,
+                          ),
                         ),
                         Expanded(child: Container()),
                         Icon(
                           Icons.keyboard_arrow_down,
-                          color: tournamentController.sortTourBy.value == "" ? kGreyColor : kWhiteText,
+                          color: tournamentController.sortTourBy.value == ""
+                              ? kGreyColor
+                              : kWhiteText,
                         )
                       ],
                     ),
@@ -181,25 +240,49 @@ class Body extends StatelessWidget {
           ),
           SizedBox(
             height: size.height - 300,
-            child: SingleChildScrollView(
+            child: SmartRefresher(
+              controller: refreshController,
+              enablePullUp: true,
+              onRefresh: () async {
+                final result = await getTournamentData(isRefresh: true);
+                if (result) {
+                  refreshController.refreshCompleted();
+                } else {
+                  refreshController.refreshFailed();
+                }
+              },
+              onLoading: () async {
+                final result = await getTournamentData(isRefresh: false);
+                if (result) {
+                  refreshController.loadComplete();
+                } else {
+                  refreshController.loadFailed();
+                }
+              },
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
                 itemCount: tournamentController.tournamentList.length,
                 itemBuilder: (BuildContext context, index) {
                   return GestureDetector(
                     onTap: () async {
                       generalController.isLoading.value = true;
-                      await teamInMatchController.getListTeamInMatch(tournamentController.tournamentList[index].id!);
-                      tournamentController.tournamentDetail.value = tournamentController.tournamentList[index];
+                      await teamInMatchController.getListTeamInMatch(
+                          tournamentController.tournamentList[index].id!);
+                      generalController.searchIDComment.value = "tounamentID=" +
+                          tournamentController.tournamentList[index].id!
+                              .toString() +
+                          "&";
+                      await commentController.getListComment(isRefresh: true);
+                      tournamentController.tournamentDetail.value =
+                          tournamentController.tournamentList[index];
                       Get.to(() => TournamentDetailScreen(),
                           transition: Transition.zoom,
                           duration: const Duration(milliseconds: 600));
-                                                generalController.isLoading.value = false;
-                      
+                      generalController.isLoading.value = false;
                     },
                     child: BuildTournamentList(
-                      image: tournamentController.tournamentList[index].tournamentAvatar,
+                      image: tournamentController
+                          .tournamentList[index].tournamentAvatar,
                       name: tournamentController
                           .tournamentList[index].tournamentName,
                       gender: tournamentController
@@ -208,8 +291,14 @@ class Body extends StatelessWidget {
                           ? "Nữ"
                           : "Nam",
                       type: tournamentController
-                          .tournamentList[index].tournamentTypeId == 1 ? "Loại trực tiếp" : tournamentController
-                          .tournamentList[index].tournamentTypeId == 2 ? "Đấu vòng tròn" : "Chia bảng",
+                                  .tournamentList[index].tournamentTypeId ==
+                              1
+                          ? "Loại trực tiếp"
+                          : tournamentController
+                                      .tournamentList[index].tournamentTypeId ==
+                                  2
+                              ? "Đấu vòng tròn"
+                              : "Chia bảng",
                       area: tournamentController
                           .tournamentList[index].footballFieldAddress,
                     ),
@@ -218,23 +307,6 @@ class Body extends StatelessWidget {
               ),
             ),
           ),
-          // Container(
-          //   width: 100,
-          //   height: 10,
-          //   decoration: BoxDecoration(
-          //             color: kBackgroundColor,
-          //             borderRadius: const BorderRadius.all(Radius.circular(8)),
-          //             border: Border.all(
-          //                 color: kGreenLightColor,
-          //                 width: 1,
-          //                 style: BorderStyle.solid),
-          //           ),
-          //   child: LinearProgressIndicator(
-          //     value: 50,
-          //     valueColor: AlwaysStoppedAnimation(kGreenLightColor),
-          //     backgroundColor: kGreyBackground,
-          //   ),
-          // ),
         ],
       ),
     );

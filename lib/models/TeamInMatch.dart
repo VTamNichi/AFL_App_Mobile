@@ -5,7 +5,7 @@ class TeamInMatch {
   int? teamScore;
   int? yellowCardNumber;
   int? redCardNumber;
-  int? teamId;
+  int? teamInTournamentId;
   int? matchId;
   String? result;
   String? nextTeam;
@@ -18,7 +18,7 @@ class TeamInMatch {
       this.teamScore,
       this.yellowCardNumber,
       this.redCardNumber,
-      this.teamId,
+      this.teamInTournamentId,
       this.matchId,
       this.result,
       this.nextTeam,
@@ -31,7 +31,7 @@ class TeamInMatch {
     teamScore = json['teamScore'];
     yellowCardNumber = json['yellowCardNumber'];
     redCardNumber = json['redCardNumber'];
-    teamId = json['teamId'];
+    teamInTournamentId = json['teamInTournamentId'];
     matchId = json['matchId'];
     result = json['result'];
     nextTeam = json['nextTeam'];
@@ -46,7 +46,7 @@ class TeamInMatch {
     data['teamScore'] = teamScore;
     data['yellowCardNumber'] = yellowCardNumber;
     data['redCardNumber'] = redCardNumber;
-    data['teamId'] = teamId;
+    data['teamInTournamentId'] = teamInTournamentId;
     data['matchId'] = matchId;
     data['result'] = result;
     data['nextTeam'] = nextTeam;

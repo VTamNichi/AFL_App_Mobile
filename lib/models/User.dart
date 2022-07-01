@@ -16,6 +16,7 @@ class User {
   int? flagReportTeam;
   int? flagReportTournament;
   String? identityCard;
+  String? dateIssuance;
   String? phoneBusiness;
   String? nameBusiness;
   String? tinbusiness;
@@ -43,6 +44,7 @@ class User {
       this.flagReportTeam,
       this.flagReportTournament,
       this.identityCard,
+      this.dateIssuance,
       this.phoneBusiness,
       this.nameBusiness,
       this.tinbusiness,
@@ -70,6 +72,7 @@ class User {
     flagReportTeam = json['flagReportTeam'];
     flagReportTournament = json['flagReportTournament'];
     identityCard = json['identityCard'];
+    dateIssuance = json['dateIssuance'];
     phoneBusiness = json['phoneBusiness'];
     nameBusiness = json['nameBusiness'];
     tinbusiness = json['tinbusiness'];
@@ -99,6 +102,7 @@ class User {
     data['flagReportTeam'] = flagReportTeam;
     data['flagReportTournament'] = flagReportTournament;
     data['identityCard'] = identityCard;
+    data['dateIssuance'] = dateIssuance;
     data['phoneBusiness'] = phoneBusiness;
     data['nameBusiness'] = nameBusiness;
     data['tinbusiness'] = tinbusiness;

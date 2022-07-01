@@ -7,7 +7,6 @@ class UserController extends GetxController {
   final generalController = Get.put(GeneralController());
 
   Rx<User> user = User().obs;
-  RxString dobParse = "".obs;
 
   // register variables
   RxBool obsPassRegister = true.obs;

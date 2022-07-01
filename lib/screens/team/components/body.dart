@@ -1,14 +1,50 @@
 import 'package:amateur_football_league_mobile/constant.dart';
+import 'package:amateur_football_league_mobile/controllers/comment_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/team_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:amateur_football_league_mobile/screens/team/components/build_team_list.dart';
 import 'package:amateur_football_league_mobile/screens/team/team_detail/team_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   Body({Key? key}) : super(key: key);
 
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   final teamController = Get.put(TeamController());
+
+  final userController = Get.put(UserController());
+
+  final generalController = Get.put(GeneralController());
+  final commentController = Get.put(CommentController());
+
+  final RefreshController refreshController =
+      RefreshController(initialRefresh: true);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<bool> getTeamData({bool isRefresh = false}) async {
+    if (!isRefresh) {
+      if (generalController.currentTeamPage.value >=
+          (teamController.countListTeam.value / 8).ceil()) {
+        refreshController.loadNoData();
+        return true;
+      } else {
+        generalController.currentTeamPage.value += 1;
+      }
+    }
+    await teamController.getListTeam(isRefresh: isRefresh);
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +60,9 @@ class Body extends StatelessWidget {
               children: [
                 Expanded(
                   child: InkWell(
-                    onTap: () => {teamController.selectTeam.value = 1},
+                    onTap: () {
+                      teamController.selectTeam.value = 1;
+                    },
                     child: Container(
                       width: 104,
                       height: double.infinity,
@@ -52,7 +90,9 @@ class Body extends StatelessWidget {
                 ),
                 Expanded(
                   child: InkWell(
-                    onTap: () => {teamController.selectTeam.value = 2},
+                    onTap: () {
+                      teamController.selectTeam.value = 2;
+                    },
                     child: Container(
                       width: 104,
                       height: double.infinity,
@@ -101,7 +141,9 @@ class Body extends StatelessWidget {
                       margin: EdgeInsets.only(
                           left: kPadding / 2, right: kPadding / 2),
                       decoration: BoxDecoration(
-                        color: teamController.element.contains(element) ? kGreenLightColor : kBackgroundColor,
+                        color: teamController.element.contains(element)
+                            ? kGreenLightColor
+                            : kBackgroundColor,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
                         border: Border.all(
@@ -111,7 +153,10 @@ class Body extends StatelessWidget {
                       ),
                       child: Text(
                         element,
-                        style: TextStyle(color: teamController.element.contains(element) ? kWhiteText : kGreyColor),
+                        style: TextStyle(
+                            color: teamController.element.contains(element)
+                                ? kWhiteText
+                                : kGreyColor),
                       ),
                     ),
                   );
@@ -145,7 +190,8 @@ class Body extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       decoration: BoxDecoration(
                         color: teamController.sortTeamBy.value == ""
-                                  ? kBackgroundColor : kGreenLightColor,
+                            ? kBackgroundColor
+                            : kGreenLightColor,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
                         border: Border.all(
@@ -178,14 +224,37 @@ class Body extends StatelessWidget {
           ),
           SizedBox(
             height: size.height - 300,
-            child: SingleChildScrollView(
+            child: SmartRefresher(
+              controller: refreshController,
+              enablePullUp: true,
+              onRefresh: () async {
+                final result = await getTeamData(isRefresh: true);
+                if (result) {
+                  refreshController.refreshCompleted();
+                } else {
+                  refreshController.refreshFailed();
+                }
+              },
+              onLoading: () async {
+                final result = await getTeamData(isRefresh: false);
+                if (result) {
+                  refreshController.loadComplete();
+                } else {
+                  refreshController.loadFailed();
+                }
+              },
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
                 itemCount: teamController.teamList.length,
                 itemBuilder: (BuildContext context, index) {
                   return GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      teamController.teamDetail.value = teamController.teamList[index];
+                      generalController.searchIDComment.value = "teamID=" +
+                          teamController.teamList[index].id!
+                              .toString() +
+                          "&";
+                      await commentController.getListComment(isRefresh: true);
                       Get.to(() => TeamDetailScreen(),
                           transition: Transition.zoom,
                           duration: const Duration(milliseconds: 600));

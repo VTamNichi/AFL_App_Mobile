@@ -2,6 +2,7 @@ import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:amateur_football_league_mobile/screens/loading/loading_screen.dart';
+import 'package:amateur_football_league_mobile/screens/notification/notification_screen.dart';
 import 'package:amateur_football_league_mobile/screens/user/infor/components/body.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +33,9 @@ class UserInforScreen extends StatelessWidget {
                             Icons.notifications,
                             size: 34,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(NotificationScreen());
+                          },
                         ),
                       ],
                     ),
