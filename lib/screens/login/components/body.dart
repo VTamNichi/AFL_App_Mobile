@@ -125,10 +125,10 @@ class Body extends StatelessWidget {
                     userController.codeResetRead.value = false;
                     userController.obsNewPassReset.value = true;
                     userController.obsConfirmNewPassReset.value = true;
-                    
+
                     Get.to(() => ResetPasswordScreen(),
-                          transition: Transition.zoom,
-                          duration: const Duration(milliseconds: 600));
+                        transition: Transition.zoom,
+                        duration: const Duration(milliseconds: 600));
                   },
                   child: Text(
                     "Quên mật khẩu",
