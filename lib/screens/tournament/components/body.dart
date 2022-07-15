@@ -266,13 +266,14 @@ class _BodyState extends State<Body> {
                   return GestureDetector(
                     onTap: () async {
                       generalController.isLoading.value = true;
+                      generalController.currentCommentPage.value = 1;
                       await teamInMatchController.getListTeamInMatch(
                           tournamentController.tournamentList[index].id!);
                       generalController.searchIDComment.value = "tounamentID=" +
                           tournamentController.tournamentList[index].id!
                               .toString() +
                           "&";
-                      await commentController.getListComment(isRefresh: true);
+                      await commentController.getListComment();
                       tournamentController.tournamentDetail.value =
                           tournamentController.tournamentList[index];
                       Get.to(() => TournamentDetailScreen(),

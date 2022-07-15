@@ -16,12 +16,12 @@ class TournamentDetailScreen extends StatefulWidget {
 }
 
 class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
+
   final generalController = Get.put(GeneralController());
-
   final tournamentController = Get.put(TournamentController());
-
   final commentController = Get.put(CommentController());
-  
+  TextEditingController textCommentController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -318,6 +318,54 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.all(kPadding / 2),
+                    child: TextField(
+                      controller: textCommentController,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        labelText: "Viết bình luận",
+                        labelStyle: TextStyle(color: kGreyColor),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: kGreenLightColor),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10))),
+                      ),
+                      keyboardType: TextInputType.name,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(
+                        kPadding / 2, 0, kPadding / 2, kPadding / 2),
+                    child: Row(
+                      children: [
+                        Expanded(child: Container()),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await commentController.postComment(textCommentController.text);
+                            textCommentController.text = "";
+                            await commentController.getListComment();
+                          },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  kGreenLightColor),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4)),
+                              ))),
+                          child: Text(
+                            "Đăng",
+                            style: TextStyle(color: kWhiteText, fontSize: 20),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   ListView.builder(
                     shrinkWrap: true,
                     itemCount: commentController.commentList.length,
@@ -335,6 +383,28 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                       );
                     },
                   ),
+                  Padding(
+                    padding: EdgeInsets.all(kPadding / 2),
+                    child: Row(
+                      children: [
+                        Expanded(child: Container()),
+                        GestureDetector(
+                          onTap: () async {
+                            generalController.currentCommentPage.value++;
+                            await commentController.getListComment();
+                          },
+                          child: Text(
+                            "Xem nhiều bình luận",
+                            style: TextStyle(
+                                color: kGreenLightColor,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: kPadding * 1.5,),
                 ],
               ),
             ),

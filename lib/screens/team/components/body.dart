@@ -249,12 +249,13 @@ class _BodyState extends State<Body> {
                 itemBuilder: (BuildContext context, index) {
                   return GestureDetector(
                     onTap: () async {
-                      teamController.teamDetail.value = teamController.teamList[index];
+                      teamController.teamDetail.value =
+                          teamController.teamList[index];
                       generalController.searchIDComment.value = "teamID=" +
-                          teamController.teamList[index].id!
-                              .toString() +
+                          teamController.teamList[index].id!.toString() +
                           "&";
-                      await commentController.getListComment(isRefresh: true);
+                      generalController.currentCommentPage.value = 1;
+                      await commentController.getListComment();
                       Get.to(() => TeamDetailScreen(),
                           transition: Transition.zoom,
                           duration: const Duration(milliseconds: 600));

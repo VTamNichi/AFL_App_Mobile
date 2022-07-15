@@ -1,5 +1,6 @@
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/notification_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/tournament_controller.dart';
 import 'package:amateur_football_league_mobile/screens/loading/loading_screen.dart';
 import 'package:amateur_football_league_mobile/screens/notification/notification_screen.dart';
@@ -13,6 +14,7 @@ class TournamentScreen extends StatelessWidget {
 
   final generalController = Get.put(GeneralController());
   final tournamentController = Get.put(TournamentController());
+  final notificationController = Get.put(NotificationController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +25,16 @@ class TournamentScreen extends StatelessWidget {
           Scaffold(
             appBar: AppBar(
               title: Text(
-                tournamentController.nameSearchTour.value.isEmpty ? "Giải đấu" : tournamentController.nameSearchTour.value,
+                tournamentController.nameSearchTour.value.isEmpty
+                    ? "Giải đấu"
+                    : tournamentController.nameSearchTour.value,
                 style: TextStyle(
                   color: kBlackText,
                 ),
               ),
-              centerTitle: tournamentController.nameSearchTour.value.isEmpty ? true : false,
+              centerTitle: tournamentController.nameSearchTour.value.isEmpty
+                  ? true
+                  : false,
               automaticallyImplyLeading: false,
               backgroundColor: kBackgroundColor,
               leading: IconButton(
@@ -38,7 +44,10 @@ class TournamentScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   generalController.isSearchTour.value = true;
-                  showSearch(context: context, delegate: SearchTournamentDelegate(), query: tournamentController.nameSearchTour.value);
+                  showSearch(
+                      context: context,
+                      delegate: SearchTournamentDelegate(),
+                      query: tournamentController.nameSearchTour.value);
                 },
               ),
               actions: [
@@ -52,10 +61,37 @@ class TournamentScreen extends StatelessWidget {
                           size: 34,
                           color: kBlackText,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          await notificationController.updateOldNoti();
                           Get.to(NotificationScreen());
                         },
                       ),
+                      notificationController.countNew.value > 0
+                          ? Positioned(
+                              top: 5,
+                              right: 9,
+                              child: Container(
+                                width: 22,
+                                height: 22,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: kGreenLightColor,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    notificationController.countNew.value
+                                            .toString() +
+                                        "+",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 11,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Container(),
                     ],
                   ),
                 )

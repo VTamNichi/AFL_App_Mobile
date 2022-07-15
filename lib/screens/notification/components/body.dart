@@ -69,12 +69,19 @@ class _BodyState extends State<Body> {
               shrinkWrap: true,
               itemCount: notificationController.notificationList.length,
               itemBuilder: (BuildContext context, index) {
-                return BuildNotificationList(
-                  content:
-                      notificationController.notificationList[index].content,
-                  dateCreate:
-                      notificationController.notificationList[index].dateCreate,
-                  index: index,
+                return GestureDetector(
+                  onTap: () async {
+                    await notificationController.seenNoti(notificationController.notificationList[index]);
+                    await notificationController.getListNotification(isRefresh: true);
+                  },
+                  child: BuildNotificationList(
+                    content:
+                        notificationController.notificationList[index].content,
+                    isSeen: notificationController.notificationList[index].isSeen,
+                    dateCreate:
+                        notificationController.notificationList[index].dateCreate,
+                    index: index,
+                  ),
                 );
               }),
         ),

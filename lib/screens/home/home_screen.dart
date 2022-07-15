@@ -54,12 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
         //     patientProfileController.nearestHealthCheck.value.id);
       }
     });
-    _firebaseMessaging
-        .getToken()
-        .then((token) {
-          storage.write(key: "tokenFCM", value: token);
-        })
-        .then((value) => {AuthAPI.makeConnection()});
+    _firebaseMessaging.getToken().then((token) {
+      storage.write(key: "tokenFCM", value: token);
+    }).then((value) => {AuthAPI.makeConnection()});
 //        .then((value) => {FetchAPI.getCountUnreadNotification()});
   }
 
@@ -81,37 +78,60 @@ class _HomeScreenState extends State<HomeScreen> {
     await flutterLocalNotificationsPlugin
         .show(0, title, body, platformChannelSpecifics, payload: 'test');
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-            title: const Text("Trang chủ"),
-            centerTitle: true,
-            automaticallyImplyLeading: false,
-            backgroundColor: kBlueBlack,
-            actions: [
-              SizedBox(
-                width: 60,
-                child: Stack(
-                  children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.notifications,
-                        size: 34,
-                      ),
-                      onPressed: () async {
-                        Get.to(NotificationScreen());
-                      },
-                    ), ],
-                ),
-              )
-            ],
-          ),
-        body: SingleChildScrollView(child: Body()),
+        child: Scaffold(
+      appBar: AppBar(
+        title: const Text("Trang chủ"),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
         backgroundColor: kBlueBlack,
-      )
-    );
+        actions: [
+          SizedBox(
+            width: 60,
+            child: Stack(
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.notifications,
+                    size: 34,
+                  ),
+                  onPressed: () async {
+                    await notificationController.updateOldNoti();
+                    Get.to(NotificationScreen());
+                  },
+                ),
+                notificationController.countNew.value > 0 ? Positioned(
+                  top: 5,
+                  right: 9,
+                  child: Container(
+                    width: 22,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: kGreenLightColor,
+                    ),
+                    child: Center(
+                      child: Text(
+                        notificationController.countNew.value.toString() + "+",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                  ),
+                ) : Container(),
+              ],
+            ),
+          )
+        ],
+      ),
+      body: SingleChildScrollView(child: Body()),
+      backgroundColor: kBlueBlack,
+    ));
   }
 }

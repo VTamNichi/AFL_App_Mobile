@@ -13,6 +13,7 @@ class TeamDetailScreen extends StatelessWidget {
   final generalController = Get.put(GeneralController());
   final teamController = Get.put(TeamController());
   final commentController = Get.put(CommentController());
+  TextEditingController textCommentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +92,8 @@ class TeamDetailScreen extends StatelessWidget {
                     teamController.teamDetail.value.teamName
                         .toString()
                         .toUpperCase(),
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: kPadding,
@@ -115,8 +117,7 @@ class TeamDetailScreen extends StatelessWidget {
                           child: Container(),
                         ),
                         Text(
-                          teamController.teamDetail.value.id
-                              .toString(),
+                          teamController.teamDetail.value.id.toString(),
                           style: TextStyle(
                             color: kBlackText,
                             fontSize: 16,
@@ -144,8 +145,7 @@ class TeamDetailScreen extends StatelessWidget {
                           child: Container(),
                         ),
                         Text(
-                          teamController
-                                      .teamDetail.value.teamPhone.toString(),
+                          teamController.teamDetail.value.teamPhone.toString(),
                           style: TextStyle(
                             color: kBlackText,
                             fontSize: 16,
@@ -173,9 +173,7 @@ class TeamDetailScreen extends StatelessWidget {
                           child: Container(),
                         ),
                         Text(
-                          teamController
-                                      .teamDetail.value.teamGender ==
-                                  "Male"
+                          teamController.teamDetail.value.teamGender == "Male"
                               ? "Nam"
                               : "Nữ",
                           style: TextStyle(
@@ -205,8 +203,8 @@ class TeamDetailScreen extends StatelessWidget {
                           child: Container(),
                         ),
                         Text(
-                          teamController
-                                      .teamDetail.value.numberPlayerInTeam.toString(),
+                          teamController.teamDetail.value.numberPlayerInTeam
+                              .toString(),
                           style: TextStyle(
                             color: kBlackText,
                             fontSize: 16,
@@ -236,9 +234,7 @@ class TeamDetailScreen extends StatelessWidget {
                         Expanded(
                           flex: 2,
                           child: Text(
-                            teamController
-                                .teamDetail.value.teamArea
-                                .toString(),
+                            teamController.teamDetail.value.teamArea.toString(),
                             maxLines: 4,
                             style: TextStyle(
                               color: kBlackText,
@@ -278,12 +274,9 @@ class TeamDetailScreen extends StatelessWidget {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: teamController.listTeamDetail
-                            .map((element) {
+                        children: teamController.listTeamDetail.map((element) {
                           return GestureDetector(
-                            onTap: () {
-                              
-                            },
+                            onTap: () {},
                             child: Container(
                               height: 30,
                               alignment: Alignment.centerLeft,
@@ -301,7 +294,8 @@ class TeamDetailScreen extends StatelessWidget {
                               ),
                               child: Text(
                                 element,
-                                style: TextStyle(color: kBlackText, fontSize: 16),
+                                style:
+                                    TextStyle(color: kBlackText, fontSize: 16),
                               ),
                             ),
                           );
@@ -355,6 +349,54 @@ class TeamDetailScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.all(kPadding / 2),
+                    child: TextField(
+                      controller: textCommentController,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        labelText: "Viết bình luận",
+                        labelStyle: TextStyle(color: kGreyColor),
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: kGreenLightColor),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10))),
+                      ),
+                      keyboardType: TextInputType.name,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(
+                        kPadding / 2, 0, kPadding / 2, kPadding / 2),
+                    child: Row(
+                      children: [
+                        Expanded(child: Container()),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await commentController.postComment(textCommentController.text);
+                            textCommentController.text = "";
+                            await commentController.getListComment();
+                          },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  kGreenLightColor),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4)),
+                              ))),
+                          child: Text(
+                            "Đăng",
+                            style: TextStyle(color: kWhiteText, fontSize: 20),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   ListView.builder(
                     shrinkWrap: true,
                     itemCount: commentController.commentList.length,
@@ -371,6 +413,30 @@ class TeamDetailScreen extends StatelessWidget {
                         ),
                       );
                     },
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(kPadding / 2),
+                    child: Row(
+                      children: [
+                        Expanded(child: Container()),
+                        GestureDetector(
+                          onTap: () async {
+                            generalController.currentCommentPage.value++;
+                            await commentController.getListComment();
+                          },
+                          child: Text(
+                            "Xem nhiều bình luận",
+                            style: TextStyle(
+                                color: kGreenLightColor,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: kPadding * 1.5,
                   ),
                 ],
               ),

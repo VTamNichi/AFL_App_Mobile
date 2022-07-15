@@ -5,11 +5,13 @@ class BuildNotificationList extends StatelessWidget {
   const BuildNotificationList({
     Key? key,
     this.content,
+    this.isSeen,
     this.dateCreate,
     this.index,
   }) : super(key: key);
 
   final content;
+  final isSeen;
   final dateCreate;
   final index;
 
@@ -51,6 +53,7 @@ class BuildNotificationList extends StatelessWidget {
                     style: TextStyle(
                       color: kBlackText,
                       fontSize: 18,
+                      fontWeight: isSeen == false ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
                 ),
