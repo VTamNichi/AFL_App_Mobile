@@ -21,6 +21,10 @@ class FootballPlayerAPI {
       if (currentFootballPlayerPage == 0) {
         currentFootballPlayerPage = 1;
       }
+      if (orderBy.isEmpty) {
+        orderBy = "order-by=Id&";
+        orderType = "order-type=DESC&";
+      }
       final response = await http.get(
           Uri.parse(urlApi +
               "football-players?" +
@@ -32,8 +36,9 @@ class FootballPlayerAPI {
               "&" +
               footballPlayerGender +
               position +
+              "status=true&"+
               orderBy +
-              orderBy +
+              orderType +
               "page-offset=" +
               currentFootballPlayerPage.toString() +
               "&limit=8"),

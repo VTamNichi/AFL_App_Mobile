@@ -41,29 +41,31 @@ class BuildCommentList extends StatelessWidget {
                   height: 80,
                   color: kWhiteComment,
                   padding: EdgeInsets.only(left: kPadding / 4),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name.toString(),
-                        style: TextStyle(
-                          color: kBlackText,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name.toString(),
+                          style: TextStyle(
+                            color: kBlackText,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: kPadding / 3,
-                      ),
-                      Text(
-                        content.toString(),
-                        style: TextStyle(
-                          color: kBlackText,
-                          fontSize: 18,
+                        SizedBox(
+                          height: kPadding / 3,
                         ),
-                      ),
-                    ],
+                        Text(
+                          content.toString(),
+                          style: TextStyle(
+                            color: kBlackText,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

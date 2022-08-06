@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 class MatchController extends GetxController {
   RxInt matchId = 0.obs;
   Rx<Match> matchDetail = Match().obs;
+  Rx<String> idScreen = "".obs;
 
   Future<int> createToken(Match match) async {
     int rs = 0;

@@ -10,9 +10,11 @@ class Tournament {
   String? footballFieldAddress;
   String? tournamentAvatar;
   String? description;
+  String? statusTnm;
   int? matchMinutes;
   int? footballTeamNumber;
   int? footballPlayerMaxNumber;
+  int? groupNumber;
   String? dateCreate;
   bool? status;
   int? userId;
@@ -32,9 +34,11 @@ class Tournament {
       this.footballFieldAddress,
       this.tournamentAvatar,
       this.description,
+      this.statusTnm,
       this.matchMinutes,
       this.footballTeamNumber,
       this.footballPlayerMaxNumber,
+      this.groupNumber,
       this.dateCreate,
       this.status,
       this.userId,
@@ -54,9 +58,11 @@ class Tournament {
     footballFieldAddress = json['footballFieldAddress'];
     tournamentAvatar = json['tournamentAvatar'];
     description = json['description'];
+    statusTnm = json['statusTnm'];
     matchMinutes = json['matchMinutes'];
     footballTeamNumber = json['footballTeamNumber'];
     footballPlayerMaxNumber = json['footballPlayerMaxNumber'];
+    groupNumber = json['groupNumber'];
     dateCreate = json['dateCreate'];
     status = json['status'];
     userId = json['userId'];
@@ -78,9 +84,11 @@ class Tournament {
     data['footballFieldAddress'] = footballFieldAddress;
     data['tournamentAvatar'] = tournamentAvatar;
     data['description'] = description;
+    data['statusTnm'] = statusTnm;
     data['matchMinutes'] = matchMinutes;
     data['footballTeamNumber'] = footballTeamNumber;
     data['footballPlayerMaxNumber'] = footballPlayerMaxNumber;
+    data['groupNumber'] = groupNumber;
     data['dateCreate'] = dateCreate;
     data['status'] = status;
     data['userId'] = userId;

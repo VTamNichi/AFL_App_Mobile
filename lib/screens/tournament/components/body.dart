@@ -276,6 +276,7 @@ class _BodyState extends State<Body> {
                       await commentController.getListComment();
                       tournamentController.tournamentDetail.value =
                           tournamentController.tournamentList[index];
+                      await userController.getUserById(tournamentController.tournamentList[index].userId!);
                       Get.to(() => TournamentDetailScreen(),
                           transition: Transition.zoom,
                           duration: const Duration(milliseconds: 600));

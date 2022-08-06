@@ -24,9 +24,11 @@ class TournamentController extends GetxController {
     "Giới tính",
   ].obs;
   RxList listTournamentDetail = [
+    "Tin tức",
+    "Hình ảnh",
     "Lịch thi đấu",
-    "Bảng xếp hạng",
     "Đội thi đấu",
+    "Dự đoán",
     "Thống kê",
   ].obs;
 

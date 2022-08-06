@@ -59,7 +59,7 @@ class BuildFootballPlayerList extends StatelessWidget {
                   height: kPadding / 4,
                 ),
                 Text(
-                  position.toString(),
+                  position.toString() == "null" ? "" : position.toString(),
                   style: TextStyle(
                     color: kBlackText,
                     fontSize: 16,

@@ -1,43 +1,47 @@
 import 'package:amateur_football_league_mobile/models/Match.dart';
+import 'package:amateur_football_league_mobile/models/TeamInTournament.dart';
 
 class TeamInMatch {
   int? id;
   int? teamScore;
   int? yellowCardNumber;
   int? redCardNumber;
-  int? teamInTournamentId;
-  int? matchId;
-  String? result;
   String? nextTeam;
   String? teamName;
+  int? teamInTournamentId;
+  int? matchId;
+  int? teamScoreLose;
+  int? result;
   Match? match;
-  Null? team;
+  TeamInTournament? teamInTournament;
 
   TeamInMatch(
       {this.id,
       this.teamScore,
       this.yellowCardNumber,
       this.redCardNumber,
-      this.teamInTournamentId,
-      this.matchId,
-      this.result,
       this.nextTeam,
       this.teamName,
+      this.teamInTournamentId,
+      this.matchId,
+      this.teamScoreLose,
+      this.result,
       this.match,
-      this.team});
+      this.teamInTournament});
 
   TeamInMatch.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     teamScore = json['teamScore'];
     yellowCardNumber = json['yellowCardNumber'];
     redCardNumber = json['redCardNumber'];
-    teamInTournamentId = json['teamInTournamentId'];
-    matchId = json['matchId'];
-    result = json['result'];
     nextTeam = json['nextTeam'];
     teamName = json['teamName'];
+    teamInTournamentId = json['teamInTournamentId'];
+    matchId = json['matchId'];
+    teamScoreLose = json['teamScoreLose'];
+    result = json['result'];
     match = json['match'] != null ? Match.fromJson(json['match']) : null;
-    team = json['team'];
+    teamInTournament = json['teamInTournament'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,15 +50,16 @@ class TeamInMatch {
     data['teamScore'] = teamScore;
     data['yellowCardNumber'] = yellowCardNumber;
     data['redCardNumber'] = redCardNumber;
-    data['teamInTournamentId'] = teamInTournamentId;
-    data['matchId'] = matchId;
-    data['result'] = result;
     data['nextTeam'] = nextTeam;
     data['teamName'] = teamName;
+    data['teamInTournamentId'] = teamInTournamentId;
+    data['matchId'] = matchId;
+    data['teamScoreLose'] = teamScoreLose;
+    data['result'] = result;
     if (match != null) {
       data['match'] = match!.toJson();
     }
-    data['team'] = team;
+    data['teamInTournament'] = teamInTournament;
     return data;
   }
 }

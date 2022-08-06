@@ -22,33 +22,44 @@ class TournamentAPI {
     final tournamentController = GetX.Get.put(TournamentController());
     int rs = 0;
     try {
-      if(currentTournamentPage == 0) {
+      if (currentTournamentPage == 0) {
         currentTournamentPage = 1;
       }
+      if (orderBy.isEmpty) {
+        orderBy = "order-by=DateCreate&";
+        orderType = "order-type=DESC&";
+      }
       final response = await http.get(
-          Uri.parse(urlApi + "tournaments?" +
-              "tournament-name=" + nameSearch + "&" +
+          Uri.parse(urlApi +
+              "tournaments?" +
+              "tournament-name=" +
+              nameSearch +
+              "&" +
               userIDSearchTour +
               areaSearch +
               modeSearch +
               typeSearch +
               genderSearch +
               footballFieldSearch +
+              "status=true&" +
               orderBy +
               orderType +
-              "page-offset=" + currentTournamentPage.toString() + "&limit=8"),
+              "page-offset=" +
+              currentTournamentPage.toString() +
+              "&limit=8"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
           });
-          
+
       if (response.statusCode == 200) {
         var bodyJson = json.decode(utf8.decode(response.bodyBytes));
         ListTournament listTournament = ListTournament.fromJson(bodyJson);
-        if(currentTournamentPage > 1) {
-          tournamentController.tournamentList.addAll(listTournament.tournaments!);
-        }
-        else {
-          tournamentController.tournamentList.value = listTournament.tournaments!;
+        if (currentTournamentPage > 1) {
+          tournamentController.tournamentList
+              .addAll(listTournament.tournaments!);
+        } else {
+          tournamentController.tournamentList.value =
+              listTournament.tournaments!;
         }
         tournamentController.countListTournament.value =
             listTournament.countList!;
