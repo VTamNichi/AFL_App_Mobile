@@ -181,7 +181,7 @@ class _BodyState extends State<Body> {
                 Expanded(child: Container()),
                 GestureDetector(
                   onTap: () {
-                    //footballPlayerController.showOptionOrderFootballPlayer(context);
+                    footballPlayerController.showOptionOrderFootballPlayer(context);
                   },
                   child: Container(
                       width: 100,

@@ -25,8 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final storage = const FlutterSecureStorage();
   final userController = Get.put(UserController());
   final notificationController = Get.put(NotificationController());
-  //List<News>? listNews;
-  //var statisticCovid;
+   
   NumberFormat formatter = NumberFormat('###,000');
 
   @override
@@ -43,21 +42,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     _firebaseMessaging.subscribeToTopic('all');
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      // accountController.countNotificationUnread.value =
-      //     accountController.countNotificationUnread.value + 1;
       showNotification(
           event.notification!.title ?? "", event.notification!.body ?? "");
     });
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       if (message.data['page'] != null) {
-        // listDoctorController.getTokenHealthCheck(
-        //     patientProfileController.nearestHealthCheck.value.id);
       }
     });
     _firebaseMessaging.getToken().then((token) {
       storage.write(key: "tokenFCM", value: token);
     }).then((value) => {AuthAPI.makeConnection()});
-//        .then((value) => {FetchAPI.getCountUnreadNotification()});
   }
 
   void showNotification(String title, String body) async {

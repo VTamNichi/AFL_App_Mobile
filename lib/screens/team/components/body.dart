@@ -256,6 +256,7 @@ class _BodyState extends State<Body> {
                           "&";
                       generalController.currentCommentPage.value = 1;
                       await commentController.getListComment();
+                      await userController.getUserById(teamController.teamList[index].id!);
                       Get.to(() => TeamDetailScreen(),
                           transition: Transition.zoom,
                           duration: const Duration(milliseconds: 600));

@@ -18,12 +18,11 @@ class UserAPI {
         "Email": user.email,
         "RoleId": 4,
       });
-      Response response =
-          await Dio().post(urlApi + "users",
-              data: formData,
-              options: Options(headers: <String, String>{
-                HttpHeaders.contentTypeHeader: 'multipart/form-data',
-              }));
+      Response response = await Dio().post(urlApi + "users",
+          data: formData,
+          options: Options(headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'multipart/form-data',
+          }));
       if (response.statusCode == 201) {
         User user = User.fromJson(response.data);
         userController.user.value = user;
@@ -78,12 +77,11 @@ class UserAPI {
           "RoleId": 4,
         });
       }
-      Response response =
-          await Dio().post(urlApi + "users",
-              data: formData,
-              options: Options(headers: <String, String>{
-                HttpHeaders.contentTypeHeader: 'multipart/form-data',
-              }));
+      Response response = await Dio().post(urlApi + "users",
+          data: formData,
+          options: Options(headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'multipart/form-data',
+          }));
       if (response.statusCode == 201) {
         User user = User.fromJson(response.data);
         userController.user.value = user;
@@ -103,11 +101,11 @@ class UserAPI {
     String message = "";
     try {
       final response = await http.post(
-          Uri.parse(
-              urlApi + "auth/send-verify-code?email=" +
-                  email +
-                  "&toDo=" +
-                  toDo.toString()),
+          Uri.parse(urlApi +
+              "auth/send-verify-code?email=" +
+              email +
+              "&toDo=" +
+              toDo.toString()),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
           });
@@ -131,11 +129,11 @@ class UserAPI {
     String message = "";
     try {
       final response = await http.post(
-          Uri.parse(
-              urlApi + "auth/check-verify-code?email=" +
-                  email +
-                  "&code=" +
-                  code),
+          Uri.parse(urlApi +
+              "auth/check-verify-code?email=" +
+              email +
+              "&code=" +
+              code),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',
           });
@@ -188,12 +186,11 @@ class UserAPI {
           "TINBusiness": user.tinbusiness,
         });
       }
-      Response response =
-          await Dio().put(urlApi + "users",
-              data: formData,
-              options: Options(headers: <String, String>{
-                HttpHeaders.contentTypeHeader: 'multipart/form-data',
-              }));
+      Response response = await Dio().put(urlApi + "users",
+          data: formData,
+          options: Options(headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'multipart/form-data',
+          }));
       if (response.statusCode == 201) {
         User user = User.fromJson(response.data);
         userController.user.value = user;
@@ -217,13 +214,12 @@ class UserAPI {
     data["newPassword"] = newPass;
     String message = "";
     try {
-      final response = await http.post(
-          Uri.parse(
-              urlApi + "users/change-password"),
-          headers: <String, String>{
-            HttpHeaders.contentTypeHeader: 'application/json',
-          },
-          body: jsonEncode(data));
+      final response =
+          await http.post(Uri.parse(urlApi + "users/change-password"),
+              headers: <String, String>{
+                HttpHeaders.contentTypeHeader: 'application/json',
+              },
+              body: jsonEncode(data));
       if (response.statusCode == 200) {
         message = "Đổi mật khẩu thành công";
       } else if (response.statusCode == 404) {
@@ -245,13 +241,12 @@ class UserAPI {
     data["newPassword"] = newPass;
     String message = "";
     try {
-      final response = await http.post(
-          Uri.parse(
-              urlApi + "users/reset-password"),
-          headers: <String, String>{
-            HttpHeaders.contentTypeHeader: 'application/json',
-          },
-          body: jsonEncode(data));
+      final response =
+          await http.post(Uri.parse(urlApi + "users/reset-password"),
+              headers: <String, String>{
+                HttpHeaders.contentTypeHeader: 'application/json',
+              },
+              body: jsonEncode(data));
       if (response.statusCode == 200) {
         message = "Đổi mật khẩu thành công";
       } else {
@@ -259,6 +254,26 @@ class UserAPI {
       }
     } catch (e) {
       return message;
+    }
+    return message;
+  }
+
+  static Future<String> getUserById(int userId) async {
+    final userController = GetX.Get.put(UserController());
+    String message = "";
+    try {
+      final response = await http.get(
+          Uri.parse(urlApi + "users/" + userId.toString() + "?search-type=Id"),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+          });
+      if (response.statusCode == 200) {
+        var bodyJson = json.decode(utf8.decode(response.bodyBytes));
+        userController.userById.value = User.fromJson(bodyJson);
+        message = "Success";
+      }
+    } catch (e) {
+      return e.toString();
     }
     return message;
   }

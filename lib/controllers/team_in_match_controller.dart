@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 
 class TeamInMatchController extends GetxController {
   RxList<TeamInMatch> teamInMatchList = <TeamInMatch>[].obs;
+  Rx<TeamInMatch> teamInMatchDetail1 = TeamInMatch().obs;
+  Rx<TeamInMatch> teamInMatchDetail2 = TeamInMatch().obs;
 
   Future<void> getListTeamInMatch(int tourId) async {
     await TeamInMatchAPI.getListTeamInMatch(tourId);

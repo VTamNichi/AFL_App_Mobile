@@ -7,6 +7,7 @@ class UserController extends GetxController {
   final generalController = Get.put(GeneralController());
 
   Rx<User> user = User().obs;
+  Rx<User> userById = User().obs;
 
   // register variables
   RxBool obsPassRegister = true.obs;
@@ -264,5 +265,9 @@ class UserController extends GetxController {
           .then((value) => msg = value);
     }
     return msg;
+  }
+
+  Future<void> getUserById(int userID) async {
+    await UserAPI.getUserById(userID);
   }
 }

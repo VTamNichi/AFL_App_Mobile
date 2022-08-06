@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/team_in_match_controller.dart';
 import 'package:amateur_football_league_mobile/models/TeamInMatch.dart';
+import 'package:amateur_football_league_mobile/models/TeamInTournament.dart';
 import 'package:amateur_football_league_mobile/models/list_models/ListTeamInMatch.dart';
 // ignore: library_prefixes
 import 'package:get/get.dart' as GetX;
@@ -13,6 +14,7 @@ class TeamInMatchAPI {
     final teamInMatchController = GetX.Get.put(TeamInMatchController());
     int rs = 0;
     try {
+      
       final response = await http.get(
           Uri.parse(
               urlApi + "TeamInMatch?tournamentId=" + tournamentId.toString()),
@@ -36,7 +38,7 @@ class TeamInMatchAPI {
                       nextTeam: tim["nextTeam"],
                       teamName: tim["teamName"],
                       match: null,
-                      team: null),
+                      teamInTournament: TeamInTournament.fromJson(tim["teamInTournament"])),
                   teamInMatchController.teamInMatchList.add(teamInMatch)
                 })
             .toList();

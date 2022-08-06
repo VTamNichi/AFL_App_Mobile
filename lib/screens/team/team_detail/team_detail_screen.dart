@@ -2,6 +2,7 @@ import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/comment_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/team_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:amateur_football_league_mobile/screens/loading/loading_screen.dart';
 import 'package:amateur_football_league_mobile/screens/team/team_detail/components/build_comment_list.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +12,11 @@ class TeamDetailScreen extends StatelessWidget {
   TeamDetailScreen({Key? key}) : super(key: key);
 
   final generalController = Get.put(GeneralController());
+  final userController = Get.put(UserController());
   final teamController = Get.put(TeamController());
   final commentController = Get.put(CommentController());
   TextEditingController textCommentController = TextEditingController();
+  RegExp regExp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +110,7 @@ class TeamDetailScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          "Ban tổ chức",
+                          "Chủ đội bóng",
                           style: TextStyle(
                             color: kBlackText,
                             fontSize: 16,
@@ -117,7 +120,7 @@ class TeamDetailScreen extends StatelessWidget {
                           child: Container(),
                         ),
                         Text(
-                          teamController.teamDetail.value.id.toString(),
+                          userController.userById.value.username!,
                           style: TextStyle(
                             color: kBlackText,
                             fontSize: 16,
@@ -304,13 +307,13 @@ class TeamDetailScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 100,
+                    height: 50,
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
                         children: [
                           Text(
-                            "TỔNG QUÁT",
+                            "GIỚI THIỆU ĐỘI BÓNG",
                             style: TextStyle(
                               color: kBlackText,
                               fontSize: 16,
@@ -320,15 +323,26 @@ class TeamDetailScreen extends StatelessWidget {
                           Expanded(
                             child: Container(),
                           ),
-                          Text(
-                            "Tất cả",
-                            style: TextStyle(
-                              color: kGreenLightColor,
-                              fontSize: 16,
-                            ),
-                          ),
                         ],
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.fromLTRB(kPadding, 0, kPadding, kPadding),
+                    child: Row(
+                      children: [
+                        Text(
+                          teamController
+                              .teamDetail.value.description!
+                              .replaceAll(regExp, ""),
+                          style: TextStyle(
+                            color: kBlackText,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Expanded(child: Container()),
+                      ],
                     ),
                   ),
                   Padding(
@@ -376,7 +390,8 @@ class TeamDetailScreen extends StatelessWidget {
                         Expanded(child: Container()),
                         ElevatedButton(
                           onPressed: () async {
-                            await commentController.postComment(textCommentController.text);
+                            await commentController
+                                .postComment(textCommentController.text);
                             textCommentController.text = "";
                             await commentController.getListComment();
                           },

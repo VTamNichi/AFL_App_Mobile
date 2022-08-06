@@ -49,13 +49,17 @@ class ListMatch extends StatelessWidget {
                 child: ClipOval(
                   child: Image(
                     image: NetworkImage(
-                      image1.toString().isEmpty
-                          ? "https://aobongdathietke.vn/wp-content/uploads/2021/03/Mau-logo-doi-da-banh-bong-da-thiet-ke-dep-nhat-5-800x800.jpg"
-                          : image1.toString(),
+                      image1.toString(),
                     ),
                     width: 30,
                     height: 40,
                     fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => Image.asset(
+                      "assets/images/team_default.png",
+                      width: 30,
+                      height: 40,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
@@ -76,12 +80,17 @@ class ListMatch extends StatelessWidget {
                 child: ClipOval(
                   child: Image(
                     image: NetworkImage(
-                      image2.toString().isEmpty
-                          ? "https://aobongdathietke.vn/wp-content/uploads/2021/03/Mau-logo-doi-da-banh-bong-da-thiet-ke-dep-nhat-5-800x800.jpg"
-                          : image2.toString(),),
+                      image2.toString(),
+                    ),
                     width: 30,
                     height: 40,
                     fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => Image.asset(
+                      "assets/images/team_default.png",
+                      width: 30,
+                      height: 40,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),

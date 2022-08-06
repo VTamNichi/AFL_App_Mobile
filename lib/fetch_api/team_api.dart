@@ -16,6 +16,10 @@ class TeamAPI {
       if(currentTeamPage == 0) {
         currentTeamPage = 1;
       }
+      if (orderBy.isEmpty) {
+        orderBy = "order-by=Id&";
+        orderType = "order-type=DESC&";
+      }
       final response = await http.get(
           Uri.parse(urlApi +
               "teams?" +
@@ -23,7 +27,7 @@ class TeamAPI {
               teamArea +
               teamGender +
               orderBy +
-              orderBy +
+              orderType +
               "page-offset="+ currentTeamPage.toString() +"&limit=8"),
           headers: <String, String>{
             HttpHeaders.contentTypeHeader: 'application/json',

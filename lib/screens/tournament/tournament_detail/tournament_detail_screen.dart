@@ -2,6 +2,7 @@ import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/comment_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/tournament_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:amateur_football_league_mobile/screens/loading/loading_screen.dart';
 import 'package:amateur_football_league_mobile/screens/tournament/schedule/schedule_screen.dart';
 import 'package:amateur_football_league_mobile/screens/tournament/tournament_detail/components/build_comment_list.dart';
@@ -16,11 +17,12 @@ class TournamentDetailScreen extends StatefulWidget {
 }
 
 class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
-
   final generalController = Get.put(GeneralController());
+  final userController = Get.put(UserController());
   final tournamentController = Get.put(TournamentController());
   final commentController = Get.put(CommentController());
   TextEditingController textCommentController = TextEditingController();
+  RegExp regExp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
 
   @override
   Widget build(BuildContext context) {
@@ -160,8 +162,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                           child: Container(),
                         ),
                         Text(
-                          tournamentController.tournamentDetail.value.userId
-                              .toString(),
+                          userController.userById.value.username!,
                           style: TextStyle(
                             color: kBlackText,
                             fontSize: 16,
@@ -273,13 +274,13 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 100,
+                    height: 50,
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
                         children: [
                           Text(
-                            "TỔNG QUÁT",
+                            "THÔNG TIN GIẢI ĐẤU",
                             style: TextStyle(
                               color: kBlackText,
                               fontSize: 16,
@@ -289,15 +290,24 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                           Expanded(
                             child: Container(),
                           ),
-                          Text(
-                            "Tất cả",
-                            style: TextStyle(
-                              color: kGreenLightColor,
-                              fontSize: 16,
-                            ),
-                          ),
                         ],
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(kPadding, 0, kPadding, kPadding),
+                    child: Row(
+                      children: [
+                        Text(
+                          tournamentController.tournamentDetail.value.description!
+                              .replaceAll(regExp, ""),
+                          style: TextStyle(
+                            color: kBlackText,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Expanded(child: Container()),
+                      ],
                     ),
                   ),
                   Padding(
@@ -345,7 +355,8 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                         Expanded(child: Container()),
                         ElevatedButton(
                           onPressed: () async {
-                            await commentController.postComment(textCommentController.text);
+                            await commentController
+                                .postComment(textCommentController.text);
                             textCommentController.text = "";
                             await commentController.getListComment();
                           },
@@ -404,7 +415,9 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: kPadding * 1.5,),
+                  SizedBox(
+                    height: kPadding * 1.5,
+                  ),
                 ],
               ),
             ),

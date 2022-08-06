@@ -6,6 +6,7 @@ class Match {
   String? round;
   String? fight;
   String? groupFight;
+  String? idScreen;
   String? tokenLivestream;
   Null? tournament;
 
@@ -17,6 +18,7 @@ class Match {
       this.round,
       this.fight,
       this.groupFight,
+      this.idScreen,
       this.tokenLivestream,
       this.tournament});
 
@@ -28,6 +30,7 @@ class Match {
     round = json['round'];
     fight = json['fight'];
     groupFight = json['groupFight'];
+    idScreen = json['idScreen'];
     tokenLivestream = json['tokenLivestream'];
     tournament = json['tournament'];
   }
@@ -41,6 +44,7 @@ class Match {
     data['round'] = round;
     data['fight'] = fight;
     data['groupFight'] = groupFight;
+    data['idScreen'] = idScreen;
     data['tokenLivestream'] = tokenLivestream;
     data['tournament'] = tournament;
     return data;

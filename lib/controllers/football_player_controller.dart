@@ -1,7 +1,11 @@
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/fetch_api/football_player_api.dart';
 import 'package:amateur_football_league_mobile/models/FootballPlayer.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../constant.dart';
 
 class FootballPlayerController extends GetxController {
   final generalController = Get.put(GeneralController());
@@ -14,6 +18,7 @@ class FootballPlayerController extends GetxController {
   RxList listFootballPlayerDetail = [
     "Đội bóng tham gia",
     "Giải đấu tham gia",
+    "Yêu cầu tham gia",
     "Lịch thi đấu",
     "Thành tích"
   ].obs;
@@ -45,5 +50,44 @@ class FootballPlayerController extends GetxController {
         sortFootballPlayerType.value,
         generalController.currentFootballPlayerPage.value);
     generalController.isLoading.value = false;
+  }
+
+  void showOptionOrderFootballPlayer(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return SizedBox(
+              height: 190,
+              child: Column(children: <Widget>[
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  color: kGreenLightColor,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Sắp xếp theo",
+                    style: TextStyle(
+                        color: kWhiteText,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                ListTile(
+                    onTap: () async {
+                      Navigator.pop(context);
+                      // if (sortType.isTrue) {
+                      //   sortTeamType.value = "order-type=ASC&";
+                      // } else {
+                      //   sortTeamType.value = "order-type=DESC&";
+                      // }
+                      // sortType.value = !sortType.value;
+                      // sortTeamBy.value = "";
+                      await getListFootballPlayer();
+                    },
+                    title: const Center(child: Text("--"))),
+                Divider(color: kGreyColor, height: 3),
+                // +
+              ]));
+        });
   }
 }

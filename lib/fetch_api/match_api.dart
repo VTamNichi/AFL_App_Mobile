@@ -31,6 +31,7 @@ class MatchAPI {
         var bodyJson = json.decode(utf8.decode(response.bodyBytes));
         Match match = Match.fromJson(bodyJson);
         matchController.matchDetail.value = match;
+        
       } 
       rs = response.statusCode;
     } catch (e) {
@@ -50,6 +51,7 @@ class MatchAPI {
         var bodyJson = json.decode(utf8.decode(response.bodyBytes));
         Match match = Match.fromJson(bodyJson);
         matchController.matchDetail.value = match;
+        matchController.idScreen.value = match.idScreen!;
       } 
       rs = response.statusCode;
     } catch (e) {

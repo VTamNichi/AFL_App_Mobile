@@ -14,6 +14,7 @@ class TeamController extends GetxController {
   Rx<Team> teamDetail = Team().obs;
   RxList listTeamDetail = [
     "Thành viên",
+    "Giải đấu",
     "Thống kê",
   ].obs;
 
