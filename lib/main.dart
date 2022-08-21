@@ -66,7 +66,7 @@ Future main() async {
 
 Future<void> _messageHandler(RemoteMessage message) async {
   showNotification(
-      message.notification!.title ?? "", message.notification!.body ?? "");
+      message.data.toString(), message.notification!.body ?? "");
 }
 
 void showNotification(String title, String body) async {

@@ -15,9 +15,10 @@ class GeneralController extends GetxController {
   RxInt currentNotificationPage = 0.obs;
   RxInt currentFootballPlayerPage = 0.obs;
   RxInt currentCommentPage = 1.obs;
+  RxInt currentNewsPage = 0.obs;
+  RxInt currentImagesPage = 0.obs; 
 
   RxString searchIDComment = "".obs;
-  
 
   RxInt currentIndex = 0.obs;
   RxBool isLoading = false.obs;

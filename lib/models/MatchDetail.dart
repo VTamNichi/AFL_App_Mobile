@@ -10,7 +10,8 @@ class MatchDetail {
   FootballPlayer? footballPlayer;
   Null? match;
   Null? playerInTournament;
-
+  int? teamInTournamentId;
+  int? clothesNumber;
   MatchDetail(
       {this.id,
       this.actionMatchId,
@@ -20,7 +21,9 @@ class MatchDetail {
       this.footballPlayerId,
       this.footballPlayer,
       this.match,
-      this.playerInTournament});
+      this.playerInTournament,
+      this.teamInTournamentId,
+      this.clothesNumber});
 
   MatchDetail.fromJson(Map<String, dynamic> json) {
     id = json['id'];

@@ -1,11 +1,19 @@
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/comment_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/image_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/news_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/team_in_tournament_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/tournament_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/tournament_result_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:amateur_football_league_mobile/screens/loading/loading_screen.dart';
 import 'package:amateur_football_league_mobile/screens/tournament/schedule/schedule_screen.dart';
 import 'package:amateur_football_league_mobile/screens/tournament/tournament_detail/components/build_comment_list.dart';
+import 'package:amateur_football_league_mobile/screens/tournament/tournament_detail/images/images_screen.dart';
+import 'package:amateur_football_league_mobile/screens/tournament/tournament_detail/news/news_screen.dart';
+import 'package:amateur_football_league_mobile/screens/tournament/tournament_detail/team_in_tournament/team_in_tournament_screen.dart';
+import 'package:amateur_football_league_mobile/screens/tournament/tournament_detail/tournament_result/tournament_result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,6 +29,11 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
   final userController = Get.put(UserController());
   final tournamentController = Get.put(TournamentController());
   final commentController = Get.put(CommentController());
+  final newsController = Get.put(NewsController());
+  final teamInTournamentController = Get.put(TeamInTournamentController());
+  final imagesController = Get.put(ImagesController());
+  final tournamentResultController = Get.put(TournamentResultsController());
+
   TextEditingController textCommentController = TextEditingController();
   RegExp regExp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
 
@@ -237,10 +250,46 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                         children: tournamentController.listTournamentDetail
                             .map((element) {
                           return GestureDetector(
-                            onTap: () {
+                            onTap: () async {
                               generalController.isLoading.value = true;
                               if (element == "Lịch thi đấu") {
                                 Get.to(() => ScheduleScreen(),
+                                    transition: Transition.rightToLeft,
+                                    duration:
+                                        const Duration(milliseconds: 600));
+                              } else if (element == "Tin tức") {
+                                newsController.tournamentId.value =
+                                    tournamentController
+                                        .tournamentDetail.value.id!;
+                                Get.to(() => NewsScreen(),
+                                    transition: Transition.rightToLeft,
+                                    duration:
+                                        const Duration(milliseconds: 600));
+                              } else if (element == "Hình ảnh") {
+                                imagesController.tournamentId.value =
+                                    tournamentController
+                                        .tournamentDetail.value.id!;
+                                Get.to(() => ImagesScreen(),
+                                    transition: Transition.rightToLeft,
+                                    duration:
+                                        const Duration(milliseconds: 600));
+                              } else if (element == "Đội thi đấu") {
+                                teamInTournamentController.tourId.value =
+                                    tournamentController
+                                        .tournamentDetail.value.id!;
+                                await teamInTournamentController
+                                    .getListTeamInTournament();
+                                Get.to(() => TeamInTournamentScreen(),
+                                    transition: Transition.rightToLeft,
+                                    duration:
+                                        const Duration(milliseconds: 600));
+                              } else {
+                                tournamentResultController.tournamentId.value =
+                                    tournamentController
+                                        .tournamentDetail.value.id!;
+                                await tournamentResultController
+                                    .getListTournamentResults();
+                                Get.to(() => TournamentResultsScreen(),
                                     transition: Transition.rightToLeft,
                                     duration:
                                         const Duration(milliseconds: 600));
@@ -295,11 +344,13 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(kPadding, 0, kPadding, kPadding),
+                    padding:
+                        EdgeInsets.fromLTRB(kPadding, 0, kPadding, kPadding),
                     child: Row(
                       children: [
                         Text(
-                          tournamentController.tournamentDetail.value.description!
+                          tournamentController
+                              .tournamentDetail.value.description!
                               .replaceAll(regExp, ""),
                           style: TextStyle(
                             color: kBlackText,
