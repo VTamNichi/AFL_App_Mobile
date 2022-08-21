@@ -1,12 +1,9 @@
-import 'dart:ui';
-
+import 'dart:math';
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/match_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/match_detail_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/team_in_match_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
-import 'package:amateur_football_league_mobile/models/TeamInMatch.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
@@ -39,6 +36,7 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
 
   @override
   void dispose() {
+    matchController.hasChangeScreen.value = false;
     // clear users
     _users.clear();
     // destroy sdk and leave channel
@@ -48,12 +46,14 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
 
   @override
   void initState() {
+    matchController.hasChangeScreen.value = true;
     super.initState();
     _scrollController.animateTo(
       0.0,
       curve: Curves.linear,
       duration: const Duration(milliseconds: 300),
     );
+
     // initialize agora sdk
     initializeAgora();
   }
@@ -64,37 +64,27 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
     if (widget.isLivestream) streamId = strId!;
 
     _engine.setEventHandler(RtcEngineEventHandler(
-      joinChannelSuccess: (channel, uid, elapsed) {
-        setState(() {
-          print('onJoinChannel: $channel, uid: $uid');
-        });
-      },
+      joinChannelSuccess: (channel, uid, elapsed) {},
       leaveChannel: (stats) {
         setState(() {
-          print('onLeaveChannel');
           _users.clear();
         });
       },
       userJoined: (uid, elapsed) {
         setState(() {
-          print('userJoined: $uid');
-
           _users.add(uid);
         });
       },
       userOffline: (uid, elapsed) {
         setState(() {
-          print('userOffline: $uid');
           _users.remove(uid);
         });
       },
       streamMessage: (_, __, message) {
         final String info = "here is the message $message";
-        print(info);
       },
       streamMessageError: (_, __, error, ___, ____) {
         final String info = "here is the error $error";
-        print(info);
       },
     ));
 
@@ -102,11 +92,16 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
         matchController.matchDetail.value.tokenLivestream,
         "MATCH_" + matchController.matchDetail.value.id.toString(),
         userController.user.value.username,
-        userController.user.value.id!);
+        Random().nextInt(1000000000));
   }
 
   Future<void> _initAgoraRtcEngine() async {
     _engine = await RtcEngine.createWithConfig(RtcEngineConfig(appId));
+    VideoEncoderConfiguration config = VideoEncoderConfiguration(
+        frameRate: VideoFrameRate.Fps60,
+        dimensions: VideoDimensions(width: 1280, height: 720),
+        bitrate: 3420);
+    _engine.setVideoEncoderConfiguration(config);
     await _engine.enableVideo();
 
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
@@ -116,7 +111,7 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
       await _engine.setClientRole(ClientRole.Audience);
     }
   }
- 
+
   @override
   Widget build(BuildContext context) {
     TeamInMatchController teamInMatchController =
@@ -130,115 +125,236 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
     return SafeArea(
       child: Scaffold(
         body: Center(
-            child: Stack(
-              children: <Widget>[
-                widget.isLivestream || fullscreen ? Container() : _comment(),
-                widget.isLivestream
-                    ? _broadcastView()
-                    : SizedBox(
-                        height: fullscreen ? size.height : size.height * 0.4,
-                        child: Stack(
-                          children: [
-                            _broadcastView(),
-                            Obx(() => Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(child: Container()),
-                                    Container(
-                                      padding: EdgeInsets.all(kPadding / 6),
-                                      decoration: BoxDecoration(
-                                        color: kGreenLightColor,
-                                        borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(kPadding),
-                                            bottomRight: Radius.circular(kPadding)),
-                                      ),
-                                      child: Text(
-                                        teamInMatchController
-                                            .teamInMatchDetail1.value.teamName!,
-                                        style: TextStyle(
-                                            color: kWhiteComment,
-                                            fontSize: kPadding / 3 * 2),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: kPadding / 3,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(kPadding / 6),
-                                      child: Text(
-                                        teamInMatchController
-                                            .teamInMatchDetail1.value.teamScore
-                                            .toString(),
-                                        style: TextStyle(
-                                            color: kWhiteComment,
-                                            fontSize: kPadding / 3 * 2),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(kPadding / 6),
-                                      child: Text(
-                                        "-",
-                                        style: TextStyle(
-                                            color: kWhiteComment,
-                                            fontSize: kPadding / 3 * 2),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(kPadding / 6),
-                                      child: Text(
-                                        teamInMatchController
-                                            .teamInMatchDetail2.value.teamScore
-                                            .toString(),
-                                        style: TextStyle(
-                                            color: kWhiteComment,
-                                            fontSize: kPadding / 3 * 2),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: kPadding / 3,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(kPadding / 6),
-                                      decoration: BoxDecoration(
-                                        color: kGreenLightColor,
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(kPadding),
-                                            bottomLeft: Radius.circular(kPadding)),
-                                      ),
-                                      child: Text(
-                                        teamInMatchController
-                                            .teamInMatchDetail2.value.teamName!,
-                                        style: TextStyle(
-                                            color: kWhiteComment,
-                                            fontSize: kPadding / 3 * 2),
-                                      ),
-                                    ),
-                                    Expanded(child: Container()),
-                                  ],
+          child: Stack(
+            children: <Widget>[
+              widget.isLivestream || fullscreen ? Container() : _comment(),
+              widget.isLivestream
+                  ? Stack(
+                      children: [
+                        _broadcastView(),
+                        Obx(
+                          () => Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.all(kPadding / 6),
+                                  decoration: BoxDecoration(
+                                    color: kGreenLightColor,
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(kPadding),
+                                        bottomRight: Radius.circular(kPadding)),
+                                  ),
+                                  child: Text(
+                                    teamInMatchController
+                                        .teamInMatchDetail1.value.teamName!,
+                                    style: TextStyle(
+                                        color: kWhiteComment,
+                                        fontSize: kPadding / 3 * 2),
+                                  ),
                                 ),
-                            ),
-                          ],
-                        ),
-                      ),
-                widget.isLivestream
-                    ? Container()
-                    : Positioned(
-                        top: fullscreen ? size.height * 0.8 : size.height * 0.33,
-                        left: fullscreen ? size.width * 0.9 : size.width * 0.8,
-                        child: RawMaterialButton(
-                          onPressed: _onToggleFullscreen,
-                          child: Icon(
-                            fullscreen ? Icons.fullscreen_exit : Icons.fullscreen,
-                            color: Colors.white,
-                            size: 30.0,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(kPadding / 6),
+                                child: Text(
+                                  teamInMatchController.teamInMatchDetail1.value
+                                                  .teamScore
+                                                  .toString() ==
+                                              "null" ||
+                                          teamInMatchController
+                                                  .teamInMatchDetail1
+                                                  .value
+                                                  .teamScore
+                                                  .toString() ==
+                                              ""
+                                      ? "0"
+                                      : teamInMatchController
+                                          .teamInMatchDetail1.value.teamScore
+                                          .toString(),
+                                  style: TextStyle(
+                                      color: kWhiteComment,
+                                      fontSize: kPadding / 3 * 2),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(kPadding / 6),
+                                child: Text(
+                                  "-",
+                                  style: TextStyle(
+                                      color: kWhiteComment,
+                                      fontSize: kPadding / 3 * 2),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(kPadding / 6),
+                                child: Text(
+                                  teamInMatchController.teamInMatchDetail2.value
+                                                  .teamScore
+                                                  .toString() ==
+                                              "null" ||
+                                          teamInMatchController
+                                                  .teamInMatchDetail2
+                                                  .value
+                                                  .teamScore
+                                                  .toString() ==
+                                              ""
+                                      ? "0"
+                                      : teamInMatchController
+                                          .teamInMatchDetail2.value.teamScore
+                                          .toString(),
+                                  style: TextStyle(
+                                      color: kWhiteComment,
+                                      fontSize: kPadding / 3 * 2),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.all(kPadding / 6),
+                                  decoration: BoxDecoration(
+                                    color: kGreenLightColor,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(kPadding),
+                                        bottomLeft: Radius.circular(kPadding)),
+                                  ),
+                                  child: Text(
+                                    teamInMatchController
+                                        .teamInMatchDetail2.value.teamName!,
+                                    style: TextStyle(
+                                        color: kWhiteComment,
+                                        fontSize: kPadding / 3 * 2),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
+                      ],
+                    )
+                  : SizedBox(
+                      height: fullscreen ? size.height : size.height * 0.4,
+                      child: Stack(
+                        children: [
+                          _broadcastView(),
+                          Obx(
+                            () => Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.all(kPadding / 6),
+                                    decoration: BoxDecoration(
+                                      color: kGreenLightColor,
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(kPadding),
+                                          bottomRight:
+                                              Radius.circular(kPadding)),
+                                    ),
+                                    child: Text(
+                                      teamInMatchController
+                                          .teamInMatchDetail1.value.teamName!,
+                                      style: TextStyle(
+                                          color: kWhiteComment,
+                                          fontSize: kPadding / 3 * 2),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(kPadding / 6),
+                                  child: Text(
+                                    teamInMatchController.teamInMatchDetail1
+                                                    .value.teamScore
+                                                    .toString() ==
+                                                "null" ||
+                                            teamInMatchController
+                                                    .teamInMatchDetail1
+                                                    .value
+                                                    .teamScore
+                                                    .toString() ==
+                                                ""
+                                        ? "0"
+                                        : teamInMatchController
+                                            .teamInMatchDetail1.value.teamScore
+                                            .toString(),
+                                    style: TextStyle(
+                                        color: kWhiteComment,
+                                        fontSize: kPadding / 3 * 2),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(kPadding / 6),
+                                  child: Text(
+                                    "-",
+                                    style: TextStyle(
+                                        color: kWhiteComment,
+                                        fontSize: kPadding / 3 * 2),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(kPadding / 6),
+                                  child: Text(
+                                    teamInMatchController.teamInMatchDetail2
+                                                    .value.teamScore
+                                                    .toString() ==
+                                                "null" ||
+                                            teamInMatchController
+                                                    .teamInMatchDetail2
+                                                    .value
+                                                    .teamScore
+                                                    .toString() ==
+                                                ""
+                                        ? "0"
+                                        : teamInMatchController
+                                            .teamInMatchDetail2.value.teamScore
+                                            .toString(),
+                                    style: TextStyle(
+                                        color: kWhiteComment,
+                                        fontSize: kPadding / 3 * 2),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.all(kPadding / 6),
+                                    decoration: BoxDecoration(
+                                      color: kGreenLightColor,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(kPadding),
+                                          bottomLeft:
+                                              Radius.circular(kPadding)),
+                                    ),
+                                    child: Text(
+                                      teamInMatchController
+                                          .teamInMatchDetail2.value.teamName!,
+                                      style: TextStyle(
+                                          color: kWhiteComment,
+                                          fontSize: kPadding / 3 * 2),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                _toolbar(),
-              ],
-            ),
+                    ),
+              widget.isLivestream
+                  ? Container()
+                  : Positioned(
+                      top: fullscreen ? size.height * 0.8 : size.height * 0.33,
+                      left: fullscreen ? size.width * 0.9 : size.width * 0.8,
+                      child: RawMaterialButton(
+                        onPressed: _onToggleFullscreen,
+                        child: Icon(
+                          fullscreen ? Icons.fullscreen_exit : Icons.fullscreen,
+                          color: Colors.white,
+                          size: 30.0,
+                        ),
+                      ),
+                    ),
+              _toolbar(),
+            ],
           ),
         ),
+      ),
     );
   }
 
@@ -427,7 +543,7 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
                                     BorderRadius.all(Radius.circular(4)),
                               ))),
                           child: Text(
-                            "Gửi",
+                            "Gửi",
                             style: TextStyle(color: kWhiteText, fontSize: 18),
                           ),
                         ),
@@ -444,24 +560,18 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
   }
 
   /// Helper function to get list of native views
-  List<Widget> _getRenderViews() {
-    final List<StatefulWidget> list = [];
+  Widget _getRenderViews() {
     if (widget.isLivestream) {
-      list.add(const RtcLocalView.SurfaceView());
+      return const RtcLocalView.SurfaceView();
+    } else {
+      return RtcRemoteView.SurfaceView(
+        uid: matchController.idScreen.value == "0" ||
+                matchController.idScreen.value == null
+            ? 1
+            : int.parse(matchController.idScreen.value),
+        channelId: "MATCH_" + matchController.matchDetail.value.id.toString(),
+      );
     }
-    print("userrrrrr: " + _users.length.toString());
-    _users.forEach((int uid) {
-      if (uid.toString() == matchController.idScreen.value) {
-        list.add(RtcRemoteView.SurfaceView(
-              uid: uid,
-              channelId: "MATCH_" + matchController.matchDetail.value.id.toString(),
-            ),
-        );
-      }
-    });
-
-    
-    return list;
   }
 
   /// Video view row wrapper
@@ -478,46 +588,54 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
 
   /// Video layout wrapper
   Widget _broadcastView() {
+    Size size = MediaQuery.of(context).size;
     final views = _getRenderViews();
-    // return Column(
+    return SingleChildScrollView(
+      child: Container(
+        width: size.width,
+        height: size.height,
+        child: Column(
+          children: <Widget>[
+            _expandedVideoView([views]),
+          ],
+        ),
+      ),
+    );
+
+    // switch (views.length) {
+    //   case 1:
+    //     return Column(
     //       children: <Widget>[
     //         _expandedVideoView([views[0]]),
     //       ],
     //     );
-    switch (views.length) {
-      case 1:
-        return Column(
-          children: <Widget>[
-            _expandedVideoView([views[0]]),
-          ],
-        );
-      case 2:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoView([views[0]]),
-            _expandedVideoView([views[1]])
-          ],
-        ));
-      case 3:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoView(views.sublist(0, 2)),
-            _expandedVideoView(views.sublist(2, 3))
-          ],
-        ));
-      case 4:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoView(views.sublist(0, 2)),
-            _expandedVideoView(views.sublist(2, 4))
-          ],
-        ));
-      default:
-    }
-    return Container(); 
+    //   case 2:
+    //     return Container(
+    //         child: Column(
+    //       children: <Widget>[
+    //         _expandedVideoView([views[0]]),
+    //         _expandedVideoView([views[1]])
+    //       ],
+    //     ));
+    //   case 3:
+    //     return Container(
+    //         child: Column(
+    //       children: <Widget>[
+    //         _expandedVideoView(views.sublist(0, 2)),
+    //         _expandedVideoView(views.sublist(2, 3))
+    //       ],
+    //     ));
+    //   case 4:
+    //     return Container(
+    //         child: Column(
+    //       children: <Widget>[
+    //         _expandedVideoView(views.sublist(0, 2)),
+    //         _expandedVideoView(views.sublist(2, 4))
+    //       ],
+    //     ));
+    //   default:
+    // }
+    // return Container();
   }
 
   void _onCallEnd(BuildContext context) {

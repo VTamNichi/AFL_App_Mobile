@@ -15,22 +15,31 @@ class TeamInTournament {
   String? groupName;
   Team? team;
   Null? tournament;
+  int? numberOfMatch;
+  int? numberOfWin;
+  int? numberOfLose;
+  int? numberOfDraw;
 
-  TeamInTournament(
-      {this.id,
-      this.point,
-      this.winScoreNumber,
-      this.loseScoreNumber,
-      this.differentPoint,
-      this.totalYellowCard,
-      this.totalRedCard,
-      this.status,
-      this.statusInTournament,
-      this.tournamentId,
-      this.teamId,
-      this.groupName,
-      this.team,
-      this.tournament});
+  TeamInTournament({
+    this.id,
+    this.point,
+    this.winScoreNumber,
+    this.loseScoreNumber,
+    this.differentPoint,
+    this.totalYellowCard,
+    this.totalRedCard,
+    this.status,
+    this.statusInTournament,
+    this.tournamentId,
+    this.teamId,
+    this.groupName,
+    this.team,
+    this.tournament,
+    this.numberOfMatch,
+    this.numberOfWin,
+    this.numberOfLose,
+    this.numberOfDraw,
+  });
 
   TeamInTournament.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -47,6 +56,10 @@ class TeamInTournament {
     groupName = json['groupName'];
     team = json['team'] != null ? Team.fromJson(json['team']) : null;
     tournament = json['tournament'];
+    numberOfMatch = json['numberOfMatch'];
+    numberOfWin = json['numberOfWin'];
+    numberOfLose = json['numberOfLose'];
+    numberOfDraw = json['numberOfDraw'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,6 +76,10 @@ class TeamInTournament {
     data['tournamentId'] = tournamentId;
     data['teamId'] = teamId;
     data['groupName'] = groupName;
+    data['numberOfMatch'] = numberOfMatch;
+    data['numberOfWin'] = numberOfWin;
+    data['numberOfLose'] = numberOfLose;
+    data['numberOfDraw'] = numberOfDraw;
     if (team != null) {
       data['team'] = team!.toJson();
     }

@@ -27,7 +27,7 @@ var kBackgroundVideoColor = const Color(0xff202124);
 var kWhiteComment = const Color(0xfff0f2f5);
 
 // agora
-const appId = "629c856215b345779a8fb2a691f51976";
+const appId = "ab5ddade1a8c4bfaa6f7018e03f73463";
 
 // api
 const urlApi = "https://afootballleague.ddns.net/api/v1/";

@@ -55,7 +55,7 @@ class ListMatch extends StatelessWidget {
                     height: 40,
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) => Image.asset(
-                      "assets/images/team_default.png",
+                      "assets/images/team_default.jpg",
                       width: 30,
                       height: 40,
                       fit: BoxFit.contain,
@@ -86,7 +86,7 @@ class ListMatch extends StatelessWidget {
                     height: 40,
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) => Image.asset(
-                      "assets/images/team_default.png",
+                      "assets/images/team_default.jpg",
                       width: 30,
                       height: 40,
                       fit: BoxFit.contain,

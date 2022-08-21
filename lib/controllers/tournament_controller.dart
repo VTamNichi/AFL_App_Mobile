@@ -28,7 +28,6 @@ class TournamentController extends GetxController {
     "Hình ảnh",
     "Lịch thi đấu",
     "Đội thi đấu",
-    "Dự đoán",
     "Thống kê",
   ].obs;
 

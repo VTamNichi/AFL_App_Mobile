@@ -7,6 +7,9 @@ class TeamInMatchController extends GetxController {
   Rx<TeamInMatch> teamInMatchDetail1 = TeamInMatch().obs;
   Rx<TeamInMatch> teamInMatchDetail2 = TeamInMatch().obs;
 
+  RxInt circleMatch = 0.obs;
+  RxInt knockoutMatch = 0.obs; 
+
   Future<void> getListTeamInMatch(int tourId) async {
     await TeamInMatchAPI.getListTeamInMatch(tourId);
   }

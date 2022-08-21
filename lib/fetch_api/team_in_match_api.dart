@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:amateur_football_league_mobile/constant.dart';
+import 'package:amateur_football_league_mobile/controllers/match_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/team_in_match_controller.dart';
+import 'package:amateur_football_league_mobile/models/Match.dart';
 import 'package:amateur_football_league_mobile/models/TeamInMatch.dart';
 import 'package:amateur_football_league_mobile/models/TeamInTournament.dart';
-import 'package:amateur_football_league_mobile/models/list_models/ListTeamInMatch.dart';
 // ignore: library_prefixes
 import 'package:get/get.dart' as GetX;
 import 'package:http/http.dart' as http;
@@ -12,9 +13,9 @@ import 'package:http/http.dart' as http;
 class TeamInMatchAPI {
   static Future<int> getListTeamInMatch(int tournamentId) async {
     final teamInMatchController = GetX.Get.put(TeamInMatchController());
+    final matchController = GetX.Get.put(MatchController());
     int rs = 0;
     try {
-      
       final response = await http.get(
           Uri.parse(
               urlApi + "TeamInMatch?tournamentId=" + tournamentId.toString()),
@@ -25,6 +26,8 @@ class TeamInMatchAPI {
         var bodyJson = json.decode(utf8.decode(response.bodyBytes));
         TeamInMatch teamInMatch;
         teamInMatchController.teamInMatchList.value = [];
+        teamInMatchController.circleMatch.value = 0;
+        teamInMatchController.knockoutMatch.value = 0;
         bodyJson
             .map((tim) => {
                   teamInMatch = TeamInMatch(
@@ -37,9 +40,18 @@ class TeamInMatchAPI {
                       result: tim["result"],
                       nextTeam: tim["nextTeam"],
                       teamName: tim["teamName"],
-                      match: null,
-                      teamInTournament: TeamInTournament.fromJson(tim["teamInTournament"])),
+                      match: Match.fromJson(tim["match"]),
+                      teamInTournament:
+                          TeamInTournament.fromJson(tim["teamInTournament"])),
                   teamInMatchController.teamInMatchList.add(teamInMatch)
+                })
+            .toList();
+        teamInMatchController.teamInMatchList
+            .map((element) => {
+                  if (element.match!.round == "Vòng bảng")
+                    {teamInMatchController.circleMatch.value++}
+                  else
+                    {teamInMatchController.knockoutMatch.value++}
                 })
             .toList();
       } else {

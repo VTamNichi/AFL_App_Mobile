@@ -43,9 +43,10 @@ class _HomeScreenState extends State<HomeScreen> {
     _firebaseMessaging.subscribeToTopic('all');
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       showNotification(
-          event.notification!.title ?? "", event.notification!.body ?? "");
+          event.data.toString(), event.notification!.body ?? "");
     });
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      
       if (message.data['page'] != null) {
       }
     });

@@ -62,95 +62,167 @@ class MatchDetailScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(child: Container()),
-                            Column(
-                              children: [
-                                ClipOval(
-                                  child: Image(
-                                    image: NetworkImage(
-                                      teamInMatchController
-                                          .teamInMatchDetail1
-                                          .value
-                                          .teamInTournament!
-                                          .team!
-                                          .teamAvatar!,
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                children: [
+                                  ClipOval(
+                                    child: Image(
+                                      image: teamInMatchController
+                                                  .teamInMatchDetail1
+                                                  .value
+                                                  .teamInTournamentId ==
+                                              null
+                                          ? const NetworkImage(
+                                              "",
+                                            )
+                                          : NetworkImage(
+                                              teamInMatchController
+                                                  .teamInMatchDetail1
+                                                  .value
+                                                  .teamInTournament!
+                                                  .team!
+                                                  .teamAvatar!,
+                                            ),
+                                      width: 70,
+                                      height: 70,
+                                      fit: BoxFit.contain,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Image.asset(
+                                        "assets/images/team_default.jpg",
+                                        width: 70,
+                                        height: 70,
+                                        fit: BoxFit.contain,
+                                      ),
                                     ),
-                                    width: 70,
-                                    height: 70,
-                                    fit: BoxFit.contain,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: kPadding / 2,
-                                ),
-                                Text(
-                                  teamInMatchController.teamInMatchDetail1.value
-                                          .teamName!.isEmpty
-                                      ? "Chưa có đội"
-                                      : teamInMatchController
-                                          .teamInMatchDetail1.value.teamName
-                                          .toString(),
-                                  style: TextStyle(
-                                    color: kWhiteText,
-                                    fontSize: 24,
+                                  SizedBox(
+                                    height: kPadding / 2,
                                   ),
-                                ),
-                              ],
-                            ),
-                            Expanded(child: Container()),
-                            Center(
-                              child: Text(
-                                teamInMatchController
-                                        .teamInMatchDetail1.value.teamScore
-                                        .toString() +
-                                    " - " +
-                                    teamInMatchController
-                                        .teamInMatchDetail2.value.teamScore
-                                        .toString(),
-                                style: TextStyle(
-                                  color: kWhiteText,
-                                  fontSize: 24,
-                                ),
+                                  Text(
+                                    teamInMatchController.teamInMatchDetail1
+                                            .value.teamName!.isEmpty
+                                        ? "Chưa có đội"
+                                        : teamInMatchController
+                                            .teamInMatchDetail1.value.teamName
+                                            .toString(),
+                                    style: TextStyle(
+                                      color: kWhiteText,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Expanded(child: Container()),
-                            Column(
-                              children: [
-                                ClipOval(
-                                  child: Image(
-                                    image: NetworkImage(
-                                      teamInMatchController
-                                          .teamInMatchDetail2
-                                          .value
-                                          .teamInTournament!
-                                          .team!
-                                          .teamAvatar!,
+                            Center(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    teamInMatchController.teamInMatchDetail1
+                                                    .value.teamScore
+                                                    .toString() ==
+                                                "null" ||
+                                            teamInMatchController
+                                                    .teamInMatchDetail1
+                                                    .value
+                                                    .teamScore
+                                                    .toString() ==
+                                                ""
+                                        ? "0"
+                                        : teamInMatchController
+                                            .teamInMatchDetail1.value.teamScore
+                                            .toString(),
+                                    style: TextStyle(
+                                      color: kWhiteText,
+                                      fontSize: 24,
                                     ),
-                                    width: 70,
-                                    height: 70,
-                                    fit: BoxFit.contain,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: kPadding / 2,
-                                ),
-                                Text(
-                                  teamInMatchController.teamInMatchDetail2.value
-                                          .teamName!.isEmpty
-                                          .toString()
-                                          .isEmpty
-                                      ? "Chưa có đội"
-                                      : teamInMatchController
-                                          .teamInMatchDetail2.value.teamName
-                                          .toString(),
-                                  style: TextStyle(
-                                    color: kWhiteText,
-                                    fontSize: 24,
+                                  Text(
+                                    "-",
+                                    style: TextStyle(
+                                      color: kWhiteText,
+                                      fontSize: 24,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    teamInMatchController.teamInMatchDetail2
+                                                    .value.teamScore
+                                                    .toString() ==
+                                                "null" ||
+                                            teamInMatchController
+                                                    .teamInMatchDetail2
+                                                    .value
+                                                    .teamScore
+                                                    .toString() ==
+                                                ""
+                                        ? "0"
+                                        : teamInMatchController
+                                            .teamInMatchDetail2.value.teamScore
+                                            .toString(),
+                                    style: TextStyle(
+                                      color: kWhiteText,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Expanded(child: Container()),
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                children: [
+                                  ClipOval(
+                                    child: Image(
+                                      image: teamInMatchController
+                                                  .teamInMatchDetail2
+                                                  .value
+                                                  .teamInTournamentId ==
+                                              null
+                                          ? const NetworkImage(
+                                              "",
+                                            )
+                                          : NetworkImage(
+                                              teamInMatchController
+                                                  .teamInMatchDetail2
+                                                  .value
+                                                  .teamInTournament!
+                                                  .team!
+                                                  .teamAvatar!,
+                                            ),
+                                      width: 70,
+                                      height: 70,
+                                      fit: BoxFit.contain,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Image.asset(
+                                        "assets/images/team_default.jpg",
+                                        width: 70,
+                                        height: 70,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: kPadding / 2,
+                                  ),
+                                  Text(
+                                    teamInMatchController.teamInMatchDetail2
+                                            .value.teamName!.isEmpty
+                                            .toString()
+                                            .isEmpty
+                                        ? "Chưa có đội"
+                                        : teamInMatchController
+                                            .teamInMatchDetail2.value.teamName
+                                            .toString(),
+                                    style: TextStyle(
+                                      color: kWhiteText,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -179,36 +251,134 @@ class MatchDetailScreen extends StatelessWidget {
                         .map(
                           (matchDetail) => Row(
                             children: [
-                              Text(matchDetail.footballPlayer!.playerName! +
-                                  " " +
-                                  matchDetail.actionMinute.toString() +
-                                  "'"),
+                              Expanded(flex: 2, child: Container()),
+                              matchDetail.teamInTournamentId ==
+                                      teamInMatchController.teamInMatchDetail1
+                                          .value.teamInTournamentId
+                                  ? Expanded(
+                                      flex: 3,
+                                      child: Text(matchDetail
+                                              .footballPlayer!.playerName! +
+                                          " (" +
+                                          matchDetail.clothesNumber.toString() +
+                                          ")"),
+                                    )
+                                  : Expanded(flex: 3, child: Container()),
                               matchDetail.actionMatchId == 1
-                                  ? const Image(
-                                      image: AssetImage(
-                                        'assets/images/soccer-ball-retina.png',
+                                  ? Container(
+                                      padding: EdgeInsets.all(kPadding / 4),
+                                      decoration: BoxDecoration(
+                                        color: kGreyBackground,
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.7),
+                                            spreadRadius: 5,
+                                            blurRadius: 7,
+                                            offset: const Offset(0,
+                                                4), // changes position of shadow
+                                          ),
+                                        ],
                                       ),
-                                      width: 70,
-                                      height: 70,
-                                      fit: BoxFit.contain,
+                                      child: Column(
+                                        children: [
+                                          const Image(
+                                            image: AssetImage(
+                                              'assets/images/soccer-ball-retina.png',
+                                            ),
+                                            width: 40,
+                                            height: 40,
+                                            fit: BoxFit.contain,
+                                          ),
+                                          Text(matchDetail.actionMinute
+                                                  .toString() +
+                                              "'"),
+                                        ],
+                                      ),
                                     )
                                   : matchDetail.actionMatchId == 2
-                                      ? const Image(
-                                          image: AssetImage(
-                                            'assets/images/yellow-card.png',
+                                      ? Container(
+                                          padding: EdgeInsets.all(kPadding / 4),
+                                          decoration: BoxDecoration(
+                                            color: kGreyBackground,
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.7),
+                                                spreadRadius: 5,
+                                                blurRadius: 7,
+                                                offset: const Offset(0,
+                                                    4), // changes position of shadow
+                                              ),
+                                            ],
                                           ),
-                                          width: 70,
-                                          height: 70,
-                                          fit: BoxFit.contain,
+                                          child: Column(
+                                            children: [
+                                              const Image(
+                                                image: AssetImage(
+                                                  'assets/images/yellow-card.png',
+                                                ),
+                                                width: 40,
+                                                height: 40,
+                                                fit: BoxFit.contain,
+                                              ),
+                                              Text(matchDetail.actionMinute
+                                                      .toString() +
+                                                  "'"),
+                                            ],
+                                          ),
                                         )
-                                      : const Image(
-                                          image: AssetImage(
-                                            'assets/images/red-card.png',
+                                      : Container(
+                                          padding: EdgeInsets.all(kPadding / 4),
+                                          decoration: BoxDecoration(
+                                            color: kGreyBackground,
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.7),
+                                                spreadRadius: 5,
+                                                blurRadius: 7,
+                                                offset: const Offset(0,
+                                                    4), // changes position of shadow
+                                              ),
+                                            ],
                                           ),
-                                          width: 70,
-                                          height: 70,
-                                          fit: BoxFit.contain,
+                                          child: Column(
+                                            children: [
+                                              const Image(
+                                                image: AssetImage(
+                                                  'assets/images/red-card.png',
+                                                ),
+                                                width: 40,
+                                                height: 40,
+                                                fit: BoxFit.contain,
+                                              ),
+                                              Text(matchDetail.actionMinute
+                                                      .toString() +
+                                                  "'"),
+                                            ],
+                                          ),
                                         ),
+                              matchDetail.teamInTournamentId ==
+                                      teamInMatchController.teamInMatchDetail2
+                                          .value.teamInTournamentId
+                                  ? Expanded(
+                                      flex: 3,
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.only(left: kPadding / 2),
+                                        child: Text(matchDetail
+                                                .footballPlayer!.playerName! +
+                                            " (" +
+                                            matchDetail.clothesNumber
+                                                .toString() +
+                                            ")"),
+                                      ),
+                                    )
+                                  : Expanded(flex: 3, child: Container()),
+                              Expanded(flex: 2, child: Container()),
                             ],
                           ),
                         )
