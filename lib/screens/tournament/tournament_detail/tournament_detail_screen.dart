@@ -3,6 +3,7 @@ import 'package:amateur_football_league_mobile/controllers/comment_controller.da
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/image_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/news_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/team_in_match_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/team_in_tournament_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/tournament_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/tournament_result_controller.dart';
@@ -33,6 +34,7 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
   final teamInTournamentController = Get.put(TeamInTournamentController());
   final imagesController = Get.put(ImagesController());
   final tournamentResultController = Get.put(TournamentResultsController());
+  final teamInMatchController = Get.put(TeamInMatchController());
 
   TextEditingController textCommentController = TextEditingController();
   RegExp regExp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
@@ -253,6 +255,9 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                             onTap: () async {
                               generalController.isLoading.value = true;
                               if (element == "Lịch thi đấu") {
+                                await teamInMatchController.getListTeamInMatch(
+                          tournamentController
+                                        .tournamentDetail.value.id!);
                                 Get.to(() => ScheduleScreen(),
                                     transition: Transition.rightToLeft,
                                     duration:
@@ -348,16 +353,17 @@ class _TournamentDetailScreenState extends State<TournamentDetailScreen> {
                         EdgeInsets.fromLTRB(kPadding, 0, kPadding, kPadding),
                     child: Row(
                       children: [
-                        Text(
-                          tournamentController
-                              .tournamentDetail.value.description!
-                              .replaceAll(regExp, ""),
-                          style: TextStyle(
-                            color: kBlackText,
-                            fontSize: 20,
+                        Expanded(
+                          child: Text(
+                            tournamentController
+                                .tournamentDetail.value.description!
+                                .replaceAll(regExp, ""),
+                            style: TextStyle(
+                              color: kBlackText,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
-                        Expanded(child: Container()),
                       ],
                     ),
                   ),

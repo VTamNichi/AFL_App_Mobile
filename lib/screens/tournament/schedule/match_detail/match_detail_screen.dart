@@ -116,55 +116,130 @@ class MatchDetailScreen extends StatelessWidget {
                               ),
                             ),
                             Center(
-                              child: Row(
+                              child: Column(
                                 children: [
-                                  Text(
-                                    teamInMatchController.teamInMatchDetail1
-                                                    .value.teamScore
-                                                    .toString() ==
-                                                "null" ||
-                                            teamInMatchController
+                                  Row(
+                                    children: [
+                                      Text(
+                                        teamInMatchController.teamInMatchDetail1
+                                                    .value.scoreTieBreak
+                                                    .toString() !=
+                                                "null"
+                                            ? teamInMatchController
+                                                .teamInMatchDetail1
+                                                .value
+                                                .scoreTieBreak
+                                                .toString()
+                                            : teamInMatchController
+                                                            .teamInMatchDetail1
+                                                            .value
+                                                            .teamScore
+                                                            .toString() ==
+                                                        "null" ||
+                                                    teamInMatchController
+                                                            .teamInMatchDetail1
+                                                            .value
+                                                            .teamScore
+                                                            .toString() ==
+                                                        ""
+                                                ? "0"
+                                                : teamInMatchController
                                                     .teamInMatchDetail1
                                                     .value
                                                     .teamScore
-                                                    .toString() ==
-                                                ""
-                                        ? "0"
-                                        : teamInMatchController
-                                            .teamInMatchDetail1.value.teamScore
-                                            .toString(),
-                                    style: TextStyle(
-                                      color: kWhiteText,
-                                      fontSize: 24,
-                                    ),
-                                  ),
-                                  Text(
-                                    "-",
-                                    style: TextStyle(
-                                      color: kWhiteText,
-                                      fontSize: 24,
-                                    ),
-                                  ),
-                                  Text(
-                                    teamInMatchController.teamInMatchDetail2
-                                                    .value.teamScore
-                                                    .toString() ==
-                                                "null" ||
-                                            teamInMatchController
+                                                    .toString(),
+                                        style: TextStyle(
+                                          color: kWhiteText,
+                                          fontSize: 24,
+                                        ),
+                                      ),
+                                      Text(
+                                        "-",
+                                        style: TextStyle(
+                                          color: kWhiteText,
+                                          fontSize: 24,
+                                        ),
+                                      ),
+                                      Text(
+                                        teamInMatchController.teamInMatchDetail2
+                                                    .value.scoreTieBreak
+                                                    .toString() !=
+                                                "null"
+                                            ? teamInMatchController
+                                                .teamInMatchDetail2
+                                                .value
+                                                .scoreTieBreak
+                                                .toString()
+                                            : teamInMatchController
+                                                            .teamInMatchDetail2
+                                                            .value
+                                                            .teamScore
+                                                            .toString() ==
+                                                        "null" ||
+                                                    teamInMatchController
+                                                            .teamInMatchDetail2
+                                                            .value
+                                                            .teamScore
+                                                            .toString() ==
+                                                        ""
+                                                ? "0"
+                                                : teamInMatchController
                                                     .teamInMatchDetail2
                                                     .value
                                                     .teamScore
-                                                    .toString() ==
-                                                ""
-                                        ? "0"
-                                        : teamInMatchController
-                                            .teamInMatchDetail2.value.teamScore
-                                            .toString(),
-                                    style: TextStyle(
-                                      color: kWhiteText,
-                                      fontSize: 24,
-                                    ),
+                                                    .toString(),
+                                        style: TextStyle(
+                                          color: kWhiteText,
+                                          fontSize: 24,
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                  teamInMatchController.teamInMatchDetail1
+                                                    .value.scorePenalty
+                                                    .toString() != "null" ? Row(
+                                    children: [
+                                      Text(
+                                        "(",
+                                        style: TextStyle(
+                                          color: kWhiteText,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      Text(
+                                        teamInMatchController.teamInMatchDetail1
+                                                    .value.scorePenalty
+                                                    .toString(),
+                                        style: TextStyle(
+                                          color: kWhiteText,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      Text(
+                                        "-",
+                                        style: TextStyle(
+                                          color: kWhiteText,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      Text(
+                                        teamInMatchController.teamInMatchDetail2
+                                                    .value.scorePenalty
+                                                    .toString(),
+                                        style: TextStyle(
+                                          color: kWhiteText,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      Text(
+                                        ")",
+                                        style: TextStyle(
+                                          color: kWhiteText,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ],
+                                  ) : Container(),
                                 ],
                               ),
                             ),

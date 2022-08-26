@@ -17,6 +17,8 @@ class GeneralController extends GetxController {
   RxInt currentCommentPage = 1.obs;
   RxInt currentNewsPage = 0.obs;
   RxInt currentImagesPage = 0.obs; 
+  RxInt currentPlayerInTeamPage = 0.obs;
+  RxInt currentTournamentOfTeamPage = 0.obs;
 
   RxString searchIDComment = "".obs;
 

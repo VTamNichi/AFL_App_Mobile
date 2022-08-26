@@ -271,8 +271,10 @@ class ScheduleScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     height: tournamentController
-                          .tournamentDetail.value.tournamentTypeId ==
-                      3 ? size.height - 191 : size.height - 141,
+                                .tournamentDetail.value.tournamentTypeId ==
+                            3
+                        ? size.height - 191
+                        : size.height - 141,
                     child: SingleChildScrollView(
                       child: teamInMatchController.teamInMatchList.isNotEmpty
                           ? ListView.builder(
@@ -286,31 +288,37 @@ class ScheduleScreen extends StatelessWidget {
                                 int flag = 0;
                                 flag += 2 * index;
                                 String groupName = teamInMatchController
-                                      .teamInMatchList[flag].match!.groupFight
-                                      .toString();
-                                if (flag > 0 && teamInMatchController
-                                      .teamInMatchList[flag].match!.groupFight
-                                      .toString() == teamInMatchController
-                                      .teamInMatchList[flag-1].match!.groupFight
-                                      .toString()) {
+                                    .teamInMatchList[flag].match!.groupFight
+                                    .toString();
+                                if (flag > 0 &&
+                                    teamInMatchController.teamInMatchList[flag]
+                                            .match!.groupFight
+                                            .toString() ==
+                                        teamInMatchController
+                                            .teamInMatchList[flag - 1]
+                                            .match!
+                                            .groupFight
+                                            .toString()) {
                                   groupName = "";
                                 }
                                 return Column(
                                   children: [
-                                    groupName == "" ? Container() : Container(
-                                      width: double.infinity,
-                                      height: 50,
-                                      color: kBlueBlack,
-                                      child: Center(
-                                        child: Text(
-                                          groupName,
-                                          style: TextStyle(
-                                              color: kWhiteText,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
-                                        ),
-                                      ),
-                                    ),
+                                    groupName == ""
+                                        ? Container()
+                                        : Container(
+                                            width: double.infinity,
+                                            height: 50,
+                                            color: kBlueBlack,
+                                            child: Center(
+                                              child: Text(
+                                                groupName,
+                                                style: TextStyle(
+                                                    color: kWhiteText,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
+                                              ),
+                                            ),
+                                          ),
                                     GestureDetector(
                                       onTap: () async {
                                         generalController.isLoading.value =
@@ -342,49 +350,51 @@ class ScheduleScreen extends StatelessWidget {
                                         Get.to(MatchDetailScreen());
                                       },
                                       child: ListMatch(
-                                        name1: teamInMatchController
-                                            .teamInMatchList[flag].teamName,
-                                        image1: teamInMatchController
-                                                    .teamInMatchList[flag]
-                                                    .teamInTournamentId ==
-                                                null
-                                            ? ""
-                                            : teamInMatchController
-                                                .teamInMatchList[flag]
-                                                .teamInTournament!
-                                                .team!
-                                                .teamAvatar,
-                                        score1: teamInMatchController
-                                                    .teamInMatchList[flag]
-                                                    .teamScore
-                                                    .toString() ==
-                                                "null"
-                                            ? 0
-                                            : teamInMatchController
-                                                .teamInMatchList[flag]
-                                                .teamScore,
-                                        name2: teamInMatchController
-                                            .teamInMatchList[flag + 1].teamName,
-                                        image2: teamInMatchController
-                                                    .teamInMatchList[flag + 1]
-                                                    .teamInTournamentId ==
-                                                null
-                                            ? ""
-                                            : teamInMatchController
-                                                .teamInMatchList[flag + 1]
-                                                .teamInTournament!
-                                                .team!
-                                                .teamAvatar,
-                                        score2: teamInMatchController
-                                                    .teamInMatchList[flag + 1]
-                                                    .teamScore
-                                                    .toString() ==
-                                                "null"
-                                            ? 0
-                                            : teamInMatchController
-                                                .teamInMatchList[flag + 1]
-                                                .teamScore,
-                                      ),
+                                          name1: teamInMatchController
+                                              .teamInMatchList[flag].teamName,
+                                          image1: teamInMatchController.teamInMatchList[flag].teamInTournamentId == null
+                                              ? ""
+                                              : teamInMatchController
+                                                  .teamInMatchList[flag]
+                                                  .teamInTournament!
+                                                  .team!
+                                                  .teamAvatar,
+                                          score1: teamInMatchController
+                                                      .teamInMatchList[flag]
+                                                      .scoreTieBreak
+                                                      .toString() !=
+                                                  "null"
+                                              ? teamInMatchController
+                                                  .teamInMatchList[flag]
+                                                  .scoreTieBreak
+                                              : teamInMatchController.teamInMatchList[flag].teamScore
+                                                          .toString() ==
+                                                      "null"
+                                                  ? 0
+                                                  : teamInMatchController
+                                                      .teamInMatchList[flag]
+                                                      .teamScore,
+                                          penalty1: teamInMatchController
+                                              .teamInMatchList[flag]
+                                              .scorePenalty
+                                              .toString(),
+                                          name2: teamInMatchController
+                                              .teamInMatchList[flag + 1]
+                                              .teamName,
+                                          image2: teamInMatchController.teamInMatchList[flag + 1].teamInTournamentId == null
+                                              ? ""
+                                              : teamInMatchController
+                                                  .teamInMatchList[flag + 1]
+                                                  .teamInTournament!
+                                                  .team!
+                                                  .teamAvatar,
+                                          score2: teamInMatchController.teamInMatchList[flag + 1].scoreTieBreak.toString() != "null"
+                                              ? teamInMatchController.teamInMatchList[flag + 1].scoreTieBreak
+                                              : teamInMatchController.teamInMatchList[flag + 1].teamScore.toString() == "null"
+                                                  ? 0
+                                                  : teamInMatchController.teamInMatchList[flag + 1].teamScore,
+                                          penalty2: teamInMatchController.teamInMatchList[flag + 1].scorePenalty.toString(),
+                                          isLive: teamInMatchController.teamInMatchList[flag].match!.idScreen.toString() == "0" || teamInMatchController.teamInMatchList[flag].match!.idScreen.toString() == "null" || teamInMatchController.teamInMatchList[flag].match!.idScreen.toString() == "" ? "" : "live"),
                                     ),
                                   ],
                                 );

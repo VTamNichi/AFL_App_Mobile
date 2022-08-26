@@ -1,10 +1,15 @@
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/comment_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/player_in_team_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/team_controller.dart';
+import 'package:amateur_football_league_mobile/controllers/team_in_tournament_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/user_controller.dart';
 import 'package:amateur_football_league_mobile/screens/loading/loading_screen.dart';
 import 'package:amateur_football_league_mobile/screens/team/team_detail/components/build_comment_list.dart';
+import 'package:amateur_football_league_mobile/screens/team/team_detail/player_in_team/player_in_team_screen.dart';
+import 'package:amateur_football_league_mobile/screens/team/team_detail/team_analysis/team_analysis_screen.dart';
+import 'package:amateur_football_league_mobile/screens/team/team_detail/tournament_of_team/tournament_of_team_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +20,9 @@ class TeamDetailScreen extends StatelessWidget {
   final userController = Get.put(UserController());
   final teamController = Get.put(TeamController());
   final commentController = Get.put(CommentController());
+  final playerInTeamController = Get.put(PlayerInTeamController());
+  final teamInTournamentController = Get.put(TeamInTournamentController());
+
   TextEditingController textCommentController = TextEditingController();
   RegExp regExp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
 
@@ -279,7 +287,32 @@ class TeamDetailScreen extends StatelessWidget {
                       child: Row(
                         children: teamController.listTeamDetail.map((element) {
                           return GestureDetector(
-                            onTap: () {},
+                            onTap: () async {
+                              generalController.isLoading.value = true;
+                              if (element == "Thành viên") {
+                                playerInTeamController.teamId.value =
+                                    teamController.teamDetail.value.id!;
+                                Get.to(() => PlayerInTeamScreen(),
+                                    transition: Transition.rightToLeft,
+                                    duration:
+                                        const Duration(milliseconds: 600));
+                              } else if (element == "Giải đấu") {
+                                teamInTournamentController.teamId.value =
+                                    teamController.teamDetail.value.id!;
+                                Get.to(() => TournamentOfTeamScreen(),
+                                    transition: Transition.rightToLeft,
+                                    duration:
+                                        const Duration(milliseconds: 600));
+                              } else {
+                                await teamController.getTeamAnalysis();
+                                await teamController.getTeamAnalysis2();
+                                Get.to(() => TeamAnalysisScreen(),
+                                    transition: Transition.rightToLeft,
+                                    duration:
+                                        const Duration(milliseconds: 600));
+                              }
+                              generalController.isLoading.value = false;
+                            },
                             child: Container(
                               height: 30,
                               alignment: Alignment.centerLeft,
@@ -332,16 +365,16 @@ class TeamDetailScreen extends StatelessWidget {
                         EdgeInsets.fromLTRB(kPadding, 0, kPadding, kPadding),
                     child: Row(
                       children: [
-                        Text(
-                          teamController
-                              .teamDetail.value.description!
-                              .replaceAll(regExp, ""),
-                          style: TextStyle(
-                            color: kBlackText,
-                            fontSize: 20,
+                        Expanded(
+                          child: Text(
+                            teamController.teamDetail.value.description!
+                                .replaceAll(regExp, ""),
+                            style: TextStyle(
+                              color: kBlackText,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
-                        Expanded(child: Container()),
                       ],
                     ),
                   ),

@@ -1,6 +1,10 @@
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/controllers/football_player_controller.dart';
+import 'package:amateur_football_league_mobile/screens/football_player/football_player_detail/football_player_analysis/football_player_analysis_screen.dart';
+import 'package:amateur_football_league_mobile/screens/football_player/football_player_detail/team_joining/team_joining_screen.dart';
+import 'package:amateur_football_league_mobile/screens/football_player/football_player_detail/tournament_joining/tournament_joining_screen.dart';
+import 'package:amateur_football_league_mobile/screens/football_player/schedule_today/schedule_today_screen.dart';
 import 'package:amateur_football_league_mobile/screens/loading/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -85,7 +89,8 @@ class FootballPlayerDetailScreen extends StatelessWidget {
                     height: kPadding / 3,
                   ),
                   Text(
-                    footballPlayerController.footballPlayerDetail.value.playerName
+                    footballPlayerController
+                        .footballPlayerDetail.value.playerName
                         .toString()
                         .toUpperCase(),
                     style: const TextStyle(
@@ -206,10 +211,23 @@ class FootballPlayerDetailScreen extends StatelessWidget {
                         ),
                         Text(
                           footballPlayerController
-                              .footballPlayerDetail.value.position
-                              .toString() == "null" ? "Chưa chọn vị trí" : footballPlayerController
-                              .footballPlayerDetail.value.position
-                              .toString(),
+                                      .footballPlayerDetail.value.position
+                                      .toString() ==
+                                  "striker"
+                              ? "Tiền đạo"
+                              : footballPlayerController
+                                          .footballPlayerDetail.value.position
+                                          .toString() ==
+                                      "defender"
+                                  ? "Hậu vệ"
+                                  : footballPlayerController
+                                              .footballPlayerDetail
+                                              .value
+                                              .position
+                                              .toString() ==
+                                          "midfielder"
+                                      ? "Tiền vệ"
+                                      : "Thủ môn",
                           style: TextStyle(
                             color: kBlackText,
                             fontSize: 16,
@@ -290,7 +308,35 @@ class FootballPlayerDetailScreen extends StatelessWidget {
                             .listFootballPlayerDetail
                             .map((element) {
                           return GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              if (element == "Đội bóng tham gia") {
+                                footballPlayerController.getTeamJoining();
+                                Get.to(() => TeamJoiningScreen(),
+                                    transition: Transition.rightToLeft,
+                                    duration:
+                                        const Duration(milliseconds: 600));
+                              } else if (element == "Giải đấu tham gia") {
+                                footballPlayerController.getTournamentJoining();
+                                Get.to(() => TournamentJoiningScreen(),
+                                    transition: Transition.rightToLeft,
+                                    duration:
+                                        const Duration(milliseconds: 600));
+                              } else if (element == "Thành tích") {
+                                footballPlayerController
+                                    .getFootballPlayerAnalysis();
+                                Get.to(() => FootballPlayerAnalysisScreen(),
+                                    transition: Transition.rightToLeft,
+                                    duration:
+                                        const Duration(milliseconds: 600));
+                              } else {
+                                // footballPlayerController
+                                //     .getScheduleToday();
+                                // Get.to(() => ScheduleTodayScreen(),
+                                //     transition: Transition.rightToLeft,
+                                //     duration:
+                                //         const Duration(milliseconds: 600));
+                              }
+                            },
                             child: Container(
                               height: 30,
                               alignment: Alignment.centerLeft,
@@ -308,7 +354,8 @@ class FootballPlayerDetailScreen extends StatelessWidget {
                               ),
                               child: Text(
                                 element,
-                                style: TextStyle(color: kBlackText, fontSize: 16),
+                                style:
+                                    TextStyle(color: kBlackText, fontSize: 16),
                               ),
                             ),
                           );

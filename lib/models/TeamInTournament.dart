@@ -1,4 +1,5 @@
 import 'package:amateur_football_league_mobile/models/Team.dart';
+import 'package:amateur_football_league_mobile/models/Tournament.dart';
 
 class TeamInTournament {
   int? id;
@@ -14,7 +15,7 @@ class TeamInTournament {
   int? teamId;
   String? groupName;
   Team? team;
-  Null? tournament;
+  Tournament? tournament;
   int? numberOfMatch;
   int? numberOfWin;
   int? numberOfLose;

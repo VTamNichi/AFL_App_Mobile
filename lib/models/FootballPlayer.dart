@@ -11,6 +11,7 @@ class FootballPlayer {
   String? dateUpdate;
   String? dateDelete;
   User? userVM;
+  User? idNavigation;
 
   FootballPlayer(
       {this.id,
@@ -22,7 +23,8 @@ class FootballPlayer {
       this.dateCreate,
       this.dateUpdate,
       this.dateDelete,
-      this.userVM});
+      this.userVM,
+      this.idNavigation});
 
   FootballPlayer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -36,6 +38,8 @@ class FootballPlayer {
     dateDelete = json['dateDelete'];
     userVM =
         json['userVM'] != null ? User.fromJson(json['userVM']) : null;
+    idNavigation =
+        json['idNavigation'] != null ? User.fromJson(json['idNavigation']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +55,9 @@ class FootballPlayer {
     data['dateDelete'] = dateDelete;
     if (userVM != null) {
       data['userVM'] = userVM!.toJson();
+    }
+    if (idNavigation != null) {
+      data['idNavigation'] = idNavigation!.toJson();
     }
     return data;
   }

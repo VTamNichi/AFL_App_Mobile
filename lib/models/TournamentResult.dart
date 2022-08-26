@@ -1,5 +1,6 @@
 import 'package:amateur_football_league_mobile/models/FootballPlayer.dart';
 import 'package:amateur_football_league_mobile/models/Team.dart';
+import 'package:amateur_football_league_mobile/models/Tournament.dart';
 
 class TournamentResults {
   int? id;
@@ -20,7 +21,7 @@ class TournamentResults {
   FootballPlayer? footballPlayer;
   Team? team;
   Null? teamInTournament;
-  Null? tournament;
+  Tournament? tournament;
 
   TournamentResults(
       {this.id,
@@ -64,7 +65,7 @@ class TournamentResults {
         : null;
     team = json['team'] != null ? Team.fromJson(json['team']) : null;
     teamInTournament = json['teamInTournament'];
-    tournament = json['tournament'];
+    tournament = json['tournament'] != null ? Tournament.fromJson(json['tournament']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -91,7 +92,9 @@ class TournamentResults {
       data['team'] = team!.toJson();
     }
     data['teamInTournament'] = teamInTournament;
-    data['tournament'] = tournament;
+    if (tournament != null) {
+      data['tournament'] = tournament!.toJson();
+    }
     return data;
   }
 }

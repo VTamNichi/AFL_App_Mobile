@@ -2,6 +2,8 @@ import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/general/general_controller.dart';
 import 'package:amateur_football_league_mobile/fetch_api/team_api.dart';
 import 'package:amateur_football_league_mobile/models/Team.dart';
+import 'package:amateur_football_league_mobile/models/TeamAnalysis.dart';
+import 'package:amateur_football_league_mobile/models/TournamentResult.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,10 @@ class TeamController extends GetxController {
   Rx<int> selectTeam = 1.obs;
   RxList<Team> teamList = <Team>[].obs;
   Rx<Team> teamDetail = Team().obs;
+  Rx<TeamAnalysis> teamAnalysis = TeamAnalysis().obs;
+  RxInt champion = 0.obs;
+  RxInt second = 0.obs;
+  RxInt third = 0.obs;
   RxList listTeamDetail = [
     "Thành viên",
     "Giải đấu",
@@ -38,6 +44,18 @@ class TeamController extends GetxController {
         sortTeamBy.value,
         sortTeamType.value,
         generalController.currentTeamPage.value);
+    generalController.isLoading.value = false;
+  }
+
+  Future<void> getTeamAnalysis() async {
+    generalController.isLoading.value = true;
+    await TeamAPI.getTeamAnalysis(teamDetail.value.id!);
+    generalController.isLoading.value = false;
+  }
+
+  Future<void> getTeamAnalysis2() async {
+    generalController.isLoading.value = true;
+    await TeamAPI.getTeamAnalysis2(teamDetail.value.id!);
     generalController.isLoading.value = false;
   }
 
