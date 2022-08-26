@@ -133,110 +133,9 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
                       children: [
                         _broadcastView(),
                         Obx(
-                          () => Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  padding: EdgeInsets.all(kPadding / 6),
-                                  decoration: BoxDecoration(
-                                    color: kGreenLightColor,
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(kPadding),
-                                        bottomRight: Radius.circular(kPadding)),
-                                  ),
-                                  child: Text(
-                                    teamInMatchController
-                                        .teamInMatchDetail1.value.teamName!,
-                                    style: TextStyle(
-                                        color: kWhiteComment,
-                                        fontSize: kPadding / 3 * 2),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(kPadding / 6),
-                                child: Text(
-                                  teamInMatchController.teamInMatchDetail1.value
-                                                  .teamScore
-                                                  .toString() ==
-                                              "null" ||
-                                          teamInMatchController
-                                                  .teamInMatchDetail1
-                                                  .value
-                                                  .teamScore
-                                                  .toString() ==
-                                              ""
-                                      ? "0"
-                                      : teamInMatchController
-                                          .teamInMatchDetail1.value.teamScore
-                                          .toString(),
-                                  style: TextStyle(
-                                      color: kWhiteComment,
-                                      fontSize: kPadding / 3 * 2),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(kPadding / 6),
-                                child: Text(
-                                  "-",
-                                  style: TextStyle(
-                                      color: kWhiteComment,
-                                      fontSize: kPadding / 3 * 2),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(kPadding / 6),
-                                child: Text(
-                                  teamInMatchController.teamInMatchDetail2.value
-                                                  .teamScore
-                                                  .toString() ==
-                                              "null" ||
-                                          teamInMatchController
-                                                  .teamInMatchDetail2
-                                                  .value
-                                                  .teamScore
-                                                  .toString() ==
-                                              ""
-                                      ? "0"
-                                      : teamInMatchController
-                                          .teamInMatchDetail2.value.teamScore
-                                          .toString(),
-                                  style: TextStyle(
-                                      color: kWhiteComment,
-                                      fontSize: kPadding / 3 * 2),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  padding: EdgeInsets.all(kPadding / 6),
-                                  decoration: BoxDecoration(
-                                    color: kGreenLightColor,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(kPadding),
-                                        bottomLeft: Radius.circular(kPadding)),
-                                  ),
-                                  child: Text(
-                                    teamInMatchController
-                                        .teamInMatchDetail2.value.teamName!,
-                                    style: TextStyle(
-                                        color: kWhiteComment,
-                                        fontSize: kPadding / 3 * 2),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  : SizedBox(
-                      height: fullscreen ? size.height : size.height * 0.4,
-                      child: Stack(
-                        children: [
-                          _broadcastView(),
-                          Obx(
-                            () => Row(
+                          () => Container(
+                             color: Colors.black,
+                            child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
@@ -246,8 +145,7 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
                                       color: kGreenLightColor,
                                       borderRadius: BorderRadius.only(
                                           topRight: Radius.circular(kPadding),
-                                          bottomRight:
-                                              Radius.circular(kPadding)),
+                                          bottomRight: Radius.circular(kPadding)),
                                     ),
                                     child: Text(
                                       teamInMatchController
@@ -262,7 +160,16 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
                                   padding: EdgeInsets.all(kPadding / 6),
                                   child: Text(
                                     teamInMatchController.teamInMatchDetail1
-                                                    .value.teamScore
+                                                      .value.scoreTieBreak
+                                                      .toString() !=
+                                                  "null"
+                                              ? teamInMatchController
+                                                  .teamInMatchDetail1
+                                                  .value
+                                                  .scoreTieBreak
+                                                  .toString()
+                                              : teamInMatchController.teamInMatchDetail1.value
+                                                    .teamScore
                                                     .toString() ==
                                                 "null" ||
                                             teamInMatchController
@@ -293,7 +200,16 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
                                   padding: EdgeInsets.all(kPadding / 6),
                                   child: Text(
                                     teamInMatchController.teamInMatchDetail2
-                                                    .value.teamScore
+                                                      .value.scoreTieBreak
+                                                      .toString() !=
+                                                  "null"
+                                              ? teamInMatchController
+                                                  .teamInMatchDetail2
+                                                  .value
+                                                  .scoreTieBreak
+                                                  .toString()
+                                              : teamInMatchController.teamInMatchDetail2.value
+                                                    .teamScore
                                                     .toString() ==
                                                 "null" ||
                                             teamInMatchController
@@ -318,8 +234,7 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
                                       color: kGreenLightColor,
                                       borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(kPadding),
-                                          bottomLeft:
-                                              Radius.circular(kPadding)),
+                                          bottomLeft: Radius.circular(kPadding)),
                                     ),
                                     child: Text(
                                       teamInMatchController
@@ -331,6 +246,134 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
                                   ),
                                 ),
                               ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : SizedBox(
+                      height: fullscreen ? size.height : size.height * 0.4,
+                      child: Stack(
+                        children: [
+                          _broadcastView(),
+                          Obx(
+                            () => Container(
+                               color: Colors.black,
+                              child: Row(
+                               
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      padding: EdgeInsets.all(kPadding / 6),
+                                      decoration: BoxDecoration(
+                                        color: kGreenLightColor,
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(kPadding),
+                                            bottomRight:
+                                                Radius.circular(kPadding)),
+                                      ),
+                                      child: Text(
+                                        teamInMatchController
+                                            .teamInMatchDetail1.value.teamName!,
+                                        style: TextStyle(
+                                            color: kWhiteComment,
+                                            fontSize: kPadding / 3 * 2),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(kPadding / 6),
+                                    child: Text(
+                                      teamInMatchController.teamInMatchDetail1
+                                                      .value.scoreTieBreak
+                                                      .toString() !=
+                                                  "null"
+                                              ? teamInMatchController
+                                                  .teamInMatchDetail1
+                                                  .value
+                                                  .scoreTieBreak
+                                                  .toString()
+                                              : teamInMatchController.teamInMatchDetail1
+                                                      .value.teamScore
+                                                      .toString() ==
+                                                  "null" ||
+                                              teamInMatchController
+                                                      .teamInMatchDetail1
+                                                      .value
+                                                      .teamScore
+                                                      .toString() ==
+                                                  ""
+                                          ? "0"
+                                          : teamInMatchController
+                                              .teamInMatchDetail1.value.teamScore
+                                              .toString(),
+                                      style: TextStyle(
+                                          color: kWhiteComment,
+                                          fontSize: kPadding / 3 * 2),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(kPadding / 6),
+                                    child: Text(
+                                      "-",
+                                      style: TextStyle(
+                                          color: kWhiteComment,
+                                          fontSize: kPadding / 3 * 2),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(kPadding / 6),
+                                    child: Text(
+                                      teamInMatchController.teamInMatchDetail2
+                                                      .value.scoreTieBreak
+                                                      .toString() !=
+                                                  "null"
+                                              ? teamInMatchController
+                                                  .teamInMatchDetail2
+                                                  .value
+                                                  .scoreTieBreak
+                                                  .toString()
+                                              : teamInMatchController.teamInMatchDetail2
+                                                      .value.teamScore
+                                                      .toString() ==
+                                                  "null" ||
+                                              teamInMatchController
+                                                      .teamInMatchDetail2
+                                                      .value
+                                                      .teamScore
+                                                      .toString() ==
+                                                  ""
+                                          ? "0"
+                                          : teamInMatchController
+                                              .teamInMatchDetail2.value.teamScore
+                                              .toString(),
+                                      style: TextStyle(
+                                          color: kWhiteComment,
+                                          fontSize: kPadding / 3 * 2),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      padding: EdgeInsets.all(kPadding / 6),
+                                      decoration: BoxDecoration(
+                                        color: kGreenLightColor,
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(kPadding),
+                                            bottomLeft:
+                                                Radius.circular(kPadding)),
+                                      ),
+                                      child: Text(
+                                        teamInMatchController
+                                            .teamInMatchDetail2.value.teamName!,
+                                        style: TextStyle(
+                                            color: kWhiteComment,
+                                            fontSize: kPadding / 3 * 2),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -565,8 +608,9 @@ class _LivestreamScreenState extends State<LivestreamScreen> {
       return const RtcLocalView.SurfaceView();
     } else {
       return RtcRemoteView.SurfaceView(
-        uid: matchController.idScreen.value == "0" ||
-                matchController.idScreen.value == null
+        uid: matchController.idScreen.value.toString() == "0" ||
+                matchController.idScreen.value.toString() == "null" ||
+                matchController.idScreen.value.toString() == ""
             ? 1
             : int.parse(matchController.idScreen.value),
         channelId: "MATCH_" + matchController.matchDetail.value.id.toString(),

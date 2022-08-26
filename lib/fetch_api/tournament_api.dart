@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:amateur_football_league_mobile/constant.dart';
 import 'package:amateur_football_league_mobile/controllers/tournament_controller.dart';
+import 'package:amateur_football_league_mobile/models/Tournament.dart';
 import 'package:amateur_football_league_mobile/models/list_models/ListTournament.dart';
 // ignore: library_prefixes
 import 'package:get/get.dart' as GetX;
@@ -69,5 +70,24 @@ class TournamentAPI {
       return rs;
     }
     return rs;
+  }
+
+  static Future<Tournament> getTournamentById(int tournamentId) async {
+    Tournament tournament = Tournament();
+    try {
+      
+      final response = await http
+          .get(Uri.parse(urlApi + "tournaments/" + tournamentId.toString()), headers: <String, String>{
+        HttpHeaders.contentTypeHeader: 'application/json',
+      });
+
+      if (response.statusCode == 200) {
+        var bodyJson = json.decode(utf8.decode(response.bodyBytes));
+        tournament = Tournament.fromJson(bodyJson);
+      }
+    } catch (e) {
+      return tournament;
+    }
+    return tournament;
   }
 }

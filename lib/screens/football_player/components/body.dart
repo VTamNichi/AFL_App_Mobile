@@ -50,120 +50,129 @@ class _BodyState extends State<Body> {
     return Obx(
       () => Column(
         children: [
-          Container(
-            color: kBackgroundColor,
-            width: double.infinity,
-            height: 50,
-            child: Row(
-              children: [
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      footballPlayerController.selectFootballPlayer.value = 1;
-                    },
-                    child: Container(
-                      width: 104,
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                color: footballPlayerController.selectFootballPlayer.value == 1
-                                    ? kGreenLightColor
-                                    : kBackgroundColor,
-                                width: 3,
-                                style: BorderStyle.solid)),
-                      ),
-                      child: Center(
-                          child: Text(
-                        "Tất cả cầu thủ",
-                        style: TextStyle(
-                          color: footballPlayerController.selectFootballPlayer.value == 1
-                              ? kGreenLightColor
-                              : kBlackText,
-                          fontSize: 18,
-                        ),
-                      )),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      footballPlayerController.selectFootballPlayer.value = 2;
-                    },
-                    child: Container(
-                      width: 104,
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                color: footballPlayerController.selectFootballPlayer.value == 2
-                                    ? kGreenLightColor
-                                    : kBackgroundColor,
-                                width: 3,
-                                style: BorderStyle.solid)),
-                      ),
-                      child: Center(
-                          child: Text(
-                        "Cầu thủ của tôi",
-                        style: TextStyle(
-                          color: footballPlayerController.selectFootballPlayer.value == 2
-                              ? kGreenLightColor
-                              : kBlackText,
-                          fontSize: 18,
-                        ),
-                      )),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 50,
-            width: double.infinity,
-            color: kBackgroundColor,
-            alignment: Alignment.centerLeft,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: footballPlayerController.listSearchFootballPlayer.map((element) {
-                  return GestureDetector(
-                    onTap: () {
-                      //footballPlayerController.showOptionSearchFootballPlayer(context, element);
-                    },
-                    child: Container(
-                      height: 30,
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      margin: EdgeInsets.only(
-                          left: kPadding / 2, right: kPadding / 2),
-                      decoration: BoxDecoration(
-                        color: 
-                        // footballPlayerController.element.contains(element)
-                        //     ? kGreenLightColor : 
-                            kBackgroundColor,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        border: Border.all(
-                            color: kGreyColor,
-                            width: 1,
-                            style: BorderStyle.solid),
-                      ),
-                      child: Text(
-                        element,
-                        style: TextStyle(
-                            color: 
-                            // footballPlayerController.element.contains(element)
-                            //     ? kWhiteText :
-                                kGreyColor),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
+          // Container(
+          //   color: kBackgroundColor,
+          //   width: double.infinity,
+          //   height: 50,
+          //   child: Row(
+          //     children: [
+          //       Expanded(
+          //         child: InkWell(
+          //           onTap: () {
+          //             footballPlayerController.selectFootballPlayer.value = 1;
+          //           },
+          //           child: Container(
+          //             width: 104,
+          //             height: double.infinity,
+          //             decoration: BoxDecoration(
+          //               border: Border(
+          //                   bottom: BorderSide(
+          //                       color: footballPlayerController
+          //                                   .selectFootballPlayer.value ==
+          //                               1
+          //                           ? kGreenLightColor
+          //                           : kBackgroundColor,
+          //                       width: 3,
+          //                       style: BorderStyle.solid)),
+          //             ),
+          //             child: Center(
+          //                 child: Text(
+          //               "Tất cả cầu thủ",
+          //               style: TextStyle(
+          //                 color: footballPlayerController
+          //                             .selectFootballPlayer.value ==
+          //                         1
+          //                     ? kGreenLightColor
+          //                     : kBlackText,
+          //                 fontSize: 18,
+          //               ),
+          //             )),
+          //           ),
+          //         ),
+          //       ),
+          //       Expanded(
+          //         child: InkWell(
+          //           onTap: () {
+          //             footballPlayerController.selectFootballPlayer.value = 2;
+          //           },
+          //           child: Container(
+          //             width: 104,
+          //             height: double.infinity,
+          //             decoration: BoxDecoration(
+          //               border: Border(
+          //                   bottom: BorderSide(
+          //                       color: footballPlayerController
+          //                                   .selectFootballPlayer.value ==
+          //                               2
+          //                           ? kGreenLightColor
+          //                           : kBackgroundColor,
+          //                       width: 3,
+          //                       style: BorderStyle.solid)),
+          //             ),
+          //             child: Center(
+          //                 child: Text(
+          //               "Cầu thủ của tôi",
+          //               style: TextStyle(
+          //                 color: footballPlayerController
+          //                             .selectFootballPlayer.value ==
+          //                         2
+          //                     ? kGreenLightColor
+          //                     : kBlackText,
+          //                 fontSize: 18,
+          //               ),
+          //             )),
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // Container(
+          //   height: 50,
+          //   width: double.infinity,
+          //   color: kBackgroundColor,
+          //   alignment: Alignment.centerLeft,
+          //   child: SingleChildScrollView(
+          //     scrollDirection: Axis.horizontal,
+          //     child: Row(
+          //       children: footballPlayerController.listSearchFootballPlayer
+          //           .map((element) {
+          //         return GestureDetector(
+          //           onTap: () {
+          //             //footballPlayerController.showOptionSearchFootballPlayer(context, element);
+          //           },
+          //           child: Container(
+          //             height: 30,
+          //             alignment: Alignment.centerLeft,
+          //             padding: const EdgeInsets.only(left: 8, right: 8),
+          //             margin: EdgeInsets.only(
+          //                 left: kPadding / 2, right: kPadding / 2),
+          //             decoration: BoxDecoration(
+          //               color:
+          //                   // footballPlayerController.element.contains(element)
+          //                   //     ? kGreenLightColor :
+          //                   kBackgroundColor,
+          //               borderRadius:
+          //                   const BorderRadius.all(Radius.circular(8)),
+          //               border: Border.all(
+          //                   color: kGreyColor,
+          //                   width: 1,
+          //                   style: BorderStyle.solid),
+          //             ),
+          //             child: Text(
+          //               element,
+          //               style: TextStyle(
+          //                   color:
+          //                       // footballPlayerController.element.contains(element)
+          //                       //     ? kWhiteText :
+          //                       kGreyColor),
+          //             ),
+          //           ),
+          //         );
+          //       }).toList(),
+          //     ),
+          //   ),
+          // ),
           Container(
             height: 50,
             width: double.infinity,
@@ -172,58 +181,67 @@ class _BodyState extends State<Body> {
             child: Row(
               children: [
                 Text(
-                  footballPlayerController.countListFootballPlayer.value.toString() + " Cầu thủ",
+                  footballPlayerController.countListFootballPlayer.value
+                          .toString() +
+                      " Cầu thủ",
                   style: TextStyle(
                       color: kBlackText,
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),
                 Expanded(child: Container()),
-                GestureDetector(
-                  onTap: () {
-                    footballPlayerController.showOptionOrderFootballPlayer(context);
-                  },
-                  child: Container(
-                      width: 100,
-                      height: 30,
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      decoration: BoxDecoration(
-                        color: footballPlayerController.sortFootballPlayerBy.value == ""
-                            ? kBackgroundColor
-                            : kGreenLightColor,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        border: Border.all(
-                            color: kGreyColor,
-                            width: 1,
-                            style: BorderStyle.solid),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Sắp xếp",
-                            style: TextStyle(
-                              color: footballPlayerController.sortFootballPlayerBy.value == ""
-                                  ? kGreyColor
-                                  : kWhiteText,
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                          Icon(
-                            Icons.keyboard_arrow_down,
-                            color: footballPlayerController.sortFootballPlayerBy.value == ""
-                                ? kGreyColor
-                                : kWhiteText,
-                          )
-                        ],
-                      )),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     footballPlayerController
+                //         .showOptionOrderFootballPlayer(context);
+                //   },
+                //   child: Container(
+                //       width: 100,
+                //       height: 30,
+                //       alignment: Alignment.centerLeft,
+                //       padding: const EdgeInsets.only(left: 8, right: 8),
+                //       decoration: BoxDecoration(
+                //         color: footballPlayerController
+                //                     .sortFootballPlayerBy.value ==
+                //                 ""
+                //             ? kBackgroundColor
+                //             : kGreenLightColor,
+                //         borderRadius:
+                //             const BorderRadius.all(Radius.circular(8)),
+                //         border: Border.all(
+                //             color: kGreyColor,
+                //             width: 1,
+                //             style: BorderStyle.solid),
+                //       ),
+                //       child: Row(
+                //         children: [
+                //           Text(
+                //             "Sắp xếp",
+                //             style: TextStyle(
+                //               color: footballPlayerController
+                //                           .sortFootballPlayerBy.value ==
+                //                       ""
+                //                   ? kGreyColor
+                //                   : kWhiteText,
+                //             ),
+                //           ),
+                //           Expanded(child: Container()),
+                //           Icon(
+                //             Icons.keyboard_arrow_down,
+                //             color: footballPlayerController
+                //                         .sortFootballPlayerBy.value ==
+                //                     ""
+                //                 ? kGreyColor
+                //                 : kWhiteText,
+                //           )
+                //         ],
+                //       )),
+                // ),
               ],
             ),
           ),
           SizedBox(
-            height: size.height - 300,
+            height: size.height - 200,
             child: SmartRefresher(
               controller: refreshController,
               enablePullUp: true,
@@ -249,20 +267,37 @@ class _BodyState extends State<Body> {
                 itemBuilder: (BuildContext context, index) {
                   return GestureDetector(
                     onTap: () {
-                      footballPlayerController.footballPlayerDetail.value = footballPlayerController.footballPlayerList[index];
+                      footballPlayerController.footballPlayerDetail.value =
+                          footballPlayerController.footballPlayerList[index];
                       Get.to(() => FootballPlayerDetailScreen(),
                           transition: Transition.zoom,
                           duration: const Duration(milliseconds: 600));
                     },
                     child: BuildFootballPlayerList(
-                      image: footballPlayerController.footballPlayerList[index].playerAvatar,
-                      name: footballPlayerController.footballPlayerList[index].playerName,
-                      position: footballPlayerController.footballPlayerList[index].position,
-                      gender:
-                          footballPlayerController.footballPlayerList[index].userVM!.gender == "Female"
-                              ? "Nữ"
-                              : "Nam",
-                      area: footballPlayerController.footballPlayerList[index].userVM!.address,
+                      image: footballPlayerController
+                          .footballPlayerList[index].playerAvatar,
+                      name: footballPlayerController
+                          .footballPlayerList[index].playerName,
+                      position: footballPlayerController
+                                  .footballPlayerList[index].position ==
+                              "striker"
+                          ? "Tiền đạo"
+                          : footballPlayerController
+                                      .footballPlayerList[index].position ==
+                                  "defender"
+                              ? "Hậu vệ"
+                              : footballPlayerController
+                                          .footballPlayerList[index].position ==
+                                      "midfielder"
+                                  ? "Tiền vệ"
+                                  : "Thủ môn",
+                      gender: footballPlayerController
+                                  .footballPlayerList[index].userVM!.gender ==
+                              "Female"
+                          ? "Nữ"
+                          : "Nam",
+                      area: footballPlayerController
+                          .footballPlayerList[index].userVM!.address,
                     ),
                   );
                 },

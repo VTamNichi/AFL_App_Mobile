@@ -13,7 +13,6 @@ import 'package:http/http.dart' as http;
 class TeamInMatchAPI {
   static Future<int> getListTeamInMatch(int tournamentId) async {
     final teamInMatchController = GetX.Get.put(TeamInMatchController());
-    final matchController = GetX.Get.put(MatchController());
     int rs = 0;
     try {
       final response = await http.get(
@@ -28,13 +27,16 @@ class TeamInMatchAPI {
         teamInMatchController.teamInMatchList.value = [];
         teamInMatchController.circleMatch.value = 0;
         teamInMatchController.knockoutMatch.value = 0;
+        List<TeamInMatch> listTeamInMatch = [];
         bodyJson
             .map((tim) => {
                   teamInMatch = TeamInMatch(
                       id: tim["id"],
                       teamScore: tim["teamScore"],
+                      scoreTieBreak: tim["scoreTieBreak"],
                       yellowCardNumber: tim["yellowCardNumber"],
                       redCardNumber: tim["redCardNumber"],
+                      scorePenalty: tim["scorePenalty"],
                       teamInTournamentId: tim["teamInTournamentId"],
                       matchId: tim["matchId"],
                       result: tim["result"],
@@ -43,9 +45,65 @@ class TeamInMatchAPI {
                       match: Match.fromJson(tim["match"]),
                       teamInTournament:
                           TeamInTournament.fromJson(tim["teamInTournament"])),
-                  teamInMatchController.teamInMatchList.add(teamInMatch)
+                  listTeamInMatch.add(teamInMatch),
+                  
                 })
             .toList();
+        listTeamInMatch.map((e) => {
+          if(e.match!.groupFight == "Bảng A"){
+            teamInMatchController.teamInMatchList.add(e)
+          }
+        }).toList();
+        listTeamInMatch.map((e) => {
+          if(e.match!.groupFight == "Bảng A tie-break"){
+            teamInMatchController.teamInMatchList.add(e)
+          }
+        }).toList();
+        listTeamInMatch.map((e) => {
+          if(e.match!.groupFight == "Bảng B"){
+            teamInMatchController.teamInMatchList.add(e)
+          }
+        }).toList();
+        listTeamInMatch.map((e) => {
+          if(e.match!.groupFight == "Bảng B tie-break"){
+            teamInMatchController.teamInMatchList.add(e)
+          }
+        }).toList();
+        listTeamInMatch.map((e) => {
+          if(e.match!.groupFight == "Bảng C"){
+            teamInMatchController.teamInMatchList.add(e)
+          }
+        }).toList();
+        listTeamInMatch.map((e) => {
+          if(e.match!.groupFight == "Bảng C tie-break"){
+            teamInMatchController.teamInMatchList.add(e)
+          }
+        }).toList();
+        listTeamInMatch.map((e) => {
+          if(e.match!.groupFight == "Bảng D"){
+            teamInMatchController.teamInMatchList.add(e)
+          }
+        }).toList();
+        listTeamInMatch.map((e) => {
+          if(e.match!.groupFight == "Bảng D tie-break"){
+            teamInMatchController.teamInMatchList.add(e)
+          }
+        }).toList();
+        listTeamInMatch.map((e) => {
+          if(e.match!.groupFight == "Tứ kết"){
+            teamInMatchController.teamInMatchList.add(e)
+          }
+        }).toList();
+        listTeamInMatch.map((e) => {
+          if(e.match!.groupFight == "Bán kết"){
+            teamInMatchController.teamInMatchList.add(e)
+          }
+        }).toList();
+        listTeamInMatch.map((e) => {
+          if(e.match!.groupFight == "Chung kết"){
+            teamInMatchController.teamInMatchList.add(e)
+          }
+        }).toList();
         teamInMatchController.teamInMatchList
             .map((element) => {
                   if (element.match!.round == "Vòng bảng")
